@@ -1,13 +1,45 @@
+---
+import Header from "./Header.astro";
+---
+
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="id" class="theme-light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Peskom</title>
+  </head>
+  <body class="transition-colors duration-500">
+    <Header />
+    <slot />
+  </body>
 </html>
+
+<style is:global>
+  :root {
+    --base-hue: 266;
+  }
+
+  .theme-light {
+    --text-color: black;
+    --background-color: #fafcff;
+    --gray-100: oklch(99.24% 0.008 var(--base-hue));
+    --header: oklch(from var(--gray-100) l c h / 40%);
+    --header-border: oklch(94.3% 0.005 var(--base-hue));
+  }
+
+  .theme-dark {
+    --text-color: white;
+    --background-color: #080a0e;
+    --gray-100: oklch(14.68% 0.01 var(--base-hue));
+    --header: oklch(from var(--gray-100) l c h / 40%);
+    --header-border: oklch(24.84% 0.018 var(--base-hue));
+  }
+
+  body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+  }
+</style>

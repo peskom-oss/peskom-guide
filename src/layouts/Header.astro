@@ -1,0 +1,41 @@
+---
+import ThemeToggleSwitcher from "./ThemeToggleSwitcher.astro";
+---
+
+<header
+  class="fixed z-10 top-0 left-0 w-full transition-all duration-300 bg-header backdrop-blur-header h-[120px] border-transparent"
+  id="header"
+>
+  <div class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4 h-full">
+    <div class="flex items-center justify-between col-start-2">
+      <h1 class="text-2xl font-bold">Logo</h1>
+      <ThemeToggleSwitcher />
+    </div>
+  </div>
+</header>
+
+<style>
+  #header {
+    border-bottom: 2px solid transparent;
+    transition:
+      height 0.3s ease,
+      border-bottom 0.3s ease;
+  }
+
+  #header.scrolled {
+    height: 60px;
+    border-bottom: 2px solid var(--header-border);
+  }
+</style>
+
+<script is:inline>
+  const header = document.getElementById("header");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY >= 120) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
+</script>
