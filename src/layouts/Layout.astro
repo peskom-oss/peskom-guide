@@ -11,15 +11,22 @@ import Header from "./Header.astro";
     <meta name="generator" content={Astro.generator} />
     <title>Peskom</title>
   </head>
-  <body class="transition-colors duration-500">
+  <body class="transition-all duration-300 ease-in-out">
     <Header />
-    <slot />
+    <div
+      class="h-[var(--layout-offset-height)] max-md:h-[calc(var(--layout-offset-height)*0.6)]"
+    >
+    </div>
+    <main>
+      <slot />
+    </main>
   </body>
 </html>
 
 <style is:global>
   :root {
     --base-hue: 266;
+    --layout-offset-height: 256px;
   }
 
   .theme-light {

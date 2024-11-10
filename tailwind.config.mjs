@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         header: "var(--header)",
+        "header-border": "var(--header-border)",
       },
       backdropBlur: {
         header: "8px",

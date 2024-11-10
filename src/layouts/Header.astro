@@ -3,7 +3,7 @@ import ThemeToggleSwitcher from "./ThemeToggleSwitcher.astro";
 ---
 
 <header
-  class="fixed z-10 top-0 left-0 w-full transition-all duration-300 bg-header backdrop-blur-header h-[120px] border-transparent"
+  class="fixed z-10 top-0 left-0 w-full transition-all duration-300 bg-header backdrop-blur-header h-[120px] max-md:h-[60px] border-b-2 border-transparent"
   id="header"
 >
   <div class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4 h-full">
@@ -16,10 +16,8 @@ import ThemeToggleSwitcher from "./ThemeToggleSwitcher.astro";
 
 <style>
   #header {
+    transition: all 0.3s ease-in-out;
     border-bottom: 2px solid transparent;
-    transition:
-      height 0.3s ease,
-      border-bottom 0.3s ease;
   }
 
   #header.scrolled {
