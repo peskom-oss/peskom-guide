@@ -1,0 +1,32 @@
+---
+interface Props {
+  name: string;
+  description: string;
+}
+
+const { name, description } = Astro.props;
+---
+
+<div
+  class="bg-card-background border border-border-color rounded-md p-5 overflow-hidden"
+>
+  <h3 class="font-semibold text-xl card-text text-text-primary">{name}</h3>
+  <p class="font-semibold text-sm text-text-tertiary leading-7 mt-2">
+    {description}
+  </p>
+</div>
+
+<style>
+  .card-text {
+    background-image: linear-gradient(
+      267deg,
+      rgb(250, 210, 164) 10.37%,
+      rgb(236, 213, 237) 58.94%,
+      rgb(146, 166, 233) 98.35%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+</style>
