@@ -1,0 +1,53 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { GuideCard } from "../../../components/GuideCard";
+
+import { getCurriculumList } from "../../../utils/guides";
+
+import type { MetaData } from "../../../utils/guides";
+
+export async function getStaticPaths() {
+  const guides = import.meta.glob("../../../contents/*/meta.json", {
+    eager: true,
+  });
+
+  const paths = Object.keys(guides).map((path) => {
+    const parts = path.split("/");
+    const category = parts[parts.length - 2];
+    return { params: { category } };
+  });
+
+  return paths;
+}
+
+const currentCategory = Astro.params.category;
+
+const categoryMetaFiles: Record<string, { default: MetaData }> =
+  import.meta.glob("../../../contents/*/meta.json", {
+    eager: true,
+  });
+const curriculumMetaFiles: Record<string, { default: MetaData }> =
+  import.meta.glob("../../../contents/*/*/meta.json", { eager: true });
+
+const curriculumList = getCurriculumList({
+  categoryMetaFiles,
+  curriculumMetaFiles,
+  currentCategory,
+});
+---
+
+<Layout>
+  <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
+    {currentCategory} Guide
+  </h1>
+
+  <div class="mt-4">
+    {
+      curriculumList.map((curriculum) => (
+        <a href={`/guides/${currentCategory}/${curriculum.curriculumName}`}>
+          <GuideCard {...curriculum} />
+        </a>
+      ))
+    }
+  </div>
+</Layout>

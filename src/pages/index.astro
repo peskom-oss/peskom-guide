@@ -2,25 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import { FacebookIcon } from "../components/Icon";
 import { GuideCard } from "../components/GuideCard";
+import { getCategoryList } from "../utils/guides";
 
-interface GuideMetaData {
-  category: string;
-  name: string;
-  description: string;
-  link: string;
-}
+import type { CategoryMetaData } from "../utils/guides";
 
 const guides = import.meta.glob("../contents/*/meta.json", {
   eager: true,
 });
 
-const guideList: GuideMetaData[] = Object.entries(guides).map(
-  ([path, module]) => {
-    const parts = path.split("/");
-    const category = parts[parts.length - 2];
-    return { category, ...(module as any).default };
-  },
-);
+const guideList: CategoryMetaData[] = getCategoryList(guides);
 ---
 
 <Layout>
@@ -67,7 +57,7 @@ const guideList: GuideMetaData[] = Object.entries(guides).map(
           guideList.map((guide) => (
             <li class="list-none">
               <a
-                href="/panduan/panduan-ngoding"
+                href={`/guides/${guide.category}`}
                 class="no-underline text-text-secondary"
               >
                 <GuideCard name={guide.name} description={guide.description} />
