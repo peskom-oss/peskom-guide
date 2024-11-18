@@ -1,51 +1,41 @@
 ---
+import { getCollection } from "astro:content";
+
 import Layout from "../../../layouts/Layout.astro";
 import { GuideCard } from "../../../components/GuideCard";
-
-import { getCurriculumList } from "../../../utils/guides";
-
-import type { MetaData } from "../../../utils/guides";
-
 export async function getStaticPaths() {
-  const guides = import.meta.glob("../../../contents/*/meta.json", {
-    eager: true,
-  });
+  const subguides = await getCollection("subguides");
 
-  const paths = Object.keys(guides).map((path) => {
-    const parts = path.split("/");
-    const category = parts[parts.length - 2];
+  const paths = subguides.map((subguide) => {
+    const segments = subguide.id.split("/");
+    const category = segments[segments.length - 3];
     return { params: { category } };
   });
 
   return paths;
 }
 
-const currentCategory = Astro.params.category;
+const currentSubguides = Astro.params.category;
 
-const categoryMetaFiles: Record<string, { default: MetaData }> =
-  import.meta.glob("../../../contents/*/meta.json", {
-    eager: true,
-  });
-const curriculumMetaFiles: Record<string, { default: MetaData }> =
-  import.meta.glob("../../../contents/*/*/meta.json", { eager: true });
+const subguides = await getCollection("subguides");
 
-const curriculumList = getCurriculumList({
-  categoryMetaFiles,
-  curriculumMetaFiles,
-  currentCategory,
+const currentSubguidesList = subguides.filter((subguide) => {
+  return subguide.id.includes(`${currentSubguides}/`);
 });
+
+console.log(currentSubguidesList);
 ---
 
 <Layout>
   <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
-    {currentCategory} Guide
+    {currentSubguides} Guide
   </h1>
 
   <div class="mt-4">
     {
-      curriculumList.map((curriculum) => (
-        <a href={`/guides/${currentCategory}/${curriculum.curriculumName}`}>
-          <GuideCard {...curriculum} />
+      currentSubguidesList.map((subguide) => (
+        <a href={subguide.data.link}>
+          <GuideCard {...subguide.data} />
         </a>
       ))
     }

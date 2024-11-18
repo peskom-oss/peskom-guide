@@ -1,16 +1,12 @@
 ---
+import { getCollection } from "astro:content";
+
 import Layout from "../layouts/Layout.astro";
 import { FacebookIcon } from "../components/Icon";
 import { GuideCard } from "../components/GuideCard";
-import { getCategoryList } from "../utils/guides";
 
-import type { CategoryMetaData } from "../utils/guides";
-
-const guides = import.meta.glob("../contents/*/meta.json", {
-  eager: true,
-});
-
-const guideList: CategoryMetaData[] = getCategoryList(guides);
+const guideList = await getCollection("guides");
+console.log(guideList);
 ---
 
 <Layout>
@@ -57,10 +53,13 @@ const guideList: CategoryMetaData[] = getCategoryList(guides);
           guideList.map((guide) => (
             <li class="list-none">
               <a
-                href={`/guides/${guide.category}`}
+                href={guide.data.link}
                 class="no-underline text-text-secondary"
               >
-                <GuideCard name={guide.name} description={guide.description} />
+                <GuideCard
+                  name={guide.data.name}
+                  description={guide.data.description}
+                />
               </a>
             </li>
           ))
