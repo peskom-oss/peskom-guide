@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import Layout from "../../../layouts/Layout.astro";
+import { CoreLayout } from "../../../layouts/CoreLayout";
 import { GuideCard } from "../../../components/GuideCard";
 export async function getStaticPaths() {
   const subguides = await getCollection("subguides");
@@ -26,7 +26,7 @@ const currentSubguidesList = subguides.filter((subguide) => {
 console.log(currentSubguidesList);
 ---
 
-<Layout>
+<CoreLayout>
   <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
     {currentSubguides} Guide
   </h1>
@@ -40,4 +40,4 @@ console.log(currentSubguidesList);
       ))
     }
   </div>
-</Layout>
+</CoreLayout>

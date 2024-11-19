@@ -1,15 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 
-import Layout from "../layouts/Layout.astro";
+import { CoreLayout } from "../layouts/CoreLayout";
 import { FacebookIcon } from "../components/Icon";
 import { GuideCard } from "../components/GuideCard";
 
 const guideList = await getCollection("guides");
-console.log(guideList);
 ---
 
-<Layout>
+<CoreLayout>
   <div
     class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-x-4 gap-y-20 items-stretch"
   >
@@ -67,4 +66,4 @@ console.log(guideList);
       </ul>
     </div>
   </div>
-</Layout>
+</CoreLayout>
