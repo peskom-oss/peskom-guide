@@ -8,7 +8,7 @@ export async function getStaticPaths() {
 
   const paths = subcategories.map((subcategory) => {
     const segments = subcategory.id.split("/");
-    const category = segments[segments.length - 2];
+    const category = segments[segments.length - 3];
     return { params: { category } };
   });
 
@@ -22,8 +22,6 @@ const subcategories = await getCollection("subcategories");
 const currentSubcategoriesList = subcategories.filter((subcategory) => {
   return subcategory.id.includes(`${currentSubguides}/`);
 });
-
-console.log(currentSubcategoriesList);
 ---
 
 <CoreLayout>
