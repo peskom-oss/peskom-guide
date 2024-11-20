@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
+
+export async function getStaticPaths() {
+  const subcategories = await getCollection("subcategories");
+
+  const paths = subcategories.map((subcategory) => {
+    const segments = subcategory.id.split("/");
+    return {
+      params: {
+        category: segments[0],
+        subcategory: segments[1],
+      },
+    };
+  });
+
+  return paths;
+}
+
+const { category, subcategory } = Astro.params;
+
+// Fetch all lessons in the subcategory
+const allCurriculums = await getCollection("curriculums");
+
+const lessonsInSubcategory = allCurriculums.filter(
+  (lesson) =>
+    lesson.data.category === category &&
+    lesson.data.subcategory === subcategory,
+);
+
+// Sort lessons if needed (e.g., by filename or a `order` field)
+lessonsInSubcategory.sort((a, b) => a.id.localeCompare(b.id));
+
+// Redirect to the first lesson if it exists
+if (lessonsInSubcategory.length > 0) {
+  const firstLessonSlug = lessonsInSubcategory[0].data.slug;
+
+  return Astro.redirect(
+    `/guides/${category}/${subcategory}/${firstLessonSlug}`,
+  );
+} else {
+  return Astro.redirect("/404");
+}
+---
+
+<LessonLayout>
+  <h1>hello world</h1>
+</LessonLayout>

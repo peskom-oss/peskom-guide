@@ -5,7 +5,7 @@ import { CoreLayout } from "../layouts/CoreLayout";
 import { FacebookIcon } from "../components/Icon";
 import { GuideCard } from "../components/GuideCard";
 
-const guideList = await getCollection("guides");
+const categories = await getCollection("categories");
 ---
 
 <CoreLayout>
@@ -49,15 +49,15 @@ const guideList = await getCollection("guides");
 
       <ul class="flex flex-col gap-6 items-stretch">
         {
-          guideList.map((guide) => (
+          categories.map((category) => (
             <li class="list-none">
               <a
-                href={guide.data.link}
+                href={category.data.link}
                 class="no-underline text-text-secondary"
               >
                 <GuideCard
-                  name={guide.data.name}
-                  description={guide.data.description}
+                  name={category.data.name}
+                  description={category.data.description}
                 />
               </a>
             </li>

@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from "astro:content";
+
+import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
+
+export async function getStaticPaths() {
+  const curriculums = await getCollection("curriculums");
+
+  const paths = curriculums.map((curriculum) => ({
+    params: {
+      category: curriculum.data.category,
+      subcategory: curriculum.data.subcategory,
+      lesson: curriculum.data.slug,
+    },
+  }));
+
+  return paths;
+}
+
+const { category, subcategory, lesson: lessonSlug } = Astro.params;
+
+// Fetch the lesson based on category, subcategory, and slug
+const allCurriculums = await getCollection("curriculums");
+
+const lesson = allCurriculums.find(
+  (curriculum) =>
+    curriculum.data.category === category &&
+    curriculum.data.subcategory === subcategory &&
+    curriculum.data.slug === lessonSlug,
+);
+
+if (!lesson) {
+  return new Response("Lesson not found", { status: 404 });
+}
+
+const { Content } = await render(lesson);
+---
+
+<LessonLayout>
+  <Content />
+</LessonLayout>

@@ -2,7 +2,7 @@
 import { defineCollection, z, reference } from "astro:content";
 import { glob } from "astro/loaders";
 
-const guides = defineCollection({
+const categories = defineCollection({
   loader: glob({
     pattern: "*/*.json",
     base: "src/guides", // Base is relative to src/content/
@@ -14,7 +14,7 @@ const guides = defineCollection({
   }),
 });
 
-const subguides = defineCollection({
+const subcategories = defineCollection({
   loader: glob({
     pattern: "*/*/*.json",
     base: "src/guides",
@@ -26,39 +26,21 @@ const subguides = defineCollection({
   }),
 });
 
-// const subguides = defineCollection({
-//   loader: glob({
-//     pattern: "meta.json",
-//     base: "guides/*/*",
-//   }),
-//   schema: z.object({
-//     title: z.string(),
-//     description: z.string().optional(),
-//     parentGuide: z.string().default((entry) => {
-//       const segments = entry.id.split("/");
-//       return segments[1]; // Extracts the parent guide name
-//     }),
-//     // Add other fields from your meta.json
-//   }),
-// });
-
-// const lessons = defineCollection({
-//   loader: glob({
-//     pattern: "*.mdx",
-//     base: "guides/*/*/*",
-//   }),
-//   schema: z.object({
-//     title: z.string(),
-//     // Add other frontmatter fields if any
-//     parentSubguide: z.string().default((entry) => {
-//       const segments = entry.id.split("/");
-//       return `${segments[1]}/${segments[2]}`; // Extracts the parent subguide path
-//     }),
-//   }),
-// });
+const curriculums = defineCollection({
+  loader: glob({
+    pattern: "**/*.mdx",
+    base: "./src/guides",
+  }),
+  schema: z.object({
+    title: z.string(),
+    slug: z.string(),
+    category: z.string(),
+    subcategory: z.string(),
+  }),
+});
 
 export const collections = {
-  guides,
-  subguides,
-  //   lessons,
+  categories,
+  subcategories,
+  curriculums,
 };

@@ -4,11 +4,11 @@ import { getCollection } from "astro:content";
 import { CoreLayout } from "../../../layouts/CoreLayout";
 import { GuideCard } from "../../../components/GuideCard";
 export async function getStaticPaths() {
-  const subguides = await getCollection("subguides");
+  const subcategories = await getCollection("subcategories");
 
-  const paths = subguides.map((subguide) => {
-    const segments = subguide.id.split("/");
-    const category = segments[segments.length - 3];
+  const paths = subcategories.map((subcategory) => {
+    const segments = subcategory.id.split("/");
+    const category = segments[segments.length - 2];
     return { params: { category } };
   });
 
@@ -17,13 +17,13 @@ export async function getStaticPaths() {
 
 const currentSubguides = Astro.params.category;
 
-const subguides = await getCollection("subguides");
+const subcategories = await getCollection("subcategories");
 
-const currentSubguidesList = subguides.filter((subguide) => {
-  return subguide.id.includes(`${currentSubguides}/`);
+const currentSubcategoriesList = subcategories.filter((subcategory) => {
+  return subcategory.id.includes(`${currentSubguides}/`);
 });
 
-console.log(currentSubguidesList);
+console.log(currentSubcategoriesList);
 ---
 
 <CoreLayout>
@@ -33,9 +33,9 @@ console.log(currentSubguidesList);
 
   <div class="mt-4">
     {
-      currentSubguidesList.map((subguide) => (
-        <a href={subguide.data.link}>
-          <GuideCard {...subguide.data} />
+      currentSubcategoriesList.map((subcategory) => (
+        <a href={subcategory.data.link}>
+          <GuideCard {...subcategory.data} />
         </a>
       ))
     }
