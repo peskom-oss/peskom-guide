@@ -1,6 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
 
 export async function getStaticPaths() {
   const subcategories = await getCollection("subcategories");
@@ -43,7 +42,3 @@ if (lessonsInSubcategory.length > 0) {
   return Astro.redirect("/404");
 }
 ---
-
-<LessonLayout>
-  <h1>hello world</h1>
-</LessonLayout>
