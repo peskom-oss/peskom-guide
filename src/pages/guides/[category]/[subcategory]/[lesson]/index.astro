@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 
+import type { LessonMeta } from "@/layouts/LessonLayout";
+
 import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
 
 export async function getStaticPaths() {
@@ -19,23 +21,76 @@ export async function getStaticPaths() {
 
 const { category, subcategory, lesson: lessonSlug } = Astro.params;
 
-// Fetch the lesson based on category, subcategory, and slug
-const allCurriculums = await getCollection("curriculums");
+async function getLesson(category, subcategory, lessonSlug) {
+  // Fetch the lesson based on category, subcategory, and slug
+  const allCurriculums = await getCollection("curriculums");
 
-const lesson = allCurriculums.find(
-  (curriculum) =>
-    curriculum.data.category === category &&
-    curriculum.data.subcategory === subcategory &&
-    curriculum.data.slug === lessonSlug,
-);
+  const lesson = allCurriculums.find(
+    (curriculum) =>
+      curriculum.data.category === category &&
+      curriculum.data.subcategory === subcategory &&
+      curriculum.data.slug === lessonSlug,
+  );
+
+  if (!lesson) {
+    return null;
+  }
+
+  return lesson;
+}
+
+async function getCurriculumList() {
+  const allCurriculums = await getCollection("curriculums");
+
+  // Categorize items
+  const categorized = allCurriculums.reduce(
+    (acc, item) => {
+      // const pathSegments = item.filePath?.split("/") || [];
+      const curriculum = item.data.curriculum;
+
+      if (!acc[curriculum]) {
+        acc[curriculum] = [];
+      }
+
+      acc[curriculum].push({
+        id: item.id,
+        title: item.data.title,
+        body: item.body || "",
+        filePath: item.filePath || "",
+        slug: item.data.slug,
+      });
+
+      return acc;
+    },
+    {} as Record<string, Array<LessonMeta>>,
+  );
+
+  // Convert categorized object into an array of objects
+  const result = Object.entries(categorized).map(([curriculum, children]) => ({
+    curriculum,
+    category,
+    subcategory,
+    children,
+  }));
+
+  return result;
+}
+
+const curriculumList = await getCurriculumList();
+
+const lesson = await getLesson(category, subcategory, lessonSlug);
 
 if (!lesson) {
-  return new Response("Lesson not found", { status: 404 });
+  return Astro.redirect("/404");
 }
 
 const { Content } = await render(lesson);
 ---
 
-<LessonLayout>
+<LessonLayout
+  curriculums={curriculumList}
+  lessonSlug={lessonSlug}
+  title={lesson.data.title}
+>
   <Content />
 </LessonLayout>

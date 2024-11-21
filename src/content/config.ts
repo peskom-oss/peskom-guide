@@ -36,6 +36,7 @@ const curriculums = defineCollection({
     slug: z.string(),
     category: z.string(),
     subcategory: z.string(),
+    curriculum: z.string(),
   }),
 });
 

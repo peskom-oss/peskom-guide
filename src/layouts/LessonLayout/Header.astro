@@ -1,0 +1,66 @@
+---
+import ThemeToggleSwitcher from "../ThemeToggleSwitcher.astro";
+import LessonMenuToggle from "./LessonMenuToggle.tsx";
+
+import type { Curriculum } from "./LessonLayout.astro";
+
+interface Props {
+  curriculums: Curriculum[];
+  lessonSlug: string;
+  title: string;
+}
+
+const { curriculums, lessonSlug, title } = Astro.props;
+---
+
+<header
+  class="fixed z-10 top-0 left-0 w-full transition-all duration-300 bg-header backdrop-blur-header h-[120px] max-md:h-[60px] border-b-2 border-transparent"
+  id="header"
+>
+  <div class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4 h-full">
+    <div class="flex items-center justify-between col-start-2">
+      <LessonMenuToggle
+        curriculums={curriculums}
+        lessonSlug={lessonSlug}
+        client:load
+      />
+      <div class="hidden mx-5 overflow-hidden w-full md:block">
+        <span
+          class="transition-all duration-300 text-xl font-semibold overflow-hidden capitalize title opacity-0 translate-y-4"
+        >
+          introduction to frontend development
+        </span>
+      </div>
+      <ThemeToggleSwitcher />
+    </div>
+  </div>
+</header>
+
+<style>
+  #header {
+    transition: all 0.3s ease-in-out;
+    border-bottom: 2px solid transparent;
+  }
+
+  #header.scrolled {
+    height: 60px;
+    border-bottom: 2px solid var(--header-border);
+  }
+
+  #header.scrolled .title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script is:inline>
+  const header = document.getElementById("header");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY >= 120) {
+      header.classList.add("scrolled");
+    } else {
+      header.classList.remove("scrolled");
+    }
+  });
+</script>

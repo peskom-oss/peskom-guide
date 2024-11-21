@@ -29,7 +29,23 @@ const lessonsInSubcategory = allCurriculums.filter(
 );
 
 // Sort lessons if needed (e.g., by filename or a `order` field)
-lessonsInSubcategory.sort((a, b) => a.id.localeCompare(b.id));
+lessonsInSubcategory.sort((a, b) => {
+  const getSubcategoryOrder = (filePath: string | undefined) => {
+    if (!filePath) {
+      return Infinity;
+    }
+    // Split the filePath by "/"
+    const parts = filePath.split("/");
+    const subcategoryPart = parts[5]; // The 5th part contains the subcategory
+    const order = parseInt(subcategoryPart.split("-")[0], 10); // Extract the number before "-"
+    return isNaN(order) ? Infinity : order; // Default to Infinity if no number is found
+  };
+
+  const orderA = getSubcategoryOrder(a.filePath);
+  const orderB = getSubcategoryOrder(b.filePath);
+
+  return orderA - orderB;
+});
 
 // Redirect to the first lesson if it exists
 if (lessonsInSubcategory.length > 0) {

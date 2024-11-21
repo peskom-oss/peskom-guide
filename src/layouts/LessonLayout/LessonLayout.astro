@@ -1,6 +1,29 @@
 ---
 import "@/layouts/layout.css";
 import Header from "./Header.astro";
+
+export type LessonMeta = {
+  id: string;
+  title: string;
+  body: string;
+  filePath: string;
+  slug: string;
+};
+
+export interface Curriculum {
+  curriculum: string;
+  category: string;
+  subcategory: string;
+  children: LessonMeta[];
+}
+
+interface Props {
+  curriculums: Curriculum[];
+  lessonSlug: string;
+  title: string;
+}
+
+const { curriculums, lessonSlug, title } = Astro.props;
 ---
 
 <!doctype html>
@@ -13,7 +36,7 @@ import Header from "./Header.astro";
     <title>Peskom</title>
   </head>
   <body class="transition-all duration-300 ease-in-out">
-    <Header />
+    <Header curriculums={curriculums} lessonSlug={lessonSlug} title={title} />
     <!-- offset -->
     <div
       class="h-[var(--layout-offset-height)] max-md:h-[calc(var(--layout-offset-height)*0.6)]"
