@@ -1,0 +1,57 @@
+---
+import { InfoIcon, DangerIcon } from "../Icon";
+
+interface Props {
+  variant?: keyof typeof variants;
+  label?: string;
+}
+
+const variants = {
+  info: {
+    wrapper: "bg-emphasis",
+    label: "bg-accent",
+    icon: InfoIcon,
+    iconBg: "bg-accent",
+  },
+  danger: {
+    wrapper: "bg-danger-emphasis",
+    label: "bg-danger",
+    icon: DangerIcon,
+    iconBg: "bg-danger",
+  },
+  warning: {
+    wrapper: "bg-orange-400",
+    label: "bg-warning",
+    icon: DangerIcon,
+    iconBg: "bg-warning",
+  },
+};
+
+const { variant = "info", label } = Astro.props;
+const variantStyles = variants[variant];
+const Icon = label ? null : variantStyles.icon;
+---
+
+<aside
+  class={`relative flex flex-col gap-6 p-6 rounded-md text-text-primary border border-emphasis ${variantStyles.wrapper}`}
+>
+  {
+    Icon && (
+      <div
+        class={`absolute flex border-[6px] border-solid border-background top-[-24px] right-[-16px] rounded-full p-[6px] text-background ${variantStyles.iconBg}`}
+      >
+        <Icon />
+      </div>
+    )
+  }
+  {
+    label && (
+      <div
+        class={`absolute px-1.5 py-1.5 flex top-[-24px] right-[-8px] rounded-md text-background font-medium text-sm select-none ${variantStyles.label}`}
+      >
+        {label}
+      </div>
+    )
+  }
+  <slot />
+</aside>

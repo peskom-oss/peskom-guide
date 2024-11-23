@@ -1,0 +1,46 @@
+<li class="styled-list-item">
+  <div class="translate-y-[3px] pr-1">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="22"
+      height="22"
+      viewBox="0 0 25 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="w-[24px] h-[24px] stroke-accent"
+      ><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg
+    >
+  </div>
+  <div>
+    <slot />
+  </div>
+</li>
+
+<style>
+  .styled-list-item {
+    list-style: none;
+    display: flex;
+    margin-bottom: calc(1.45rem / 2);
+    line-height: 1.9;
+    letter-spacing: 0.3px;
+  }
+
+  .styled-list-item span[data-list-item] {
+    padding-right: 6px;
+    transform: translateY(3px);
+  }
+
+  .styled-list-item > ol,
+  .styled-list-item > ul {
+    margin-left: 1.45rem;
+    margin-top: calc(1.45rem / 2);
+    margin-bottom: calc(1.45rem / 2);
+  }
+
+  .styled-list-item > p {
+    margin-bottom: calc(1.45rem / 2);
+  }
+</style>

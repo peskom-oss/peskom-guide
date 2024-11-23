@@ -1,9 +1,10 @@
 ---
 import { getCollection, render } from "astro:content";
 
-import type { LessonMeta } from "@/layouts/LessonLayout";
-
+import { MDXComponents } from "@/components/MDXComponents";
 import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
+
+import type { LessonMeta } from "@/layouts/LessonLayout";
 
 export async function getStaticPaths() {
   const curriculums = await getCollection("curriculums");
@@ -92,5 +93,13 @@ const { Content } = await render(lesson);
   lessonSlug={lessonSlug}
   title={lesson.data.title}
 >
-  <Content />
+  <div class="grid grid-cols-[1fr_minmax(auto,700px)_1fr]">
+    <div class="col-start-2">
+      <div
+        class="flex flex-col items-start flex-nowrap gap-y-8 text-text-secondary font-medium text-base leading-7"
+      >
+        <Content components={MDXComponents} />
+      </div>
+    </div>
+  </div>
 </LessonLayout>

@@ -1,0 +1,25 @@
+<div class="m-0 p-0 text-inherit list-outside list-image-none">
+  <ol class="ordered-list">
+    <slot />
+  </ol>
+</div>
+
+<style is:global>
+  .ordered-list {
+    counter-reset: li;
+  }
+
+  .ordered-list li {
+    counter-increment: li;
+  }
+
+  .ordered-list li:before {
+    content: counters(li, ".") " ";
+    color: var(--accent);
+    margin-right: 6px;
+  }
+
+  .ordered-list li svg {
+    display: none;
+  }
+</style>

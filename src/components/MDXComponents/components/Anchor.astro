@@ -1,0 +1,12 @@
+---
+type Props = astroHTML.JSX.AnchorHTMLAttributes;
+
+const props = Astro.props;
+---
+
+<a
+  {...props}
+  class="text-accent font-medium no-underline transition-colors duration-300 border-b border-transparent hover:border-accent"
+>
+  <slot />
+</a>

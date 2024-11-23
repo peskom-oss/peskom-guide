@@ -36,6 +36,7 @@ export default {
         "token-keyword": "var(--token-keyword)",
         "token-function": "var(--token-function)",
         "token-punctuation": "var(--token-punctuation)",
+        "orange-400": "var(--orange-400)",
       },
       backdropBlur: {
         header: "8px",

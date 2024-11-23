@@ -2,6 +2,13 @@
   --base-hue: 266;
   --layout-offset-height: 256px;
   --white: oklch(100% 0 0);
+
+  --font-size-6: 14px;
+  --font-size-5: 16px;
+  --font-size-4: 18px;
+  --font-size-3: 20px;
+  --font-size-2: 24px;
+  --font-size-1: 32px;
 }
 
 /* Light theme */

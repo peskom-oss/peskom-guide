@@ -52,6 +52,7 @@
     document.documentElement.classList.add("theme-dark");
   }
 
+  document.documentElement.setAttribute("data-theme", theme);
   window.localStorage.setItem("theme", theme);
 
   const handleToggleClick = () => {

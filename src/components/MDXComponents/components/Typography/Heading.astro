@@ -1,0 +1,43 @@
+---
+interface Props {
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+}
+
+const { level, as = `h${level}` } = Astro.props;
+const variants = {
+  1: `font-bold tracking-[-0.3px] leading-6 text-text-primary h${level}`,
+  2: `font-bold tracking-[-0.3px] leading-6 text-text-primary h${level}`,
+  3: `font-bold tracking-[-0.3px] leading-6 text-text-primary h${level}`,
+  4: `font-bold tracking-[-0.3px] leading-6 text-text-primary h${level}`,
+  5: `font-bold tracking-[-0.3px] leading-6 text-text-primary h${level}`,
+  6: `font-bold tracking-[-0.3px] leading-6 text-text-primary h${level}`,
+};
+
+const Component = as;
+---
+
+<Component class={variants[level]}>
+  <slot />
+</Component>
+
+<style>
+  .h1 {
+    font-size: var(--font-size-1);
+  }
+  .h2 {
+    font-size: var(--font-size-2);
+  }
+  .h3 {
+    font-size: var(--font-size-3);
+  }
+  .h4 {
+    font-size: var(--font-size-4);
+  }
+  .h5 {
+    font-size: var(--font-size-5);
+  }
+  .h6 {
+    font-size: var(--font-size-6);
+  }
+</style>
