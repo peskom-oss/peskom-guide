@@ -12,6 +12,7 @@ import H6 from "./components/Typography/H6.astro";
 import Paragraph from "./components/Typography/Paragraph.astro";
 import EM from "./components/Typography/EM.astro";
 import InlineCode from "./components/InlineCode.astro";
+import Code from "./components/Code.astro";
 
 export const MDXComponents = {
   a: Anchor,
@@ -28,4 +29,5 @@ export const MDXComponents = {
   p: Paragraph,
   em: EM,
   code: InlineCode,
+  pre: Code,
 };

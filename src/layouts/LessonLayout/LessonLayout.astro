@@ -1,5 +1,7 @@
 ---
 import "@/layouts/layout.css";
+import "./highlighter.css";
+
 import Header from "./Header.astro";
 
 export type LessonMeta = {
@@ -27,7 +29,7 @@ const { curriculums, lessonSlug, title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="id" class="theme-light" data-theme="light">
+<html lang="id" class="theme-dark" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -56,3 +58,5 @@ const { curriculums, lessonSlug, title } = Astro.props;
     </div>
   </body>
 </html>
+
+<style is:global></style>

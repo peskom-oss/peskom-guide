@@ -1,5 +1,32 @@
-<code
-  class="font-mono leading-6 rounded-lg bg-foreground text-center text-token-keyword inline-flex px-1 mx-1 font-normal break-words border border-border-color"
+<!-- <code
+  class="not-prose inline-code font-mono leading-6 rounded-lg bg-foreground text-center text-token-keyword inline-flex px-1 mx-1 font-normal break-words border border-border-color"
 >
   <slot />
+</code> -->
+<code class="inline-code">
+  <slot />
 </code>
+
+<style>
+  .inline-code {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .inline-code:not(pre code) {
+    font-family: monospace; /* Tailwind's 'font-mono' */
+    line-height: 1.5rem; /* Tailwind's 'leading-6' */
+    border-radius: 0.5rem; /* Tailwind's 'rounded-lg' */
+    background-color: var(--foreground); /* Tailwind's 'bg-foreground' */
+    text-align: center; /* Tailwind's 'text-center' */
+    color: var(--token-keyword); /* Tailwind's 'text-token-keyword' */
+    display: inline-flex; /* Tailwind's 'inline-flex' */
+    padding-left: 0.25rem; /* Tailwind's 'px-1' */
+    padding-right: 0.25rem; /* Tailwind's 'px-1' */
+    margin-left: 0.25rem; /* Tailwind's 'mx-1' */
+    margin-right: 0.25rem; /* Tailwind's 'mx-1' */
+    font-weight: 400; /* Tailwind's 'font-normal' */
+    word-break: break-word; /* Tailwind's 'break-words' */
+    border: 1px solid var(--border-color); /* Tailwind's 'border border-border-color' */
+  }
+</style>
