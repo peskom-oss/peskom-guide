@@ -42,10 +42,17 @@ const { curriculums, lessonSlug, title } = Astro.props;
       class="h-[var(--layout-offset-height)] max-md:h-[calc(var(--layout-offset-height)*0.6)]"
     >
     </div>
-    <div class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4">
-      <main class="col-start-2">
-        <slot />
-      </main>
+    <!-- Full-width content slot -->
+    <slot name="fullwidth" />
+
+    <div
+      class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4 items-stretch"
+    >
+      <div class="col-start-2">
+        <main class="flex flex-col">
+          <slot />
+        </main>
+      </div>
     </div>
   </body>
 </html>

@@ -8,6 +8,8 @@ curriculum: "introduction"
 
 import { LessonCallout } from "@/components/LessonCallout";
 import { StaticTweet } from "@/components/StaticTweet";
+import { LessonImage } from "@/components/LessonImage";
+import { Fullbleed } from "@/components/Fullbleed";
 
 I spent the past few months diving into the realm of Raymarching and studying some of its applications that may come in handy for future 3D projects, and while I managed to build a pretty diverse set of scenes, all of them consisted of rendering _surfaces or solid objects_. [My blog post on Raymarching](/posts/painting-with-math-a-gentle-study-of-raymarching/) covered some of the many impressive capabilities of this rendering technique, and as I mentioned at the end of that post, that was only the tip of the iceberg; there is _a lot more_ we can do with it.
 
@@ -75,4 +77,18 @@ The directional derivative method to calculate diffuse lighting works only with 
 
 </LessonCallout>
 
-<StaticTweet id="1859996269948907914" client:load />
+{/* <StaticTweet id="1859996269948907914" client:load /> */}
+
+<Fullbleed widthPercent={80}>
+  <LessonImage
+    src="https://res.cloudinary.com/dg5nsedzw/image/upload/fl_lossy,f_auto,q_auto/blog/sobel_matrix_kernel"
+    alt="Diagram showcasing the process of applying the Sobel matrix on a given kernel"
+    width={700}
+    height={349}
+  />
+</Fullbleed>
+
+**P**hysically **B**ased **R**endering (PBR) is often the _defacto_ stylistic choice for 3D developers as
+tools/frameworks, for the most part, optimize for realistic materials, shadows, and lighting out-of-the-box.
+However, in an industry constantly pushing for realism, adopting **N**on-**P**hotorealistic **R**endering (NPR) or stylized shaders while still following physical principles can
+really make your project stand out.

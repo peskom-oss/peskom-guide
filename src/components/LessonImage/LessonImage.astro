@@ -1,0 +1,152 @@
+---
+// THANK YOU CHATGPT
+import { Image } from "astro:assets";
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+}
+
+const { src, alt, width = 700, height = 400 } = Astro.props;
+---
+
+<div class="image-container">
+  <figure class="zoomable-wrapper w-full">
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      class="zoomable-image rounded-lg w-full"
+    />
+    <figcaption class="text-text-tertiary font-semibold text-sm mt-2">
+      {alt}
+    </figcaption>
+  </figure>
+  <div class="zoom-overlay">
+    <figure class="zoomed-figure">
+      <Image
+        src={src}
+        alt={alt}
+        width={width * 2}
+        height={height * 2}
+        class="zoomed-image"
+      />
+      <figcaption class="zoomed-caption text-sm">{alt}</figcaption>
+    </figure>
+  </div>
+</div>
+
+<script>
+  function initZoomableImages() {
+    document.querySelectorAll(".zoomable-wrapper").forEach((wrapper) => {
+      const container = wrapper.closest(".image-container");
+      const overlay = container?.querySelector(".zoom-overlay") as HTMLElement;
+      const image = wrapper.querySelector(".zoomable-image");
+
+      if (!overlay || !image) return;
+
+      // Toggle overlay on wrapper click
+      wrapper.addEventListener("click", () => {
+        overlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+      });
+
+      // Close on overlay click
+      overlay.addEventListener("click", () => {
+        overlay.classList.remove("active");
+        document.body.style.overflow = "";
+      });
+
+      // Close on escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && overlay.classList.contains("active")) {
+          overlay.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", initZoomableImages);
+
+  // Initialize when Astro view transitions complete
+  document.addEventListener("astro:page-load", initZoomableImages);
+</script>
+
+<style>
+  .image-container {
+    position: relative;
+    width: 100%;
+  }
+  .zoomable-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 0;
+  }
+
+  .zoomable-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+  }
+
+  .zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+    cursor: zoom-out;
+  }
+
+  .zoom-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .zoomed-figure {
+    margin: 0;
+    max-width: 90%;
+    max-height: 90vh;
+  }
+
+  .zoomed-image {
+    max-width: 100%;
+    max-height: calc(90vh - 3rem);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    object-fit: contain;
+  }
+
+  .zoomed-caption {
+    text-align: center;
+    color: #fff;
+    padding: 1rem;
+    font-style: italic;
+  }
+
+  .zoom-overlay.active .zoomed-image {
+    transform: scale(1);
+  }
+</style>
