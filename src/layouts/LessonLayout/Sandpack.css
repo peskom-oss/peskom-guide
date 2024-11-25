@@ -1,0 +1,43 @@
+.sp-wrapper {
+  width: 100% !important;
+}
+
+.sp-layout {
+  background: var(--card-background);
+  position: relative;
+  border-radius: var(--border-radius-2);
+  gap: 0 !important;
+}
+
+@media (max-width: 880px) {
+  .sp-layout {
+    position: relative;
+    display: block;
+    width: 95vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -47.5vw;
+    margin-right: -47.5vw;
+  }
+}
+
+@media (min-width: 880px) {
+  .sp-layout {
+    position: relative;
+    width: calc(100% + 150px);
+    margin-left: -75px;
+    margin-right: -75px;
+  }
+}
+
+.cm-gutterElement {
+  font-size: 12px;
+  user-select: none;
+  opacity: 1;
+  color: var(--text-tertiary);
+}
+
+/* Hide default console clear button */
+.sp-console > button {
+  display: none;
+}
