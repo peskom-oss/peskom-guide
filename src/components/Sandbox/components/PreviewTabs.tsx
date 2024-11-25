@@ -4,9 +4,10 @@ import {
   useSandpackNavigation,
   useSandpackConsole,
 } from "@codesandbox/sandpack-react";
-import { Layers3, Play, Repeat, X } from "lucide-react";
+import { Layers3, Play, Repeat, X, Pen } from "lucide-react";
 
 import ToolTip from "@/components/ToolTip";
+import { useIsPrettier, usePrettier } from "../prettier";
 import type { Tab } from "../DefaultSandbox";
 
 interface Props {
@@ -20,6 +21,8 @@ export default function PreviewTabs({
   onTabSelect,
   selectedTab,
 }: Props) {
+  const { prettier } = useIsPrettier();
+
   return (
     <div
       className="flex justify-between gap-2 px-2 py-2 h-[40px] w-full border border-border-color"
@@ -57,6 +60,7 @@ export default function PreviewTabs({
       </div>
       <div className="flex gap-x-2">
         <CustomGoToSandboxButton />
+        {prettier && <CustomPrettierButton />}
         <CustomRunButton />
         <CustomRefreshButton />
         <CustomClearConsoleButton
@@ -120,6 +124,23 @@ function CustomClearConsoleButton({ onClear }: { onClear: () => void }) {
         }}
       >
         <X className="w-4 h-4" />
+      </button>
+    </ToolTip>
+  );
+}
+
+function CustomPrettierButton() {
+  const { error, success, prettifyCode } = usePrettier();
+
+  return (
+    <ToolTip content="Format Code Using Prettier">
+      <button aria-label="Format Code Using Prettier" onClick={prettifyCode}>
+        <Pen
+          className="w-4 h-4"
+          style={{
+            color: error ? "var(--danger)" : "inherit",
+          }}
+        />
       </button>
     </ToolTip>
   );
