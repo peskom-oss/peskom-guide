@@ -45,11 +45,9 @@ const { curriculums, lessonSlug, title } = Astro.props;
       class="h-[var(--layout-offset-height)] max-md:h-[calc(var(--layout-offset-height)*0.6)]"
     >
     </div>
-    <!-- Full-width content slot -->
-    <slot name="fullwidth" />
 
     <div
-      class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4 items-stretch"
+      class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-4 items-stretch my-10"
     >
       <div class="col-start-2">
         <main class="flex flex-col">
@@ -57,6 +55,44 @@ const { curriculums, lessonSlug, title } = Astro.props;
         </main>
       </div>
     </div>
+
+    <section class="bg-foreground text-text-primary px-[20px] py-14 md:px-0">
+      <div class="max-w-[700px] mx-auto flex flex-col gap-y-5">
+        <p>
+          Apakah konten ini membantu ? Jika ya, kami akan sangat menghargai jika
+          Anda bisa memberikan bintang pada
+          <a
+            href="https://github.com/peskom-oss/peskom-guide"
+            target="_blank"
+            class="text-accent font-semibold"
+          >
+            GitHub Repository kami
+          </a>
+          dan ikuti sosial media dari komunitas Peskom di
+          <a
+            href="https://www.facebook.com/groups/sarjana.komedi"
+            target="_blank"
+            class="text-accent font-semibold"
+          >
+            Facebook
+          </a>
+          . Dukungan Anda membantu kami untuk terus berkembang! 🌟
+        </p>
+
+        <p>
+          Dan juga jika Anda menemukan kesalahan, typo, kekurangan, atau
+          kesalahan pada artikel ini, kami sangat terbuka untuk masukan. Silakan
+          laporkan temuan Anda melalui
+          <a
+            href="https://github.com/peskom-oss/peskom-guide/issues"
+            target="_blank">Github Issues</a
+          >
+          . Mari bersama-sama meningkatkan kualitas konten untuk komunitas! 🚀
+        </p>
+
+        <p>Semoga semangat open source turut senantiasa menyertaimu.</p>
+      </div>
+    </section>
   </body>
 </html>
 

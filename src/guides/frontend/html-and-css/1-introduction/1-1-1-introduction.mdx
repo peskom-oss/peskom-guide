@@ -8,6 +8,21 @@ curriculum: "introduction"
 
 import Demos from "./demos";
 
-asdasdsad
+## Volumetric rendering: Raymarching with a twist
+
+In my previous blog post on Raymarching, we saw that the technique relied on:
+
+- **Signed Distance Fields**: functions that return the distance of a given point in space to the surface of an object
+- **A Raymarching loop** where we **march step-by-step** alongside rays cast **from an origin point** (a camera, the observer's eye) **through each pixel of an output image**, and we calculate the distance to the object's surface using our SDF. Once that distance is small enough, we can draw a pixel.
+
+If you've practiced this technique on some of your own scenes, you're in luck: Volumetric Raymarching relies on _the same principles_: there's a loop, rays cast from an origin, and SDFs. However, since we're rendering volumes instead of surfaces, there's a tiny twist to the technique 👀.
+
+### How to sample a volume
+
+The first time we got introduced to the concept of SDF, we learned that it was important _not to step inside_ the object during our Raymarching loop to have a beautiful render. I even emphasized that fact in one of my diagrams showcasing 3 points relative to an object:
+
+- `P1` is located far from the surface, in green, representing a _positive_ distance to the surface.
+- `P2` is located at a close distance ε to the surface, in orange,
+- `P3` positioned **inside** the object, in red, representing a **negative** distance to the surface.
 
 <Demos demo="demo1" client:load />
