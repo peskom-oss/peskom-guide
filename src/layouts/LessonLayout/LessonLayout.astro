@@ -36,7 +36,6 @@ const { curriculums, lessonSlug, title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Peskom</title>
   </head>
   <body class="transition-all duration-300 ease-in-out">
     <Header curriculums={curriculums} lessonSlug={lessonSlug} title={title} />
@@ -85,9 +84,13 @@ const { curriculums, lessonSlug, title } = Astro.props;
           laporkan temuan Anda melalui
           <a
             href="https://github.com/peskom-oss/peskom-guide/issues"
-            target="_blank">Github Issues</a
+            class="text-accent font-semibold"
+            target="_blank"
           >
-          . Mari bersama-sama meningkatkan kualitas konten untuk komunitas! 🚀
+            halaman Github Issues ini
+          </a>
+          . Mari bersama-sama meningkatkan kualitas konten untuk komunitas Peskom!
+          🚀
         </p>
 
         <p>Semoga semangat open source turut senantiasa menyertaimu.</p>

@@ -1,6 +1,27 @@
 ---
+import { SEO } from "astro-seo";
+
 import "@/layouts/layout.css";
 import Header from "./Header.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+}
+
+const defaultTitle = "Peskom Guide";
+const defaultDescription =
+  "Temukan panduan belajar berbagai macam topik teknologi di Peskom Guide! Kumpulan panduan yang dibuat dari sarjana komedi, oleh sarjana komedi, dan untuk sarjana komedi. Cocok untuk mahasiswa dan lulusan IT yang gak bisa ngoding.";
+const baseUrl = Astro.url.origin;
+
+const {
+  title,
+  description = defaultDescription,
+  canonical = baseUrl,
+} = Astro.props as Props;
+
+const fullTitle = title ? `${title} | ${defaultTitle}` : defaultTitle;
 ---
 
 <!doctype html>
@@ -10,7 +31,7 @@ import Header from "./Header.astro";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Peskom</title>
+    <SEO title={fullTitle} description={description} canonical={canonical} />
   </head>
   <body class="transition-all duration-300 ease-in-out">
     <Header />

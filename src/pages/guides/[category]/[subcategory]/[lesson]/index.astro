@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import { SEO } from "astro-seo";
 
 import { MDXComponents } from "@/components/MDXComponents";
 import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
@@ -86,6 +87,13 @@ if (!lesson) {
 }
 
 const { Content } = await render(lesson);
+
+// SEO
+const meta = {
+  title: `${lesson.data.title} pada ${subcategory} | belajar ${category} | Peskom Guide`,
+  description: `Panduan belajar ${subcategory} dengan topik ${lesson.data.title} yang merupakan bagian dari ${category}`,
+  canonical: `${Astro.url.origin}/guides/${category}/${subcategory}/${lessonSlug}`,
+};
 ---
 
 <LessonLayout
@@ -93,6 +101,7 @@ const { Content } = await render(lesson);
   lessonSlug={lessonSlug}
   title={lesson.data.title}
 >
+  <SEO {...meta} />
   <div class="grid grid-cols-[1fr_minmax(auto,700px)_1fr]">
     <div class="col-start-2">
       <div

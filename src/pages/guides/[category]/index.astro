@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { SEO } from "astro-seo";
 
 import { CoreLayout } from "../../../layouts/CoreLayout";
 import { GuideCard } from "../../../components/GuideCard";
@@ -22,9 +23,16 @@ const subcategories = await getCollection("subcategories");
 const currentSubcategoriesList = subcategories.filter((subcategory) => {
   return subcategory.id.includes(`${currentSubguides}/`);
 });
+
+const meta = {
+  title: `Panduan belajar ${currentSubguides} | Peskom Guide`,
+  description: `Panduan terlengkap untuk belajar dasar ${currentSubguides} bahasa indonesia`,
+  canonical: `${Astro.url.origin}/guides/${currentSubguides}`,
+};
 ---
 
-<CoreLayout>
+<CoreLayout {...meta}>
+  <SEO title={`Panduan belajar ${currentSubguides} | Peskom Guide`} />
   <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
     {currentSubguides} Guide
   </h1>

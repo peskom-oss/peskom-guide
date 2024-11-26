@@ -1,14 +1,24 @@
 ---
 import { getCollection } from "astro:content";
+import { SEO } from "astro-seo";
 
 import { CoreLayout } from "../layouts/CoreLayout";
 import { FacebookIcon } from "../components/Icon";
 import { GuideCard } from "../components/GuideCard";
 
 const categories = await getCollection("categories");
+
+const meta = {
+  title:
+    "Panduan Belajar Programming untuk Mahasiswa & Lulusan IT yang Gak Bisa Ngoding",
+};
 ---
 
-<CoreLayout>
+<CoreLayout {...meta}>
+  <SEO
+    title="Panduan Belajar Programming untuk Mahasiswa & Lulusan IT yang Gak Bisa Ngoding | Peskom Guide"
+    description="Temukan panduan lengkap belajar programming di Peskom Guide! Mulai dari frontend, backend, hingga teknologi terkini. Cocok untuk mahasiswa dan lulusan IT yang ingin meningkatkan skill coding mereka."
+  />
   <div
     class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-x-4 gap-y-20 items-stretch"
   >
