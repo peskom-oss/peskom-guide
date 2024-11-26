@@ -4,6 +4,7 @@ import "./highlighter.css";
 import "./Sandpack.css";
 
 import Header from "./Header.astro";
+import Footer from "@/layouts/Footer.astro";
 
 export type LessonMeta = {
   id: string;
@@ -96,6 +97,8 @@ const { curriculums, lessonSlug, title } = Astro.props;
         <p>Semoga semangat open source turut senantiasa menyertaimu.</p>
       </div>
     </section>
+
+    <Footer />
   </body>
 </html>
 

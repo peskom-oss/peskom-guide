@@ -3,6 +3,7 @@ import { SEO } from "astro-seo";
 
 import "@/layouts/layout.css";
 import Header from "./Header.astro";
+import Footer from "../Footer.astro";
 
 interface Props {
   title?: string;
@@ -45,5 +46,6 @@ const fullTitle = title ? `${title} | ${defaultTitle}` : defaultTitle;
         <slot />
       </main>
     </div>
+    <Footer />
   </body>
 </html>
