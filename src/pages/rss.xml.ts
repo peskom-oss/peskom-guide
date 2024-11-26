@@ -10,7 +10,7 @@ export async function GET(context) {
   // Transform curriculum entries into RSS items
   const curriculumItems = curriculums.map((post) => ({
     title: post.data.title,
-    description: post.body,
+    slug: post.data.slug,
     link: `/guides/${post.data.category}/${post.data.subcategory}/${post.data.slug}`,
     pubDate: new Date(),
   }));
