@@ -35,9 +35,10 @@ export async function GET(context) {
   const allItems = [...curriculumItems, ...categoryItems, ...subcategoryItems];
 
   return rss({
-    title: "Peskom Guide",
+    title:
+      "Peskom Guide: Panduan Belajar Programming untuk Mahasiswa & Lulusan IT yang Gak Bisa Ngoding",
     description:
-      "Panduan belajar programming untuk para sarjana komedi lulusan IT gak bisa ngoding",
+      "Temukan panduan lengkap belajar programming di Peskom Guide! Mulai dari frontend, backend, hingga teknologi terkini. Cocok untuk mahasiswa dan lulusan IT yang ingin meningkatkan skill coding mereka.",
     site: context.site,
     items: allItems,
     customData: `<language>ID-id</language>`,
