@@ -1,11 +1,18 @@
 ---
 import { getCollection, render } from "astro:content";
 import { SEO } from "astro-seo";
+import { ArrowLeft } from "lucide-react";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 import { MDXComponents } from "@/components/MDXComponents";
 import LessonLayout from "@/layouts/LessonLayout/LessonLayout.astro";
 
 import type { LessonMeta } from "@/layouts/LessonLayout";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export async function getStaticPaths() {
   const curriculums = await getCollection("curriculums");
@@ -86,7 +93,12 @@ if (!lesson) {
   return Astro.redirect("/404");
 }
 
-const { Content } = await render(lesson);
+const { Content, remarkPluginFrontmatter } = await render(lesson);
+const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
+  .tz("Asia/Jakarta")
+  .format("DD MMMM YYYY");
+const minutesRead = remarkPluginFrontmatter.minutesRead;
+console.log(minutesRead);
 
 // SEO
 const meta = {
@@ -104,6 +116,28 @@ const meta = {
   <SEO {...meta} />
   <div class="grid grid-cols-[1fr_minmax(auto,700px)_1fr]">
     <div class="col-start-2">
+      <div class="flex flex-col items-start gap-y-4 mb-10">
+        <a
+          href="/"
+          class="flex items-center text-text-tertiary text-sm font-medium gap-x-1"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Home
+        </a>
+
+        <h1
+          class="text-text-primary text-4xl font-semibold w-full text-balance tracking-tight leading-normal"
+        >
+          Real-time dreamy Cloudscapes with Volumetric Raymarching
+        </h1>
+
+        <p class="font-medium text-text-tertiary text-sm">
+          <span class="bg-emphasis text-accent px-1.5 py-1 rounded-lg"
+            >Last Updated</span
+          >:
+          {lastModified} / {minutesRead}
+        </p>
+      </div>
       <div
         class="flex flex-col items-start flex-nowrap gap-y-8 text-text-secondary font-medium text-base leading-7"
       >

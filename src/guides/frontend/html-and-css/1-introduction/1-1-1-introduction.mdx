@@ -5,3 +5,21 @@ subcategory: "html-and-css"
 curriculum: "introduction"
 slug: "introduction"
 ---
+
+**P**hysically **B**ased **R**endering (PBR) is often the _defacto_ stylistic choice for 3D developers as
+tools/frameworks, for the most part, optimize for realistic materials, shadows, and lighting out-of-the-box.
+However, in an industry constantly pushing for realism, adopting **N**on-**P**hotorealistic **R**endering (NPR) or stylized shaders while still following physical principles can
+really make your project stand out.
+
+There's been a recent resurgence in distinct artistic directions through the use of stylized shaders in many games.
+At least since Zelda BOTW came out, it's becoming more prevalent. While Hi-Fi Rush or the Persona series are great examples of Non-Photorealistic Rendering,
+there are a few indie games out there (e.g. [Sable](https://www.ign.com/games/sable) and [Synergy](https://www.ign.com/games/synergy-2024)) doing wonders by emulating
+a flavor of a hand-drawn art style which I particularly enjoy from legendary artist [Jean Giraud](https://en.wikipedia.org/wiki/Jean_Giraud) aka **Moebius**.
+
+So far, I've only ever tried reproducing physically accurate lighting effects or base my scene in the "real world" with no styling at all, and I wanted to see whether
+reproducing some aspect of Jean Giraud's visual art in a WebGL environment was possible. Luckily,
+made a [great video on reproducing the Moebius style](https://www.youtube.com/watch?v=jlKNOirh66E&ab_channel=UselessGameDev). In it, he deconstructs the key characteristics
+that make the Moebius style so unique and rebuilds each of them in Unity. After carefully studying the subjects covered in that video and spending a couple of days heads-down on the problem,
+I managed to build what is to me a very satisfying **Moebius post-processing pass** on top of a React Three Fiber scene. It features not only all the elements of Moebius'
+style (outlines, crosshatched shadows, and specular) but also elements usually featured in his more sci-fi-focused comic books: _desert_, _spaceships_, and _alien planets_
+looming in the distance.
