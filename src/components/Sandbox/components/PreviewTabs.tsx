@@ -130,7 +130,7 @@ function CustomClearConsoleButton({ onClear }: { onClear: () => void }) {
 }
 
 function CustomPrettierButton() {
-  const { error, success, prettifyCode } = usePrettier();
+  const { error, prettifyCode } = usePrettier();
 
   return (
     <ToolTip content="Format Code Using Prettier">

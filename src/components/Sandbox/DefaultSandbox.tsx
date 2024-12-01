@@ -66,7 +66,7 @@ export default function DefaultSandbox(props: DefaultSandboxProps) {
     >
       <SandpackLayout className="flex gap-0">
         <div
-          className="box-border flex flex-col justify-between gap-0 w-full md:w-1/2 min-w-0"
+          className="box-border flex flex-col justify-between gap-0 w-1/2"
           style={{
             height: defaultEditorOptions.editorHeight,
           }}

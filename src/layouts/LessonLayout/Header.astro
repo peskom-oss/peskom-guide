@@ -26,9 +26,9 @@ const { curriculums, lessonSlug, title } = Astro.props;
       />
       <div class="hidden mx-5 overflow-hidden w-full md:block">
         <span
-          class="transition-all duration-300 text-xl font-semibold overflow-hidden capitalize title opacity-0 translate-y-4"
+          class="transition-all duration-300 text-xl font-semibold overflow-hidden title opacity-0 translate-y-4"
         >
-          introduction to frontend development
+          {title}
         </span>
       </div>
       <ThemeToggleSwitcher />
