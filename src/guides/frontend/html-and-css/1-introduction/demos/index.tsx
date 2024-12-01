@@ -1,8 +1,12 @@
 import DefaultSandbox from "@/components/Sandbox";
-import HelloWorldStatic from "./HelloWorldStatic";
+import HelloHtmlStatic from "./HelloHtmlStatic";
+import CssCombineTwoStyle from "./CssCombineTwoStyle";
+import HelloWorldHtmlCss from "./HelloWorld";
 
 const DEMOS = {
-  demo1: HelloWorldStatic,
+  demo1: HelloHtmlStatic,
+  demo2: CssCombineTwoStyle,
+  demo3: HelloWorldHtmlCss,
 };
 
 interface Props {

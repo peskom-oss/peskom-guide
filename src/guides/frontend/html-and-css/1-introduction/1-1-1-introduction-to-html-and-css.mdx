@@ -1,0 +1,183 @@
+---
+title: "Introduction to HTML and CSS"
+category: "frontend"
+subcategory: "html-and-css"
+curriculum: "introduction"
+slug: "introduction-to-html-and-css"
+---
+
+import { LessonImage } from "@/components/LessonImage";
+import { LessonCallout } from "@/components/LessonCallout";
+import Demos from "./demos";
+
+import Image1 from "./images/image-1.jpg";
+
+HTML dan CSS, berbeda dari kebanyakan hal dalam dunia IT, bukanlah bahasa pemrograman. Gua harus menekankan hal ini terlebih dahulu sebelum ada orang yang bikin konten nulis HTML dan CSS tapi captionnya "lagi ngoding". Ngoding itu beda lagi bos. Orang yang jago ngoding belum tentu jago HTML dan CSS.
+
+<LessonImage
+  src={Image1}
+  alt="Saking sering kejadiannya, sampai dibikin meme sama orang-orang"
+/>
+
+Hal kedua yang mau gua tekenin adalah, HTML dan CSS itu adalah sepaket, dalam artian mereka tidak terpisahkan. Gua gak tau di tahun 90an atau 2000an situasinya kayak gimana, tapi di zaman sekarang, kalo ada orang ngaku lagi nulis HTML, lu bisa dengan aman berasumsi kalau dia juga nulis CSS. Inilah kenapa, kalo lu bikin CV dan kalian mau tulis bahwa lu bisa HTML atau CSS, lu semua bakalan tulis HTML dan CSS dalam satu baris, kecuali lu mau bikin seakan skillset lu panjang, nah boleh dah tuh lu tulis terpisah.
+
+Ini juga kenapa nama modul ini adalah HTML dan CSS. Karena keduanya saling berhubungan. Orang-orang pasti bakalan berpikir kalau mempelajari 2 hal sekaligus justru akan terlalu berlebihan, terutama bagi seorang pemula. Karena alasan ini juga ada banyak course, guide, dan tutorial diluar sana yang mengajari 2 hal ini secara terpisah di-awal. Umumnya, mereka akan mulai mengajari HTML terlebih dahulu, baru disusul oleh CSS.
+
+Gua sendiri setuju aja sebenernya dengan pengajaran seperti itu. Tapi gua bingung mau ngajarin sedalam apa dari setiap topik. Karena kalau gua mau ngomong _fair2an_, masing-masing HTML dan CSS itu bisa menjadi topik yang sangat kompleks kalau mau kita dalami sungguh-sungguh. Gua gak boong, lu bisa silahkan [cek website referensi HTML ini](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) dan menemukan bahwa banyak konsep yang bisa kita pelajari dari HTML. Dan ini kita baru ngomongin HTML aja.
+
+Akhirnya gua putusin buat mengajari keduanya secara bersamaan. Sekarang gua ngomong begitu, tapi aslinya, nanti sebenarnya kita bakalan lebih berat atau fokus belajar CSS, setidaknya awal-awal bakalan begitu.
+
+Bukan berarti HTML gak penting. Melainkan, berdasarkan pengalaman gua sendiri, lu bisa membuat halaman yang bagus, rapih, dan lumayan kompleks, bahkan tanpa pengetahuan HTML yang mendalam. Tentunya nanti semakin kita terbiasa dengan CSS, kita akan sembari mendalami HTML.
+
+Terus sampai ke titik ini, kalo lu gak pernah tulis 1 baris HTML atau CSS sedikitpun dalam hidup lu, lu pasti bakalan bertanya, _"Oke sudahi yappingnya, dan jelasin ke gua bedanya HTML dan CSS itu apa"_.
+
+Penjelasan paling simpel dan paling umum yang paling sering diberikan adalah, HTML itu untuk struktur kontennya, dan CSS itu untuk _styling_ tampilannya. Ini maksudnya gimana, akan lebih jelas ketika kita udah mulai nulis HTML dan CSS nantinya.
+
+## HTML: HyperText Markup Language
+
+Gua ada bilang tadi kalo HTML itu untuk struktur konten website, tapi sebenarnya HTML itu lebih dari itu, bahkan mencakup isi konten dari website itu sendiri. Seperti konten yang kalian sedang baca saat ini, bisa dibuat dengan hanya bermodalkan HTML saja, tapi paling agak kurang dari segi _stylingnya_.
+
+Sekarang gimana jadinya kalo kita cuma mau HTML tanpa ada sedikitpun _styling_ ? Sebagai contoh, kita mau memunculkan sebuah text ke dalam sebuah halaman website. Text singkat aja, contohnya begini:
+
+<Demos demo="demo1" client:load />
+
+Sekarang, coba telaah sandbox diatas. Kita bisa melihat 10 baris kode HTML yang kita gunakan untuk me-_render_ text **hello html** ke halaman website. Silahkan coba mengubah tulisan **hello html** tersebut dan kita akan melihat tulisan yang dimunculkan di tampilan website juga akan berubah.
+
+Begitulah cara HTML bekerja. Dan sebelum kalian semua bertanya tentang apa itu `head`, apa itu `charset`, `title`, dll, gua mau menekankan bahwa, mayoritas fokus utama kita ada di bagian `body`. Intinya adalah, semua konten yang akan dimunculkan di dalam halaman website, akan dimunculkan diantara tag `<body></body>`.
+
+<LessonCallout variant="info">
+  `html`, `body`, `meta`, `title`, dll adalah yang dinamakan dengan ***HTML
+  Tags*** atau yang terkadang dikenal juga dengan sebutan ***HTML elements***.
+  Keempat ***tag*** tersebut adalah ***tag*** yang paling dasar dan wajib
+  dimiliki oleh website modern di zaman sekarang. Kita akan semakin mengenal
+  tag-tag lain seiring berjalannya waktu. Tapi untuk sekarang, kita hanya cukup
+  tahu tentang 4 tag ini saja. Kita bisa mencari tahu daftar-daftar tag yang
+  terdapat pada HTML di [website
+  ini](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+</LessonCallout>
+
+Dan jika kita coba hilangkan tulisan **hello html** pada contoh diatas, maka kita akan menemukan struktur dasar dari mayoritas website yang ada di seluruh dunia di zaman sekarang. Secara singkat, berikut penjelasan tentang masing-masing element html tersebut:
+
+1. `<!DOCTYPE html>`: Wajib ada untuk memberitahu browser kalau dokumen yang kita tulis ini menggunakan versi HTML5 supaya browser bisa me-render halaman dengan menggunakan standar website modern.
+2. `<html></html>`: Wajib ada untuk menandakan akar permulaan dari struktur website kita.
+3. `<head></head>`: Berisi informasi mengenai website kita yang tidak akan ditampilkan di halaman website. Kita gak bakalan banyak otak-atik bagian ini ketika kita masih baru belajar HTML, tapi percayalah kalau bagian ini lebih penting dari perkiraan lu semua.
+4. `<meta charset="utf-8">`: Berisi informasi mengenai character encoding yang digunakan oleh website kita. encoding UTF-8 mendukung mayoritas bahasa dan simbol yang ada di dunia. Jadi _mostly_, lu bakalan mau website lu menggunakan ini.
+5. `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`: Intinya membuat browser memastikan halaman website kita _responsive_. Kalo kita gak pake ini, maka halaman website kita bakalan nge-_load_ dengan lebar yang _fix_ dan bug-bug lainnya. Dan kita gak mau itu terjadi, karena artinya user mobile bakalan harus zoom-in halaman web kita. Sejarah adanya _tag_ ini cukup panjang, tapi intinya kalo kita mau bikin website kita responsive di berbagai macam device, jangan lupa tambahin tag ini.
+6. `<title></title>`: Berisi judul dari halaman website kita. Ini yang bakalan muncul di tab browser kita.
+7. `<body></body>`: Semua isi website kita yang akan ditampilkan di halaman website kita akan dimunculkan disini.
+
+<LessonCallout variant="warning">
+  Harus diinget bahwa, mayoritas **tag** HTML akan memiliki format pembuka dan
+  penutup. Sebagai contoh, `<body></body>`, dimana penutupnya adalah `</body>` dengan awalan `</`. Namun ada pengecualian dimana kita tidak perlu menggunakan format pembuka dan penutup tersebut. Pengecualian tersebut adalah, dimana ***tag*** kita tidak memiliki konten di dalamnya.
+
+Sebagai contoh, meta tag, `<meta charset="utf-8" />` tidak memiliki tag penutup. Karena `meta` tag ini tidak memiliki konten di dalamnya. Dan jika sebuah tag tidak memiliki konten di dalamnya, kita bisa langsung menutup **_tag_** tersebut dengan akhiran `/>`, seperti pada contoh meta tag tersebut.
+
+</LessonCallout>
+
+Kalo kalian semua masih belum mengerti soal tag-tag HTML yang dijelaskan diatas, santai aja, karena kita bisa membuat website atau halaman website tanpa perlu hapal untuk mengetik tag-tag diatas. Bahkan sudah banyak banget plugin-plugin text editor yang bisa membantu kita membuat struktur basic html tersebut secara otomatis.
+
+Kalo gua boleh meminjam kosa-kata _tiktok_, struktur yang kalian semua lihat diatas adalah **_bare minimum_** yang harus kalian miliki ketika ingin membuat halaman website (duh ~). Jadinya kalian semua bisa aja copy struktur **_bare minimum_** tersebut dan kalian sudah bisa membuat halaman website. Intinya adalah, jangan dipusingin kalo kalian masih belum mengerti sepenuhnya.
+
+## CSS: Cascading Style Sheets
+
+CSS merupakan fokus utama kita dari modul ini. Karena berbeda dengan HTML, yang dimana kita bisa membuat halaman yang cukup baik tanpa perlu mengetahui banyak tag-tag HTML. CSS memaksa kita untuk mengetahui banyak properti css dan konsep-konsep dari layout secara umum untuk dapat menggunakannya.
+
+Sebelumnya kita udah melihat contoh HTML tanpa sedikitpun sentuhan CSS. Dari tampilan tersebut, kita harusnya sudah bisa menyimpulkan kalau mayoritas website yang kita gunakan sehari-hari sudah pastinya ada sentuhan CSS disitu. Namun bagaimana cara CSS bekerja dan bagaimana cara kita menggabungkannya dengan HTML ?
+
+Pertama-tama sebelum itu, ada 3 cara yang bisa kita gunakan untuk menggabungkan CSS dengan HTML:
+
+- `inline style`: menambahkan langsung properti CSS ke dalam tag HTML
+- `internal style`: menambahkan CSS ke dalam tag `<head></head>` menggunakan tag `<style></style>`
+- `external style`: menambahkan CSS ke dalam file terpisah dan menghubungkan file CSS tersebut menggunakan tag `<link>` pada bagian `<head></head>` HTML.
+
+Dalam kebanyakan kasus, cara yang mau kalian semua mau gunain adalah cara ketiga, yaitu `external style`. Alasannya simpel, semakin kompleks CSS yang kita tulis, akan semakin sulit untuk me-_maintainnya_ jika kita menggunakan cara yang pertama dan kedua.
+
+Gua gak bilang cara pertama dan kedua itu haram buat kita coba. Melainkan, dalam kebanyakan kasus, kita maunya pake cara ketiga. Ada gak kasus dimana cara pertama dan kedua itu lebih _make sense_ ? tentu saja ada. Web development di dunia nyata itu sangatlah rumit, kompleks, dan membingungkan. Jika kita menemukan kasus dimana cara pertama dan kedua lebih masuk akal, silahkan kita gunakan. Jangan membatasi diri kita dengan cara-cara yang ada.
+
+Sebagai contoh, berikut adalah contoh kode HTML menggunakan cara pertama, yaitu `inline style`:
+
+```html title="index.html" {8-10}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>intro to html</title>
+  </head>
+  <body style="color: red">
+    hello html
+  </body>
+</html>
+```
+
+Lihat bagian code yang di highlight ? disini kita menambahkan properti CSS langsung ke dalam tag html dengan menggunakan attribute `style`. Properti CSS yang kita tambahkan harusnya sudah cukup jelas, yaitu kita ingin agar seluruh HTML element yang berada dalam body memiliki warna merah.
+
+<LessonCallout variant="info">
+  Semua yang berada dalam attribute `style` pada HTML tag adalah yang dinamakan
+  dengan CSS properties. Dalam kasus ini `color` merupakan CSS property-nya,
+  sedangkan `red` adalah value dari property tersebut. Struktur ini merupakan
+  struktur yang sangat umum dalam penulisan CSS yang memiliki bentuk `property:
+  property-value`
+</LessonCallout>
+
+Dan kita juga bisa menggabungkan ketiga cara penggabungan CSS dengan HTML. Dalam contoh ini, kita akan mencoba menggabungkan cara pertama dan cara kedua, yakni `inline style` dan `internal style`.
+
+<Demos demo="demo2" client:load />
+
+Okay, ada beberapa hal yang bisa kita pelajari dari contoh diatas. Tapi pertama-tama, kita bisa lihat bahwa kita dapat menggabungkan 2 cara penggabungan CSS dengan HTML. Kita sebelumya sudah melihat cara `inline-style`, yang dimana kita menggunakannya pada html tag `span` dengan property `color`.
+
+Namun yang menarik adalah, pada bagian `head` HTML, kita juga menambahkan tag `<style></style>`, yang isinya menargetkan tag `body` dan berisi CSS property `color` dengan value `blue`. Inilah dinamakan dengan `internal style`.
+
+1 Hal yang berbeda dari penerapan `internal style` ini adalah, kita wajib menargetkan element mana yang ingin kita styling, dan kita tidak bisa menargetkan element yang sudah kita styling menggunakan `inline style` (alasannya akan dijelaskan di materi kedepan).
+
+Cara `internal style` memberikan style terhadap satu atau lebih element HTML adalah dengan menggunakan yang namanya `selector`. Sebagai contoh, kita menargetkan tag `body` dengan cara menulis `body { ... }` atau `html` dengan menggunakan `html { ... }`. Diantara kurung kurawal tersebutlah kita dapat menaruh CSS properties dan valuesnya.
+
+Nantinya, `external style` juga akan menggunakan konsep yang sama dalam memberikan style terhadap element HTML.
+
+Kombinasi dari kedua cara tersebut, telah berhasil menampilkan tulisan **hello** dengan warna merah, dan kata **css** dengan warna biru.
+
+<LessonCallout variant="info">
+  `span` merupakan salah satu HTML tag yang bisa kita gunakan untuk memunculkan
+  tulisan. Umumnya element `span` ini digunakan pada bagian tertentu dari sebuah
+  kalimat yang ingin kita berikan *styling*. Dalam kasus ini, kita hanya ingin
+  memberikan styling pada kata *css* saja.
+</LessonCallout>
+
+Pastinya akan muncul pertanyaan seperti, "kenapa 1 kata berwarna merah sedangkan 1 kata berwarna biru ?". Jawabannya adalah, karena kita sudah menambahkan CSS properties `color` dengan value `red` pada tag `body` dan `blue` pada tag `span`.
+
+"Duh, gua juga tau bang. Maksud gua tuh, kenapa bisa begitu ? padahal kita taro CSSnya di beda tempat. Bukannya harusnya semuanya jadi warna merah, soalnya satu CSS property kita menargetkan `body`, yang dimana seharusnya seluruh element dari `body` tersebut berwarna merah ?"
+
+Penjelasannya akan dijelaskan lebih lanjut di materi kedepan, tapi untuk sekarang kalian cuma perlu tahu bahwa, CSS itu bekerja secara **cascade**. Artinya, CSS akan mengecek seluruh CSS properties yang ada di dalam element tersebut, dan jika ada 1 atau kebih CSS properties yang sudah didefinisikan kepada element tersebut, maka CSS akan menggunakan CSS properties yang lebih spesifik.
+
+Konsep ini sangat berkaitan erat dengan konsep `specificity` dan `inheritance` yang akan kita pelajari nanti. Tapi untuk sekarang, kita cuma perlu tahu bahwa semakin spesifik CSS properties menargetkan suatu element, maka property tersebut yang akan digunakan oleh browser untuk memberikan styling.
+
+Dan dalam kasus ini, menarget element `span` lebih spesifik dibanding menarget element `body`, sehingga CSS akan menggunakan CSS properties yang ada di dalam tag `span`.
+
+Ada juga alasan lain, yaitu `inline style` akan lebih spesifik dibanding `internal style`, dan `internal style` akan lebih spesifik dibanding `external style`. Tapi itu juga konsep yang berbeda lagi yang akan kita pelajari nanti (inilah alasan kenapa CSS membingungkan bagi pemula BTW).
+
+## Hello World
+
+Untuk menghargai tradisi turun temurun, kita akan membuat halaman website dengan tulisan **hello world**. Kita akan mennggabungkan semua konsep yang sudah kita pelajari dalam materi ini dan 1 hal baru yang akan kita gunakan disini adalah dengan menggunakan `external style` untuk memberikan styling pada halaman kita.
+
+Caranya adalah dengan menggunakan tag `<link />` pada bagian `<head></head>` HTML dan menggunakan attribute `href` untuk menghubungkan file CSS kita. Sebagai contoh:
+
+```html title="index.html" {6}#ins
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>intro to html</title>
+  </head>
+  <body style="color: red">
+    hello world
+  </body>
+</html>
+```
+
+Dengan menggunakan element `<link />`, kita memberitahu HTML untuk menghubungkan HTML dengan sumber eksternal. Dan dengan menggunakan attribute `rel="stylesheet"` kita memberitahu browser untuk menangani sumber eksternal tersebut sebagai CSS. Dan attribute `href` disini berguna untuk memberitahu letak sumber eksternal tersebut.
+
+<Demos demo="demo3" client:load />
+
+Dan kita sudah berhasil membuat website yang super menarik seperti contoh diatas.
