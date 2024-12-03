@@ -51,10 +51,15 @@ async function getLesson(category, subcategory, lessonSlug) {
 async function getCurriculumList() {
   const allCurriculums = await getCollection("curriculums");
 
+  // Filter curriculums to only include current subcategory
+  const filteredCurriculums = allCurriculums.filter(
+    (item) =>
+      item.data.category === category && item.data.subcategory === subcategory,
+  );
+
   // Categorize items
-  const categorized = allCurriculums.reduce(
+  const categorized = filteredCurriculums.reduce(
     (acc, item) => {
-      // const pathSegments = item.filePath?.split("/") || [];
       const curriculum = item.data.curriculum;
 
       if (!acc[curriculum]) {
@@ -98,7 +103,6 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
   .tz("Asia/Jakarta")
   .format("DD MMMM YYYY");
 const minutesRead = remarkPluginFrontmatter.minutesRead;
-console.log(minutesRead);
 
 // SEO
 const meta = {
