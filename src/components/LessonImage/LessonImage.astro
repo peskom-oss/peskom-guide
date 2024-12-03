@@ -13,14 +13,14 @@ interface Props {
 const { src, alt, width = 700, height = 400 } = Astro.props;
 ---
 
-<div class="image-container">
+<div class="image-container w-full">
   <figure class="zoomable-wrapper w-full">
     <Image
       src={src}
       alt={alt}
       width={width}
       height={height}
-      class="zoomable-image rounded-lg w-full"
+      class="zoomable-image rounded-lg"
     />
     <figcaption class="text-text-tertiary font-semibold text-sm mt-2">
       {alt}

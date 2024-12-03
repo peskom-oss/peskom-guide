@@ -1,0 +1,189 @@
+---
+title: "Process of Program Compilation"
+category: "system-programming"
+subcategory: "diving-into-system"
+curriculum: "Development and Compilation"
+slug: "process-of-program-compilation"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+import { LessonImage } from "@/components/LessonImage";
+import Image1 from "./images/image-1.png";
+
+Hampir seluruh proses pemrograman sistem komputer dibuat menggunakan _compiled language_. Seperti namanya, _compiled language_ adalah bahasa pemrograman yang mewajibkan kita untuk melakukan proses _compilation_ agar dapat menggunakan program tersebut.
+
+Intinya adalah, program yang ditulis dengan menggunakan _compiled language_ wajib melalui proses _compilation_ ke dalam bahasa mesin atau bahasa lain yang disebut sebagai _intermediate languages_.
+
+Java dan C# adalahn contoh dari bahasa yang tidak di-_compile_ ke dalam bahasa mesin, melainkan source code java akan dicompile ke dalam _intermediate language_ dengan nama `bytecode`. Nantinya `bytecode` tersebut akan dieksekusi dengan menggunakan tools dengan nama `java` (ya gua tau nama toolsnya sama dengan nama bahasanya). Hal ini dengan sengaja di desain dengan tujuan _compile once, runs everywhere_. Sehingga para developer java tidak perlu lagi pusing mikirin buat nulis code spesifik ke satu atau beberapa platform.
+
+Dalam kasus ini, dimana kita menggunakan bahasa pemrograman C, proses _compilation_ akan dilakukan menggunakan _compiler_ yang bernama `cc` (c compiler) atau `gcc` (GNU C compiler). Bahasa pemrograman lain seperti java juga memiliki compilernya sendiri, yaitu `javac` (java compiler). Kalau bahasa assembly memiliki `as` sebagai compilernya.
+
+<LessonCallout variant="info">
+  Nama compiler yang tersedia itu sangat bervariasi dari bahasa satu ke bahasa
+  lainnya dan dari sistem satu ke sistem lainnya.
+
+    Kebanyakan sistem operasi (terutama traditional unix system) memiliki compiler yang bernama `cc` (c compiler). Compiler lain yang tidak kalah terkenalnya adalah `gcc` (GNU C Compiler).
+
+    Intel C Compiler bernama `icc`, IBM AIX C Compiler bernama `xlc`, dll
+
+</LessonCallout>
+
+Untuk melakukan proses _compilation_, kita perlu yang namanya _source file_. Dalam bahasa pemrograman C, _source file_ adalah file yang memiliki ekstensi `.c` yang berisi instruksi yang akan dijalankan oleh CPU nantinya.
+
+```c title="main.c"
+#include <stdio.h>
+
+void echoMsg(char *msg);
+
+int main() {
+    echoMsg("This file is compiled with c compiler.");
+}
+
+void echoMsg(char *msg) {
+    printf("%s\n", msg);
+}
+```
+
+Sebagai contoh file `main.c` di atas, merupakan file yang berisi instruksi untuk mencetak "This file is compiled with c compiler." ke layar terminal.
+
+Perintah paling simpel untuk melakukan proses _compilation_ adalah kita hanya perlu menjalankan perintah `cc main.c` atau `gcc main.c` di terminal.
+
+```bash title="terminal"
+gcc main.c # atau cc main.c
+```
+
+<LessonCallout variant="warning">
+  Gua sendiri lebih suka menggunakan compiler `gcc` untuk sekarang dibanding `cc` karena gua
+  menjalankan program-program yang gua buat di platform windows, dimana gua menemukan kalau
+  command `cc` terkadang bisa menghasilkan bug atau error yang tidak terduga,
+  terutama saat proses _linking_ nanti.
+
+Gua gak tau ini salah dari mana. Apakah dari komputer gua kah ? atau compiler gua ? sampai gua bisa test ini di beberapa platform, ini bakalan gua jadiin catatan disini.
+
+Tapi buat yang menjalankan di platform lain, silahkan boleh menggunakan compiler `cc` atau compiler bawaan vendor masing-masing. _whatever works for you_.
+
+</LessonCallout>
+
+Perintah di atas akan menerjemahkan _source file_ kita ke bahasa mesin dan menghasilkan file baru dengan nama `a.out` pada platform Linux atau `a.exe` pada platform Windows yang merupakan file hasil _compilation_ dari file `main.c`. Dan untuk mengeksekusi program tersebut, kita perlu menjalankan perintah `./a.out` atau `a.exe` di terminal.
+
+Simpel kan ? hanya dengan 1 perintah, kita sudah dapat menjalankan program yang telah kita buat. Namun sebenarnya, perintah `cc main.c` tersebut menjalankan 2 proses, yaitu _compiling_ dan _linking_. Kedua fase inilah dilalui agar source code kita dapat dijalankan oleh CPU.
+
+## 2 phases for building software
+
+Seperti yang sudah dijelaskan sebelumnya, terdapat 2 fase yang dibutuhkan untuk membuat agar program kita dapat di-eksekusi. 2 fase ini berjalan secara berurutan, yakni:
+
+- **Compiling**
+- **Linking**
+
+Proses _compiling_ akan mengubah source code kita menjadi apa yang disebut dengan _object code_ dengan ekstensi `.o`. Proses penerjemahan source code kita menjadi bentuk _object code_ ini tidak hanya terjadi pada bahasa C saja, melainkan mayoritas bahasa pemrograman lain juga, seperti C++, Java, Assembly, Pascal, dll
+
+Lalu kenapa kita hanya perlu menggunakan 1 perintah saja, yakni `cc main.c` ? Dalam kasus kita, perintah tersebut akan menjalankan proses _compiling_ dan _linking_ secara otomatis.
+
+Kecuali kita menambahkan option flag `-c` pada perintah `cc`, seperti `cc -c <nama file>`, maka proses _linking_ tidak akan dijalankan secara otomatis.
+
+Dan jika kita mencoba menjalankan perintah `cc -c main.c`, maka hasilnya akan menghasilkan file baru dengan nama `main.o` yang merupakan file _object code_ dari file `main.c`. Dan file _object code_ inilah yang nantinya akan kita gabungkan dengan object file lainnya atau library code lainnya untuk menghasilkan _executable file_ yang bisa dijalankan dan dibaca oleh komputer.
+
+```bash title="Menghasilkan object file dari source code"
+gcc -c main.c # atau cc -c main.c
+```
+
+Setelah berhasil menghasilkan _object file_ dari source code kita, maka perintah selanjutnya yang bisa kita gunakan untuk menghasilkan _executable file_ dari _object file_ adalah dengan menggunakan command `ld -o <output file> <input file>` atau `gcc -o <output file> <input file>`.
+
+```bash title="Menghasilkan executable file dari object file"
+gcc -o main main.o # atau ld -o main main.o
+```
+
+<LessonCallout variant="danger">
+  Bagi kalian yang menggunakan command `ld` sebagai command _linker_ di OS windows dan keluar error seperti dibawah ini:
+
+- `undefined reference to __main`
+- `undefined reference to puts`
+
+Maka silahkan menggunakan command `gcc` sebagai gantinya.
+
+Intinya, error tersebut muncul karena untuk memproduksi _executable file_, dibutuhkan beberapa _startup code_ yang dimana pada command `ld` tidak dimasukkan secara otomatis.
+
+Dan ketika kita menggunakan command `gcc`, maka command tersebut akan menambahkan _startup code_ tersebut secara otomatis. Command `gcc` tersebut sebenarnya tetap menggunakan command `ld` dibelakang layar dan secara otomatis juga menambahkan beberapa _startup code_, _standard libraries_, dll, yang dibutuhkan untuk melakukan proses _linking_.
+
+Info lebih lanjut bisa cek [disini](https://stackoverflow.com/a/64107315/7325247)
+
+</LessonCallout>
+
+Command diatas akan menghasilkan _executable file_ baru dengan nama `main.exe` (windows) atau `main.out` (linux) yang merupakan _executable file_ dari source file `main.c`. Hasil output tersebut merupakan hasil output yang sama dengan menjalankan perintah `gcc -o main main.c`.
+
+Dan untuk mengeksekusi _executable file_ yang telah kita buat, kita hanya perlu menjalankan perintah `./main` atau `main.exe` di terminal.
+
+```bash title="Menjalankan executable file"
+./main # atau main.exe
+```
+
+## Program compilation process
+
+Seperti yang sudah dijelaskan sebelumnya, sebagai seorang developer, kita memiliki pilihan untuk membangun software kita dengan 1 step atau 2 step.
+
+Secara umum, ketika kita menjalankan perintah untuk melakukan proses _compilation_, maka compiler akan melakukan 2 proses secara _default_ dan berurutan, yaitu _compiling_ dan _linking_. Kedua proses tersebut yang nantinya akan menghasilkan _executable file_ yang dapat dibaca dan dijalankan oleh komputer.
+
+Dan ketika kita menjalankan file _executable_ tersebut, maka CPU akan melakukan proses _execution_ untuk mengeksekusi instruksi-instruksi yang ada di dalam file tersebut.
+
+Rangkuman dari seluruh proses tersebut dapat dilihat pada diagram simpel di bawah ini:
+
+<LessonImage src={Image1} alt="Program compilation process" />
+
+Ketika sudah sampai ke titik ini, salah satu diantara kalian pasti ada yang bertanya-tanya, _"Ribet banget mau pake 2 proses segala, bukannya bisa pake 1 langkah saja ?"_.
+
+Jawabannya adalah, _"lu jangan ngaku programmer kalo lu gak mau pake cara yang lebih ribet. Sudah kodrat kita buat menggunakan cara yang paling ribet biar keliatan keren coy"_.
+
+Sorry bercanda. Jawaban sebenarnya adalah untuk 4 atau lebih alasan ini:
+
+- _modularity_
+- _reusability_
+- _recompilation speed_
+- _debugging_
+- _dll_ (thx chatgpt)
+
+Keyword-keyword diatas adalah keyword favorit para developer. Apalagi pas presentasi di depan orang umum. Tapi dalam kasus ini, keyword tersebutlah yang menjadi alasan kenapa kita mau memisahkan proses membuat _executable file_ kita menjadi 2 proses.
+
+Sekarang bayangin deh, kita ada 4 file yang masing-masing kita lakukan step 1, yaitu _compilation_, sehingga menjadi:
+
+```bash
+main.c => main.o
+input.c => input.o
+process.c => process.o
+output.c => output.o
+```
+
+Dan untuk menjadikan keempat file tersebit menjadi 1 _executable file_, maka kita perlu melakukan step ke 2, yaitu _linking_ dengan command:
+
+```bash title="Menghasilkan executable file dari object file"
+gcc -o mainprogram main.o input.o process.o output.o
+```
+
+Nah sekarang, seandainya file `process.o` berubah isinya, maka kita hanya perlu melakukan _compilation_ pada file `process.c`saja tanpa perlu melakukan _recompilation_ pada semua file setiap ada perubahan kecil di project kita.
+
+Yang kedua, ketika kita melakukan compile pada setiap file dan menemukan error pada proses _compilation_ pada salah satu file, maka kita hanya perlu meng-fix error pada file tersebut saja tanpa perlu meng-fix error pada file lainnya.
+
+Yang ketiga, _object file_ yang kita generate itu bisa digunakan di banyak project lainnya. Anggepannya, kita bikin shared general-purpose library sendiri. Kita akan melihat ini di materi kedepan.
+
+Dan buat yang kepikiran, kenapa gak _include_ setiap file yang kita gunain ke dalem `main.c`, kayak begini:
+
+```c title="main.c"
+#include "input.c"
+#include "process.c"
+#include "output.c"
+
+int main() {
+    ...
+}
+```
+
+Lalu lu semua tinggal compile `main.c` saja, dan hasilnya akan langsung jadi _executable file_ yang bisa dijalankan, kayak begini:
+
+```bash title="compile main aja"
+gcc -o mainprogram main.c # tada! pendek kan ?
+```
+
+Lebih baik buang jauh-jauh pikiran busuk kalian, karena cara tersebut agak kurang direkomendasikan.
+
+Karena cara tersebut sama aja kayak kalian men-copy code di file lain ke dalem file `main.c` punya kalian. Dan proses _compilation_ akan lebih lama karena compiler harus membaca keseluruhan code yang ada di file `main.c` beserta file lainnya.
+
+Kecuali kalian cuma pengen testing-testing aja, bikin aplikasi kecil-kecilan, cara tersebut sangatlah tidak direkomendasikan.
