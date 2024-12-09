@@ -1,0 +1,481 @@
+---
+title: "Reusability with Archive and Shared Library"
+category: "system-programming"
+subcategory: "diving-into-system"
+curriculum: "Development and Compilation"
+slug: "reusability-with-archive-and-shared-library"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+
+_Reusability_ mungkin adalah salah satu kata paling favorit bagi para developer. Pokoknya kalo mereka menemukan 1 fungsi yang mereka harus copy dan paste di 1 atau lebih tempat, itu artinya kode tersebut tidaklah _reusable_ dan wajib di _refactor_.
+
+Proses _refactoring_ kode yang paling umum adalah dengan mengumpulkan kode atau fungsi-fungsi tersebut ke 1 tempat yang sama dan yang dapat diakses oleh bagian manapun dari program kita yang membutuhkannya. Bahkan tidak jarang kalau sekumpulan kode atau fungsi tersebut berada diluar program kita atau berada di tempat lain yang berbeda dengan program kita.
+
+Kita bisa melihat pengaplikasian library secara langsung pada contoh kode hello world dibawah:
+
+```c title="hello-world.c"
+#include <stdio.h>
+
+int main() {
+  printf("Hello, World!\n");
+  return 0;
+}
+```
+
+Fungsi `printf` merupakan salah satu fungsi dari _standard library_ yang dimiliki oleh bahasa C. Dan tentu saja _C standard library_ ini meliputi dari banyak sekali fungsi-fungsi yang bisa kita sebagai developer gunakan untuk membantu kita dalam membuat program.
+
+Umumnya jika kita punya semacam C Compiler terinstal dalam mesin kita, maka jangan khawatir karena biasanya standard library juga telah terinstal juga di mesin kita.
+
+Ketika kita melakukan proses _linking_ untuk membuat file _exectable_ dari program kita, _linker_ akan selalu mencari fungsi-fungsi dari _C standard library_ yang kita gunakan dalam program kita, dan secara otomatis akan langsung menghubungkan juga fungsi-fungsi tersebut ke dalam program kita. _it just works_.
+
+Namun proses penghubungan library dengan program kita yang secara otomatis terjadi itu hanya berlaku untuk _standard library_ saja. Untuk library diluar _standard library_, maka kita wajib menghubungkannya sendiri saat proses _linking_. Jika kita tidak melakukannya, biasanya proses _linking_ akan gagal dengan error seperti `undefined symbols`, dll.
+
+Fokus kita disini adalah membahas bagaimana cara kita dapat membuat dan menghubungkan library sendiri ke dalam program kita. Dan tergantung dari jenis library apa yang ingin kita buat, maka cara menghubungkannya juga berbeda satu sama lainnya.
+
+## Archive and Shared Library
+
+Tergantung dari kebutuhan kita, kita dapat membuat library dalam 2 bentuk, yaitu _archive library_ dan _shared library_. _archive library_ bisa juga disebut dengan _static library_ dan _shared library_ bisa juga disebut dengan _dynamic library_. Dan karena ada 2 jenis library, maka kita juga memiliki 2 cara untuk menghubungkan library ke dalam program kita.
+
+<LessonCallout variant="info">
+  Proses penghubungan _archive library_ ke program kita disebut dengan _static
+  linking_ dan proses penghubungan _shared library_ ke program kita disebut
+  dengan _dynamic linking_.
+</LessonCallout>
+
+Perbedaan utama dari _archive library_ dan _shared library_ adalah, _archive library_ akan dikompilasi langsung ke dalam program kita dengan cara _static linking_ dimana fungsi-fungsi dalam _archive library_ akan di-copy langsung ke dalam program kita saat proses _compilation_ dilakukan. Tentu saja hal ini menyebabkan ukuran dari program kita menadi besar, namun keuntungannya adalah, program kita dapat berdiri sendiri.
+
+<LessonCallout variant="info">
+  Berikut beberapa keuntungan dari menggunakan proses *static linking*:
+
+- Program kita dapat berdiri sendiri karena seluruh fungsi-fungsi yang kita butuhkan telah di-copy langsung ke dalam program kita.
+- Hasil dari jalannya program akan tetap valid sampai program di re-compile kembali.
+- Program selalu dapat berjalan tanpa ada kendala dan tidak akan mengalami error _dependency issues_ karena program tidak bergantung pada fungsi-fungsi diluar program.
+
+Berikut juga merupakan beberapa kekurangan dari menggunakan proses _static linking_:
+
+- Program kita akan memiliki ukuran yang lebih besar karena fungsi-fungsi dari _archive library_ akan di-copy langsung ke dalam program kita.
+- Program kita akan lebih sulit untuk di-update. Menyebabkan kita harus re-compile program kita setiap kali ada perubahan pada _archive library_ seperti bug fix, fitur baru, dll.
+
+dan masih banyak lagi.
+
+  </LessonCallout>
+
+Sedangkan fungsi-fungsi dalam _shared library_ tidak akan di-copy langsung ke dalam program kita. Fungsi-fungsi tersebut hanya akan dihubungkan saat proses _linking_ dilakukan. Keuntungannya adalah, ukuran dari program kita akan lebih kecil, namun kekurangannya adalah, program kita tidak dapat berdiri sendiri karena program kita menjadi bergantung pada fungsi-fungsi yang berada diluar sistem kita.
+
+<LessonCallout variant="info">
+  Berikut beberapa keuntungan dari menggunakan proses _dynamic linking_:
+
+- Program kita akan memiliki ukuran yang lebih kecil karena fungsi-fungsi dari _shared library_ tidak akan di-copy langsung ke dalam program kita.
+- Program bisa mendapatkan update lebih mudah dan otomatis karena kita tidak perlu melakukan re-compile program kita setiap kali ada perubahan pada _shared library_.
+
+Berikut juga merupakan beberapa kekurangan dari menggunakan proses _dynamic linking_:
+
+- Program kita tidak dapat berdiri sendiri karena program kita menjadi bergantung pada fungsi-fungsi yang berada diluar sistem kita.
+- Program akan lebih sulit untuk dibagikan karena program juga bergantung pada fungsi-fungsi diluar program. Dan tidak ada jaminan kalau pengguna program selain kita nantinya akan menggunakan _shared library_ dengan versi yang sama dengan kita.
+- Meski kita bisa mendapatkan update lebih mudah dan otomatis, namun kita juga bisa mendapatkan bug dari _shared library_ yang kita gunakan.
+
+</LessonCallout>
+
+Pada mayoritas sistem, _archive library_ biasanya memiliki ekstensi `.a` (archive) pada linux atau `.lib` pada windows dan _shared library_ biasanya memiliki ekstensi `.so` (shared object) pada linux dan `.dll` (dynamic link library) pada windows.
+
+Buat pengguna windows dibawah windows 10, pasti sudah tidak asing dengan error `dll hell`. Error ini seringkali terjadi karena program yang kita jalankan membutuhkan file `dll` yang komputer kita tidak miliki atau terjadi error pada file `dll` yang program kita gunakan.
+
+Biasanya anak zaman dulu udah biasa harus download file `dll` satuan di internet dan taruh file tersebut di suatu lokasi dalam komputer kita (umumnya _system32_). Dan kalo masih gagal juga, mungkin versi `dll` nya yang kurang cocok. Inilah masalah-masalah yang bisa kita temui dari _dynamic linking_.
+
+## Linking our program to archive and shared library
+
+Seperti yang sudah pernah kita bahas [sebelumnya](/guides/system-programming/diving-into-system/process-of-program-compilation), dalam proses membuat file _executable_ dari program kita, _linker_ akan mencoba menggabungkan satu atau beberapa _object file_ yang akan menghasilkan file _executable_.
+
+Artinya, _linker_ akan menjelajahi directory dan file system dalam komputer kita untuk mencari file-file yang dibutuhkan yang dalam kasus ini merupakan _library_ yang program kita gunakan dan fungsi-fungsi dalam _library_ tersebut.
+
+Ada beberapa cara yang bisa kita lakukan untuk membuat agar _linker_ dapat mencari _archive_ atau _shared_ library yang ingin kita gunakan dalam program kita. Berikut 3 cara yang paling umum:
+
+1. Menyimpan _directory_ yang akan ditelusuri oleh _linker_ menggunakan **environment variable**.
+2. Menggabungkan option `-L/<directory>` dan `-l<library>` pada saat menjalankan command _linker_.
+3. Menaruh lokasi _library_ kita (_fullpath_) bersamaan dengan command _linker_ saat melakukan proses _linking_.
+
+Ketiga cara ini akan kita lihat praktiknya nanti. Tapi umumnya, kita mau melakukan _compilation_ terhadap program kita yang dimana program kita akan tetap berjalan meskipun _library_ yang kita hubungkan telah berubah lokasi dari lokasi awal saat kita melakukan proses _linking_.
+
+inilah sebabnya penggunaan **fullpath** untuk menghubungkan _shared library_ dan program kita saat proses _linking_ sangatlah problematik. Karena ketika lokasi _library_ kita berubah maka kita tidak dapat mengganti lokasi _shared library_ tersebut sehingga program kita akan menghasilkan error.
+
+Beda cerita ketika kita ngomongin _library_ yang di-provide sama sistem operasi yang kita gunakan. Karena umumnya, mereka akan selalu berada di 1 lokasi yang sama. Contohnya, kumpulan file dengan ekstensi `dll` di folder `system32` pada sistem operasi windows.
+
+## How to create archive and shared library
+
+Perlu diingat, bahwa proses menghubungkan _archive library_ dengan program kita disebut dengan _static linking_ dan proses menghubungkan _shared library_ dengan program kita disebut dengan _dynamic linking_. Kita perlu sepakat dengan penamaan disini agar tidak bingung nanti.
+
+Nah, sebelum melakukan proses _linking_, kita terlebih dahulu perlu tahu cara membuat _archive library_ dan _shared library_. Jadi sebelum melakukan proses _linking_, pertama-tama kita perlu untuk melakukan proses _compilation_ terlebih dahulu.
+
+Sebagai contoh saya ingin membuat library untuk membantu saya melakukan proses matematika dasar seperti tambah, kurang, kali, dan bagi:
+
+```c title="simpleMath.c"
+#include <stdio.h>
+
+#if WINDOWS
+__declspec(dllexport) void __cdecl add(int *total, int adder )
+#else
+void add(int *total, int adder )
+#endif
+{
+    printf("function add was called\n");
+    *total += adder;
+}
+
+#if WINDOWS
+__declspec(dllexport) void __cdecl substract(int *total, int sub)
+#else
+void substract(int *total, int sub)
+#endif
+{
+    printf("function substract was called\n");
+    *total -= sub;
+}
+
+#if WINDOWS
+__declspec(dllexport) void __cdecl multiply(int *total, int mul)
+#else
+void multiply(int *total, int mul)
+#endif
+{
+    printf("function multiply was called\n");
+    *total *= mul;
+}
+
+#if WINDOWS
+__declspec(dllexport) void __cdecl divide(int *total, int div)
+#else
+void divide(int *total, int div)
+#endif
+{
+    printf("function divide was called\n");
+    *total /= div;
+}
+```
+
+Karena fungsi-fungsi yang kita buat pada file `simpleMath.c` ini bersifat umum, maka kita bisa membuat fungsi-fungsi tersebut sebagai sebuah library yang bisa kita gunakan dalam 1 atau lebih program kita nantinya.
+
+<LessonCallout variant="info">
+  buat yang bingung `__declspec(dllexport)` dan `__cdecl` itu apa, intinya itu adalah _keyword_ khusus untuk microsoft compiler. Yang dimana ketika kita membuat _shared library_ untuk platform windows (`.dll`), compiler akan menghubungkan dan membaca function dengan _keyword_ spesifik itu.
+
+`__declspec(dllexport)` memberitahu compiler untuk mengekspor fungsi tersebut dari file `.dll` sehingga dapat digunakan oleh program luar yang dihubungkan dengan file ini.
+
+Untuk `__cdecl` seharusnya tidak kita tulis juga gak apa-apa karena compiler akan secara otomatis mengetahui kalau fungsi tersebut menggunakan calling convention `cdecl` jika kita tidak menulisnya. Tapi kita tulis aja supaya jelas gitu.
+
+Jadi kalo kita gak pengen bikin _shared library_ untuk platform windows, kita gak perlu gunain keyword-keyword tersebut.
+
+</LessonCallout>
+
+### Creating archive library
+
+Mari kita mulai dengan membuat _archive library_ dari source file `simpleMath.c` kita.
+
+Pertama-tama kita perlu melakukan proses _compilation_ terhadap source file `simpleMath.c` kita. Proses _compilation_ tersebut tidaklah berbeda dengan proses _compilation_ yang sudah kita lakukan sebelumnya ketika kita ingin membuat file `executable` dari program `main` kita.
+
+```bash title="compilation on linux machine"
+cc -c simpleMath.c # atau gcc -c simpleMath.c
+```
+
+Atau pada platform windows:
+
+```bash title="compilation on windows"
+cl -c -DWINDOWS simpleMath.c
+```
+
+<LessonCallout variant="warning">
+  flag `-DWINDOWS` berguna untuk menambahkan macro `WINDOWS` ke dalam program
+  kita. inget kan kalau kita ada gunain `#if WINDOWS` directive di source file
+  `simpleMath.c` kita ? Kalau kita tidak menambahkan flag `-DWINDOWS` ini, maka
+  macro `WINDOWS` tidak akan didefinisikan dan kita akan mendapatkan error.
+</LessonCallout>
+
+Seperti yang sudah pernah kita bahas [sebelumnya](/guides/system-programming/diving-into-system/process-of-program-compilation), proses _compilation_ tersebut akan menghasilkan file _object file_ dari source file kita dengan ekstensi `.o` pada linux atau `.obj` pada windows yang dalam kasus ini berupa file `simpleMath.o` atau `simpleMath.obj`.
+
+Dari _object file_ ini, kita dapat membuat _archive library_. Pada platform linux atau sistem-sistem unix, umumnya kita akan menggunakan command `ar` untuk membuat _archive library_. Pada platform windows, umumnya akan menggunakan command `lib` untuk membuat _archive library_.
+
+Pada platform linux pada umumnya, apple darwin, dan HP-UX kita bisa gunakan command:
+
+```bash title="create archive library on linux machine, apple darwin, and HP-UX"
+ar rv libsm.a simpleMath.o
+```
+
+Pada platform solaris:
+
+```bash title="create archive library on solaris machine"
+ar rv -S libsm.a simpleMath.o
+```
+
+Pada platform AIX:
+
+```bash title="create archive library on aix machine"
+ar -rv libsm.a simpleMath.o
+```
+
+Pada platform Windows (beda sendiri):
+
+```bash title="create archive library on windows machine"
+lib simpleMath.obj -out:libsm.lib
+```
+
+Seperti yang bisa kita lihat. Pada kebanyakan platform, _archive library_ akan menghasilkan file dengan ekstensi `.a`, sedangkan pada platform windows akan menghasilkan file dengan ekstensi `.lib`.
+
+<LessonCallout variant="info">
+Perlu diingat bahwa alasan kenapa kita bisa memiliki 2 file _archive library_ dengan ekstensi berbeda seperti `.a` dan `.lib` dalam kasus ini, adalah sama dengan alasan kita membuat file _object file_ dengan ekstensi yang berbeda seperti `.o` dan `.obj`. Yaitu karena kita ingin menargetkan platform yang berbeda.
+
+Dari contoh library kita (`simpleMath.c`) mungkin masih belum keliatan karena kita tidak menggunakan fitur yang hanya terdapat pada salah satu platform spesifik saja.
+
+Sebagai contoh, pada platform windows, kita tidak bisa menggunakan fungsi-fungsi yang hanya dimiliki oleh platform linux, seperti `fork()` atau `execve()`. Begitu juga pada platform linux, kita tidak bisa menggunakan fungsi-fungsi spesifik dari windows API seperti `CreateThread()`, dimana pada linux kita menggunakan `pthread_create()`.
+
+</LessonCallout>
+
+### Creating shared library
+
+Proses pembuatan _shared library_ juga agak sedikit mirip-mirip dengan proses pembuatan _archive library_. Hanya saja pada proses _compilation_ kita wajib menggunakan _flag_ `-fPIC` pada platform linux dan `+Z` pada HP-UX. Jika _compilation_ berhasil, seperti biasa kita akan mendapatkan file dengan ekstensi `.o` (linux) atau `.obj` (windows).
+
+Setelah _compilation_ menjadi _object file_ berhasil, biar gak perlu lama-lama, kita juga bakalan langsung akan melakukan proses _linking_ dengan command `ld` atau `gcc` pada linux dan `link` pada windows.
+
+Berikut contoh proses _compilation_ pada platform linux:
+
+```bash title="Compiling shared library on linux machine"
+# bikin object file dulu
+cc -c -fPIC simpleMath.c
+# atau
+gcc -c -fPIC simpleMath.c
+
+# selanjutnya bisa pake comamnd ini
+ld -shared -o libsm.so simpleMath.o
+# atau
+gcc -shared -WL,-soname,libsm.so -o libsm.so simpleMath.o -lc
+```
+
+<LessonCallout variant="danger">
+  Buat yang jalanin command `ld` diatas di mesin windows, mungkin akan ketemu error seperti `undefined reference to "puts"`. Solusi memecahkannya adalah dengan menambahkag flag `-lmsvcrt` diujung command. Contohnya:
+
+```bash title="tambahkan flag -lmsvcrt diujung command"
+ld -shared -o libsm.so simpleMath.o -lmsvcrt
+
+```
+
+Alasan kenapa kita perlu menambahkan flag `-lmsvcrt` diujung command adalah karena standard library C library pada windows disediakan oleh Microsoft C runtime library (`msvcrt.dll`). Jika kita menggunakan flag `-lc`, maka kita menggunakan GNU C library linux yang tidak tersedia pada windows machine.
+
+Hal serupa juga berlaku jika kita menggunakan command `gcc` pada platform windows. Maka command `gcc` berubah menjadi:
+
+```bash title="gcc pada platform windows (powershell)"
+gcc -shared "-Wl,-soname,libsm.so" -o libsm.so simpleMath.o -lmsvcrt
+```
+
+</LessonCallout>
+
+Pada solaris:
+
+```bash title="Compiling shared library on solaris machine"
+gcc -c -fPIC -m64 simpleMath.c -o simpleMath.o
+gcc -G -m64 -o libsm.so simpleMath.o -lc
+```
+
+Pada platform HP-UX:
+
+```bash title="Compiling shared library on hp-ux machine"
+cc -c +Z simpleMath.c
+ld -b -o libsm.so simpleMath.o -lc
+```
+
+Pada apple darwin:
+
+```bash title="Compiling shared library on apple darwin machine"
+cc -c -fPIC simpleMath.c -o simpleMath.o
+ld -dylib -o libsm.so simpleMath.o -lc
+```
+
+Pada platform windows (sama aja kayak compile buat _archive library_):
+
+```bash title="Compiling shared library on windows machine"
+cl -c -DWINDOWS simpleMath.c
+link -dll -out:libsm.dll -nologo -map:libsm.map simpleMath.obj
+```
+
+Hasil dari proses _compilation_ dan _linking_ diatas akan menghasilkan file dengan ekstensi `.so` (share object) pada linux, `.dll` (dynamic link library) pada windows, dan `.sl` pada HP-UX.
+
+<LessonCallout variant="info">
+Buat yang penasaran kenapa semua library, baik itu _archive_ atau _shared_ library selalu menggunakan _convention_ `lib<name>` adalah karena itu merupakan _convention_ paling umum untuk mengenali kalau sebuah file adalah _library_.
+
+Namun lebih dari itu, penamaan library dengan awalan `lib` juga merupakan standard yang diakui sama compiler yang kita gunakan. Jadi semisal library yang kita buat memiliki nama `libsm`. Maka nanti waktu proses _linking_ library tersebut ke program kita, maka kita bisa menggunakan flag `-lsm` (LOL), dan _compiler_ akan secara pintar mencari file dengan nama `libsm`.
+
+Alasan lain juga meliputi _portability_ dan _compability_ ke platform lainnya. Serta untuk menghindari nama file _library_ yang bertubrukan dengan file program, lebih baik kita turut ikuti aturan penamaan ini.
+
+Bisakah kita menamakan _library_ tanpa awalan `lib`? tentu saja bisa. Bedanya kita nanti perlu menaruh _fullpath_ dari library kita tanpa bantuan dari _linker_ saat menghubungkannya dengan program kita.
+
+Penamaan dengan awalan `lib` tidak berlaku untuk platform windows, _btw_. Tapi tetep kita gunain disini biar seragam aja.
+
+</LessonCallout>
+
+## Linking and using archive and shared library to our program
+
+Sebelum kita mulai menghubungkan _archive library_ dan _shared library_ ke dalam program kita, mari kita buat program utama kita yang akan menggunakan fungsi-fungsi dari _archive library_ dan _shared library_ tersebut.
+
+```c title="main.c"
+#include <stdio.h>
+
+void add(int *total, int adder);
+void substract(int *total, int sub);
+void multiply(int *total, int mul);
+void divide(int *total, int div);
+
+int main() {
+  int total = 0;
+
+  add(&total, 10);
+  substract(&total, 5);
+  multiply(&total, 2);
+  divide(&total, 2);
+
+  printf("Total: %d\n", total);
+
+  return 0;
+}
+```
+
+Lalu kita compile program kita tersebut menjadi _object file_ dengan command:
+
+```bash title="compilation on linux machine"
+cc -c main.c -o main.o
+# atau
+gcc -c main.c -o main.o
+```
+
+Ketika proses _compilation_ berhasil dan menghasilkan _object file_, maka kita bisa lanjut ke proses _linking_.
+
+### Linking to archive library (static library)
+
+pertama-tama mari kita mulai dari _archive library_.
+
+Ada 2 jenis _archive library_, yaitu yang kita buat sendiri dan yang disediakan oleh sistem operasi kita. Disini kita ingin fokus kepada _archive library_ yang telah kita buat sendiri sebelumnya. Namun cara yang sama juga berlaku pada _archive library_ yang disediakan oleh sistem kita.
+
+Cara menghubungkan _archive library_ ke program kita sebenarnya cukup simpel. Intinya adalah dengan menggunakan flag `-l<library>` sebagai flag option pada command _linker_ kita.
+
+Sebagai contoh, jika static library kita bernama `libsm.a`, maka kita akan menambahkan flag `-lsm` pada command _linker_ kita. Inilah kenapa _convention_ library kita selalu diawali dengan kata `lib`.
+
+1 Hal lain yang perlu kita perhatikan juga adalah, kita perlu menggunakan flag `-static` (linux) atau `-Bstatic` (beberapa platform lain) juga pada command _linker_ kita.
+
+Dan yang terakhir adalah, kita perlu menaruh lokasi dari _archive library_ kita menggunakan flag `-L<path of library>` pada command _linker_ kita setelah command `-l<lib>`.
+
+Berikut merupakan contoh command _linker_ untuk menghubungkan _archive library_ kita ke program kita pada platform linux:
+
+```bash title="linking to archive library on linux machine"
+cc -static -o main main.o -L. -lsm
+# atau
+gcc -static -o main main.o -L. -lsm
+```
+
+Pada solaris:
+
+```bash title="linking to archive library on solaris machine"
+gcc -m64 -Bstatic -o main main.o ./libsm.a
+```
+
+Pada AIX:
+
+```bash title="linking to archive library on aix machine"
+xlc -o main main.o -L. -lsm
+#atau
+xlc -o main main.o -bstatic -L. -lsm -bdynamic
+```
+
+pada HP-UX dan apple darwin:
+
+```bash title="linking to archive library on hp-ux dan apple darwin machine"
+cc -o main main.o ./libsm.a
+```
+
+Pada platform windows:
+
+```bash title="linking to archive library on windows machine"
+# Kalau file libsm.obj tidak 1 directory
+set LIB=C:\myproj\lib\libtstl;%LIB% #CMD
+#atau
+$env:LIB="C:\myproj\lib\libtstl;$env:LIB" #powershell
+
+link -lib:libsm.lib main.obj
+```
+
+<LessonCallout variant="warning">
+  Mesin windows menggunakan _environment variable_ `lib` untuk mencari lokasi
+  _archive library_ yang tidak berada pada directory kita sekarang.
+</LessonCallout>
+
+Dan jika kita jalankan file `main` executable kita, maka kita akan mendapatkan output sebagai berikut:
+
+```bash title="output"
+function add was called
+function substract was called
+function multiply was called
+function divide was called
+Total: 5
+```
+
+Lalu coba saja pindahkan file `main` executable kita ke directory lain dan kita lihat program kita tetap akan berjalan. Ini sesuai dengan kelebihan _static linking_ yang hanya perlu compile 1x dan jalan dimanapun karena fungsi-fungsi library kita di-copy ke dalam program kita langsung.
+
+### Linking to shared library (dynamic library)
+
+Sekarang kita masuk ke proses linking _shared library_ ke program kita.
+
+Proses penghubungan _shared library_ ke program kita mirip-mirip dengan proses penghubungan _archive library_ ke program kita. Hanya saja kita tidak perlu menambahkan flag `-dynamic` pada command _linker_ kita dan menggunakan flag `-L<library path>` setelahnya.
+
+1 hal yang perlu diperhatikan adalah, kita wajib mendaftarkan lokasi dari _shared library_ yang kita hubungkan ke program kita ke dalam _environment variable_ sebagai search path yang akan program kita gunakan di runtime.
+
+Alasannya kenapa ? karena meskipun proses _linking_ berhasil, program kita tetap harus mencari _shared library_ kita saat program sedang berjalan. Berbeda dengan _archive library_ dimana semua fungsi-fungsi pada library akan di-copy ke dalam program sehingga program tidak perlu lagi mencari fungsi-fungsi diluar program. Dengan _shared library_ program akan selalu mencari _library_ kita bahkan setelah proses _linking_ berhasil dan program sedang dieksekusi.
+
+Lalu bagaimana cara kita memberitahu program kita untuk mencari lokasi _library_ yang dia butuhkan? yaitu dengan menggunakan _environment variable_, yang dimana dalam kebanyakan sistem unix bernama `LD_LIBRARY_PATH`.
+
+Lokasi-lokasi yang disimpan di dalam environment `LD_LIBRARY_PATH` inilah yang nantinya akan ditelusuri oleh program kita saat menggunakan fungsi-fungsi dari library tersebut di runtime. Dalam kasus ketika kita menggunakan library yang bukan kita sendiri yang buat, sudah menjadi kewajiban kita juga sebagai developer untuk mendaftarkan lokasi dari _shared library_ yang suatu program gunakan.
+
+Dan ketika kita memindahkan lokasi dari _shared library_ yang program kita gunakan, kita tinggal mengubah environment `LD_LIBRARY_PATH` kita. Inilah alasan kenapa kita harus menghindari menggunakan fullpath ketika menghubungkan _shared library_ ke program kita. Karena nanti ketika posisi librarynya berubah, kita gak bisa mengubahnya via _environment variable_ dan program kita akan mengeluarkan error.
+
+Berikut merupakan contoh command _linker_ untuk menghubungkan _shared library_ kita ke program kita pada platform linux:
+
+```bash title="linking to shared library on linux machine"
+cc -dynamic -o main main.o -L. -lsm
+# atau
+gcc -dynamic -o main main.o -L. -lsm
+```
+
+Pada platform solaris:
+
+```bash title="linking to shared library on solaris machine"
+gcc -m64 -Bdynamic -o main main.o -Wl,-Bdynamic -lsm
+```
+
+pada platform AIX:
+
+```bash title="linking to shared library on aix machine"
+xlc -o main main.o -bnoipath ./libsm.so # Jangan gunain flag -L atau -lsm disini
+```
+
+pada platform HP-UX:
+
+```bash title="linking to shared library on hp-ux machine"
+cc -dynamic -o main main.o -L. -lsm
+```
+
+Pada platform apple darwin:
+
+```bash title="linking to shared library on apple darwin machine"
+cc -o main main.o ./libsm.so
+```
+
+Pada platform windows:
+
+```bash title="linking to shared library on windows machine"
+link main.obj /LIBPATH:C:\path\to\lib libsm.lib
+```
+
+<LessonCallout variant="warning">
+Apa yang dimaksud dengan menggunakan fullpath atau absolute path adalah, dengan menggabungkan keseluruhan path dari library seperti ini:
+
+```bash title="menggunakan fullpath atau absolute path"
+gcc -o main main.o /path/to/lib/libsm.so
+```
+
+Jika menggunakan command diatas, maka program kita tidak akan menggunakan environment variable `LD_LIBRARY_PATH` untuk mencari _shared library_ kita. Sehingga jika posisi dari _shared library_ kita berubah, maka program kita akan gagal ketika dieksekusi.
+
+</LessonCallout>
