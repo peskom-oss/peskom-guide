@@ -33,17 +33,19 @@ const meta = {
 
 <CoreLayout {...meta}>
   <SEO title={`Panduan belajar ${currentSubguides} | Peskom Guide`} />
-  <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
-    {currentSubguides} Guide
-  </h1>
+  <div class="py-6">
+    <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
+      {currentSubguides} Guide
+    </h1>
 
-  <div class="mt-4">
-    {
-      currentSubcategoriesList.map((subcategory) => (
-        <a href={subcategory.data.link}>
-          <GuideCard {...subcategory.data} />
-        </a>
-      ))
-    }
+    <div class="mt-4 flex flex-col gap-y-4">
+      {
+        currentSubcategoriesList.map((subcategory) => (
+          <a href={subcategory.data.link}>
+            <GuideCard {...subcategory.data} />
+          </a>
+        ))
+      }
+    </div>
   </div>
 </CoreLayout>

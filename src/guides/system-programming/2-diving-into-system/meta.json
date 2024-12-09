@@ -1,5 +1,5 @@
 {
   "name": "Diving Into System",
   "description": "Sebuah ekspedisi ke dalam lautan kernel. Terus berhati-hati karena tekanan di kedalaman dapat menyebabkan segfault mendadak. Siapkan senter karena siapa tau bakalan ketemu thread liar berkeliaran atau pusaran air laut race conditions. Jangan lupa tarik nafas yang panjang sebelum menyelam dan nikmati pemandangannya.",
-  "link": "/guides/system-programming/diving-into-system"
+  "link": "/guides/system-programming/2-diving-into-system"
 }

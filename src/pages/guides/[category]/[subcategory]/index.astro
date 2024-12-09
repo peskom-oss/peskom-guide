@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const subcategories = await getCollection("subcategories");
+  // console.log(subcategories);
 
   const paths = subcategories.map((subcategory) => {
     const segments = subcategory.id.split("/");
