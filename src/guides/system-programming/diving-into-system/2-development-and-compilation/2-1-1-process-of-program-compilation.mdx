@@ -52,18 +52,6 @@ Perintah paling simpel untuk melakukan proses _compilation_ adalah kita hanya pe
 gcc main.c # atau cc main.c
 ```
 
-<LessonCallout variant="warning">
-  Gua sendiri lebih suka menggunakan compiler `gcc` untuk sekarang dibanding `cc` karena gua
-  menjalankan program-program yang gua buat di platform windows, dimana gua menemukan kalau
-  command `cc` terkadang bisa menghasilkan bug atau error yang tidak terduga,
-  terutama saat proses _linking_ nanti.
-
-Gua gak tau ini salah dari mana. Apakah dari komputer gua kah ? atau compiler gua ? sampai gua bisa test ini di beberapa platform, ini bakalan gua jadiin catatan disini.
-
-Tapi buat yang menjalankan di platform lain, silahkan boleh menggunakan compiler `cc` atau compiler bawaan vendor masing-masing. _whatever works for you_.
-
-</LessonCallout>
-
 Perintah di atas akan menerjemahkan _source file_ kita ke bahasa mesin dan menghasilkan file baru dengan nama `a.out` pada platform Linux atau `a.exe` pada platform Windows yang merupakan file hasil _compilation_ dari file `main.c`. Dan untuk mengeksekusi program tersebut, kita perlu menjalankan perintah `./a.out` atau `a.exe` di terminal.
 
 Simpel kan ? hanya dengan 1 perintah, kita sudah dapat menjalankan program yang telah kita buat. Namun sebenarnya, perintah `cc main.c` tersebut menjalankan 2 proses, yaitu _compiling_ dan _linking_. Kedua fase inilah dilalui agar source code kita dapat dijalankan oleh CPU.
@@ -94,18 +82,16 @@ gcc -o main main.o # atau ld -o main main.o
 ```
 
 <LessonCallout variant="danger">
-  Bagi kalian yang menggunakan command `ld` sebagai command _linker_ di OS windows dan keluar error seperti dibawah ini:
+  Bagi kalian yang menggunakan windows danketemu error seperti dibawah ini:
 
 - `undefined reference to __main`
 - `undefined reference to puts`
 
-Maka silahkan menggunakan command `gcc` sebagai gantinya.
+Maka silahkan menambahkan flag `-lmsvcrt` pada ujung command seperti contoh dibawah ini:
 
-Intinya, error tersebut muncul karena untuk memproduksi _executable file_, dibutuhkan beberapa _startup code_ yang dimana pada command `ld` tidak dimasukkan secara otomatis.
-
-Dan ketika kita menggunakan command `gcc`, maka command tersebut akan menambahkan _startup code_ tersebut secara otomatis. Command `gcc` tersebut sebenarnya tetap menggunakan command `ld` dibelakang layar dan secara otomatis juga menambahkan beberapa _startup code_, _standard libraries_, dll, yang dibutuhkan untuk melakukan proses _linking_.
-
-Info lebih lanjut bisa cek [disini](https://stackoverflow.com/a/64107315/7325247)
+```bash title="Menghasilkan executable file dari object file"
+gcc -o main main.o -lmsvcrt # atau ld -o main main.o -lmsvcrt
+```
 
 </LessonCallout>
 
