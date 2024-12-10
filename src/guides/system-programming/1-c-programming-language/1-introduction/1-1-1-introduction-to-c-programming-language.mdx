@@ -11,3 +11,248 @@ import { LessonCallout } from "@/components/LessonCallout";
 <LessonCallout variant="danger">
   Semua materi dalam modul ini belum siap untuk dikonsumsi publik.
 </LessonCallout>
+
+Bahasa C itu bisa menjadi bahasa yang simpel atau bahasa yang sangat teramat kompleks, tergantung dari sedalam apa kita ingin mempelajarinya. Bahkan orang yang sudah terbiasa dengan bahasa pemrograman lain bisa jadi tetap menghadapi kesulitan ketika menulis dengan bahasa C.
+
+kita akan memulai perjalanan dengan menulis sebuah program paling simpel yang bisa kita tulis sebagai pemula dan sekaligus juga merupakan tradisi turun-temurun dalam dunia programming. Yaitu dengan menulis program "hello world".
+
+```c title="main.c"
+#include <stdio.h>
+
+int main() {
+  printf("Hello, World!\n");
+  return 0;
+}
+```
+
+Sekarang coba kita perhatikan program `main.c` diatas dan coba kita telaah satu per satu, baris per baris.
+
+- `#include <stdio.h>` berguna agar kita bisa menggunakan fungsi `printf` karena fungsi `printf` itu hanya ada di library `stdio.h`.
+- `int main()` adalah fungsi utama yang akan dijalankan oleh program.
+- `printf("Hello, World!\n");` adalah _statement_ yang akan mencetak teks "Hello, World!" ke layar.
+- `return 0;` adalah fungsi yang akan mengembalikan nilai 0 yang artinya program berhasil dijalankan.
+
+Gimana? kalo orang yang belum pernah belajar programming sedikitpun pasti bakal langsung bingung. `#include` itu apa? _fungsi_ itu apa? kenapa harus ada `return 0`? dan kenapa ada `int main()`?
+
+Kita akan dalami satu per satu seiring kita belajar lebih dalam. Tapi untuk sekarang kita cukup tahu bahwa program diatas itu adalah program yang berguna untuk mencetak teks "Hello, World!" ke layar terminal kita.
+
+## Compiling our code
+
+Ada beberapa cara yang bisa kita lakukan untuk menjalankan program `main.c` kita diatas. Kebanyakan pemula pasti akan disarankan untuk menggunakan apa yang dinamakan dengan **IDE** (Integrated Development Environment).
+
+IDE itu sebuah software yang bisa membantu kita dalam menulis program dengan lebih mudah dan efektif. Tapi kita tidak akan menggunakan **IDE** ini untuk menjalankan program kita. Melainkan kita akan menggunakan **terminal** yang terinstal pada komputer kita.
+
+Silahkan buka terminal kalian dan coba jalankan perintah berikut:
+
+```bash
+gcc
+#atau
+cc
+```
+
+`cc` atau `gcc` merupakan apa yang dinamakan dengan _compiler_. _compiler_ inilah yang akan membantu kita untuk menjalankan program kita. Dan meskipun kita menjalankan program kita dari **IDE** yang kita gunakan, sebenarnya **IDE** kita juga menggunakan _compiler_ ini dibelakang layar.
+
+Jika waktu kalian menjalankan perintah `cc` atau `gcc` dan ternyata muncul error seperti ini:
+
+```bash title="error"
+cc: command not found
+```
+
+Tapi coba kalian cari di google cara menginstall _compiler_ kalian di sistem operasi kalian masing-masing.
+
+Pada sistem operasi linux harusnya tinggal menjalankan `sudo apt install build-essential` dan untuk sistem operasi windows [coba ikuti tutorial ini](https://www.freecodecamp.org/news/how-to-install-c-and-cpp-compiler-on-windows/).
+
+Dan untuk menjalankan program `main.c` kita, kita tinggal menjalankan perintah:
+
+```bash title="compile our code"
+cc -o main main.c
+#atau
+gcc -o main main.c
+```
+
+<LessonCallout variant="info">
+  flag `-o` (output) adalah flag yang digunakan untuk menentukan nama file output yang akan dihasilkan. Jika kita tidak menggunakan opsi `-o` maka output filenya akan bernama `a.out` atau `a.exe`
+
+```bash title="compile our code without output flag"
+gcc main.c # Menghasilkan file output bernama a.out atau a.exe
+./a # atau ./a.exe
+```
+
+</LessonCallout>
+
+Perintah tersebut akan menghasilkan sebuag file `main.out` pada linux atau `main.exe` pada windows yang bisa kita jalankan dengan mengetikkan `./main` di terminal kita.
+
+## The minimum form of a simple C program
+
+Mari kita kembali ke program `main.c` kita. Dan ketika kita coba pecah program kita, maka kita akan mendapatkan bentuk seperti ini:
+
+```c title="main.c"
+#directives
+
+type function() {
+  statements;
+
+  return statements;
+}
+```
+
+Struktur program paling sederhana dalam bahasa C terdiri dari beberapa bagian. `directives`, `type`, `function`, dan `statements`.
+
+### Directives
+
+_Directives_ selalu diawali dengan tanda pagar (`#`). Jadi kapanpun kita menemukan tanda pagar di awal baris, maka itu adalah _directive_.
+
+Inti dari _directives_ adalah sesuatu yang dijalankan sebelum program melakukan proses _compilation_. Mungkin kita ingin mendefinisikan sebuah library yang akan kita gunakan atau sebuah _constant_ untuk program kita. Maka kita bisa menggunakan _directives_ ini.
+
+Dalam kasus ini, directive kita bertujuan untuk menggunakan standard library `stdio.h` yang akan akan memberikan kita fungsi `printf` yang kita gunakan untuk menulis output ke layar terminal kita.
+
+Perlu diketahui kalau bahasa pemrograman C tidak memiliki fungsi input/output bawaan. Inilah alasan kenapa kita perlu menggunakan yang namanya _standard library_ seperti `stdio.h` ini.
+
+<LessonCallout variant="info">
+  _standard library_ biasanya sudah terinstal otomatis bersamaan dengan compiler
+  kita. Jadi selama kita sudah menginstall compiler, maka jangan khawatir karena
+  _standard library_ ini juga biasanya sudah terinstall otomatis.
+</LessonCallout>
+
+Perlu diingat juga kalau secara default, _directive_ ini hanya sebaris panjangnya dan tidak menggunakan titik koma (`;`) di akhir baris.
+
+### Functions
+
+_functions_ atau fungsi adalah sekumpulan _statements_ atau kode yang dikumpulkan menjadi sebuah blok kode yang bisa kita gunakan berulang-ulang dibawah satu nama.
+
+Dalam kasus kita, program kita hanya memiliki satu fungsi yaitu `main`. Fungsi `main` ini adalah fungsi yang akan dijalankan pertama kali ketika program kita dijalankan.
+
+<LessonCallout variant="danger">
+  Penamaan `main` ini sangat penting dan spesial. Program kita tidak akan bisa
+  berjalan tanpa adanya fungsi ini.
+</LessonCallout>
+
+Dan fungsi ini bisa mengembalikan sesuatu. Dalam kasus kita, fungsi `main` mengembalikan nilai `0`. Tapi seandainya kita tidak ingin mengembalikan apapun juga bisa, palingan di beberapa compiler bakalan keluar _warning_ aja karena fungsi kita diawali dengan kata `int` yang berarti _integer_ atau bilangan bulat. Kata `int` inilah yang dimaksud dengan _type_.
+
+Contoh dari fungsi yang tidak mengembalikan apapun adalah fungsi `printf` yang kita gunakan untuk menulis output ke layar terminal kita. _type_ dari fungsin ini adalah `void` yang berarti dia tidak mengembalikan nilai apapun.
+
+### Statements
+
+_statements_ adalah perintah yang akan program kita jalankan. _statements_ bisa dalam berupa _return statements_, seperti `return 0` pada program kita. Bisa juga berbentuk _function calls_ yaitu pemanggilan fungsi `printf` di program kita.
+
+Setiap _statement_ harus diakhiri dengan titik koma (`;`) untuk menandakan bahwa statement tersebut sudah selesai dikarenakan _statement_ bisa terdiri dari beberapa baris.
+
+### Comments
+
+1 hal lagi yang perlu diketahui adalah tentang _comments_. _comments_ adalah kode yang tidak akan dijalankan oleh program kita. _comments_ ini biasanya digunakan untuk menambahkan catatan atau penjelasan pada program kita.
+
+Dalam bahasa C, _comments_ ini bisa kita tulis dengan dua cara.
+
+- Menggunakan garis miring dan bintang (`/***/`).
+- Menggunakan hanya garis miring saja (`//`) di awal baris.
+
+```c title="example of comments in our main program"
+#include <stdio.h>
+
+/* Program untuk mencetak Hello, World! ke layar terminal */
+int main() {
+  // Memanggil fungsi printf untuk mencetak Hello, World! ke layar terminal
+  printf("Hello, World!\n");
+  return 0; // Mengembalikan nilai 0
+}
+```
+
+Comment-comment tersebut tidak akan diproses oleh compiler.
+
+## Variables
+
+Mayoritas program tidak mungkin se-simpel program kita diatas. Kebanyakan program biasanya akan melakukan serangkaian proses dari baris satu ke baris selanjutnya. Mungkin program kita ingin melakukan kalkulasi atau memanggil fungsi luar. Dimana ketika kita melakukan proses-proses tersebut, kita perlu tempat untuk menampung data-data yang kita miliki.
+
+Nah tempat untuk menampung data-data tersebut itulah yang dinamakan dengan _variables_.
+
+### Variable declaration
+
+Untuk menggunakan sebuah _variable_, pertama-tama kita perlu mendeklarasikan _variable_ tersebut.
+
+Aturan untuk mendeklarasikan sebuah _variable_ adalah dengan menulis _type_ dari _variable_ tersebut, kemudian diikuti dengan nama _variable_ tersebut. Berikut sebagai contoh:
+
+```c title="variable declaration"
+int age;
+float wealth;
+```
+
+Dalam kasus kode diatas, _type_-nya adalah `int` dan `float`. `int` (integer) adalah _type_ yang digunakan untuk menampung bilangan bulat, sedangkan `float` (floating point) adalah _type_ yang digunakan untuk menampung bilangan desimal.
+
+Disusul dengan nama _variable_ yang ingin kita deklarasikan, dalam kasus kode diatas adalah `age` dan `wealth`.
+
+Kita juga bisa mendeklarasikan _variable_ lebih dari satu sekaligus. Sebagai contoh:
+
+```c title="more than 1 variable declaration"
+int age, killCount;
+float wealth;
+```
+
+Pada contoh diatas, `age` dan `killCount` memiliki _type_ yang sama yaitu `int` dan kita bisa deklarasikan sekaligus menggunakan koma (`,`) untuk memisahkan antara _variable_ yang satu dengan yang lainnya.
+
+### Variable assignment
+
+Tidak hanya mendeklarasikan banyak _variable_ sekaligus, kita juga bisa mengisi _variable_ tersebut dengan nilai yang kita inginkan sesuai dengan tipe dari variabel tersebut. Sebagai contoh:
+
+```c title="variable assignment"
+int age = 20, killCount = 100;
+float wealth = 2150.5f;
+```
+
+Coba perhatikan nilai dari variabel _float_ kita, `2150.5f`. Angka `f` di akhir nilai tersebut menandakan bahwa nilai tersebut bertipe _float_. Beberapa compiler akan memberikan warning kalau kita tidak menambahkan `f` dalam nilai variabel bertipe _float_.
+
+### Printing variable value
+
+Menggunakan fungsi `printf`, kita bisa mencetak nilai dari sebuah _variable_ ke layar terminal kita. Sebagai contoh:
+
+```c title="printing variable value"
+#include <stdio.h>
+
+int main() {
+    int age = 20, killCount = 100;
+    float wealth = 2150.5f;
+    float pricePerKill = wealth / killCount;
+    printf("%.3f", pricePerKill);
+
+    return 0;
+}
+```
+
+Perlu diketahui kalau `%.3f` adalah _format specifier_ yang digunakan untuk menampilkan nilai _float_ dengan presisi 3 angka dibelakang koma. Kenapa 3 angka dibelakang koma? karena jika tidak, maka angkanya tidak akan presisi dikarenakan keterbatasan _compiler_ untuk memunculkan semua nilai desimal yang berada di belakang koma.
+
+Sekarang semisal kita hanya menggunakan `%f` saja, maka outputnya akan menjadi seperti `21.504999` yang tentu saja tidak presisi.
+
+Ada beberapa _format specifier_ yang bisa kita gunakan untuk menampilkan nilai dari sebuah _variable_. Untuk menampilkan nilai _integer_ kita bisa menggunakan `%d`, _float_ kita bisa menggunakan `%f`, dan _string_ kita bisa menggunakan `%s`. Sebagai contoh:
+
+```c title="format specifier"
+#include <stdio.h>
+
+int main() {
+    int age = 20, killCount = 100;
+    float wealth = 2150.5f;
+    float pricePerKill = wealth / killCount;
+
+    printf("My age is %d years old with total of %.2f wealth", age, wealth);
+
+    return 0;
+}
+```
+
+Disini kita menggunakan `%d` untuk menampilkan nilai _integer_ dan `%.2f` untuk menampilkan nilai _float_ dengan presisi 2 angka dibelakang koma.
+
+## Variable initial values
+
+Ketika kita mendeklarasikan sebuah _variable_, tanpa memberikan nilai awal dari _variable_ tersebut. Sebagai contoh:
+
+```c title="variable initial values"
+int age;
+```
+
+Maka ketika kita ingin mengakses nilai dari _variable_ tersebut, biasanya compiler secara default akan memberikan nilai terhadap variable tersebut. Dalam contoh diatasm, ketika kita lakukan `printf("%d", age);`, maka outputnya adalah `0`.
+
+Namun ada juga variable yang tidak memiliki nilai awal jika kita tidak memberikan nilai awal dari variable tersebut. Sebagai contoh:
+
+```c title="variable without initial values"
+char *name;
+```
+
+Ketika kita melakukan `printf` terhadap variabel tersebut, maka outputnya bisa bervariasi tergantung dari _compiler_ yang kita gunakan. Kadang bisa mengeluarkan error atau angka yang entah datang dari mana.
