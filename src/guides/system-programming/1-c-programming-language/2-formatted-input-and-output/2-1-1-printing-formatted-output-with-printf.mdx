@@ -1,0 +1,160 @@
+---
+title: "Printing formatted output"
+category: "system-programming"
+subcategory: "1-c-programming-language"
+curriculum: "Formatted Input and Output"
+slug: "printing-formatted-output-with-printf"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+
+Salah satu hal yang paling sering kita lakukan saat membuat program dengan C adalah mencetak nilai dari sebuah variabel. Dan kita melakukannya dengan menggunakan fungsi `printf`.
+
+Kita sudah pernah menggunakan fungsi ini berkali-kali sebelumnya pada modul pengenalan C, sebelumnya. Namun kita akan mempelajari lebih dalam mengenai fungsi ini disini.
+
+```bash title="printf function prototype"
+printf(string, expression1, expression2, ...)
+```
+
+Bisa dilihat dari contoh diatas, tidak ada batasan argument yang bisa kita masukkan ke dalam fungsi `printf`. Kita bisa memasukkan sebanyak mungkin argument yang kita inginkan.
+
+Format string pada argumen pertama bisa berbentuk karakter biasa atau bisa juga berbentuk _format specifier_. _Format specifier_ ini adalah sebuah penanda nilai yang akan kita masukkan di pada argumen-argumen selanjutnya.
+
+Tipe data dari informasi yang kita masukkan berdasarkan pada karakter setelah karakter `%`. Jadi nilai yang kita masukkan ke dalam argumen-argumen selanjutnya harus sesuai dengan tipe data yang kita tentukan dikarenakan nilai tersebut akan dikonversikan menjadi karakter yang bisa dimunculkan ke layar nantinya. Dari sinilah asal muasal nama _conversion specification_.
+
+Kita sudah melihat contoh dari bagaimana _specifier_ `%d` bisa untuk menampung nilai bertipe _integer_ dan `%f` bisa untuk menampung nilai bertipe _float_.
+
+```c title="format specifier"
+int i, j;
+float x, y;
+
+i = 10;
+j = 30;
+x = 5.6021f;
+y = 62.660f;
+
+printf("i = %d, j = %d, x = %f, y = %f", i, j, x, y);
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+i = 10, j = 30, x = 5.602100, y = 62.660000
+```
+
+Bisa dilihat kalau _format specifier_ akan digantikan dengan nilai dari argumen-argument yang kita masukkan setelahnya secara berurutan.
+
+<LessonCallout variant="warning">
+Jumlah argumen dan _format specifier_ harus sama. Jika tidak, maka program akan menghasilkan output yang tidak diinginkan.
+
+```c title="invalid format specifier"
+printf("i = %d, j = %d, x = %f, y = %f", i, j, x);
+```
+
+Hasil dari output diatas akan menghasilkan nilai yang ngaco:
+
+```bash title="output"
+i = 2017851648, j = 2017860880, x = 0.000000, y = 4932.403358
+```
+
+Begitu juga dengan penggunaan _format specifier_ yang tidak sesuai dengan tipe data yang kita masukkan.
+
+</LessonCallout>
+
+## Conversion Specification
+
+Kita juga bisa menggunakan _conversion specification_ untuk mengubah nilai yang ingin kita tampilkan.
+
+Salah satu contoh implementasi dari _conversion specification_ adalah ketika kita ingin hanya menampilkan nilai _float_ dengan 2 angka di belakang koma.
+
+```c title="conversion specification"
+float x = 5.6021f;
+
+printf("x = %.2f", x);
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+x = 5.60
+```
+
+Umumnya, _conversion specification_ memiliki format `%m.pX` atau `%-m.pX` dimana `m` dan `p` adalah integer dan `x` adalah sebuah karakter. `m` dan `p` bersifat opsional. Jika `p` tidak digunakan, maka koma untuk pemisah antara `m` dan `p` juga tidak akan digunakan.
+
+Dalam kasus contoh kita sebelumnya, kita hanya menggunakan `p` dan `X` saja. Dimana `p` disini adalah jumlah angka di belakang koma yang ingin kita tampilkan.
+
+Nilai `m` disini berguna untuk menentukan lebar dari output yang akan kita tampilkan.
+
+```c title="conversion specification"
+float x = 5.6021f;
+
+printf("%10.2f", x);
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+      5.60
+```
+
+Bisa dilihat kalau output yang dihasilkan memiliki lebar 10 karakter. Hal tersebut dikarenakan kita menentukan nilai `m` sebesar 10, mengakibatkan nilai output kita memiliki spasi di sebelah kirinya. Jika kita ingin membuat nilai output kita berada di kiri, kita bisa menggunakan _conversion specification_ `%-m.pX`.
+
+```c title="conversion specification"
+float x = 5.6021f;
+float y = 62.660f;
+
+printf("%-10.2f %-10.2f", x, y);
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+5.60       62.66
+```
+
+Bisa dilihat kalau nilai output variabel `x` kita berada di kiri sebelum spasi, karena kita menggunakan _conversion specification_ `%-10.2f`.
+
+## Escape Sequences
+
+_Escape sequences_ adalah sebuah karakter yang digunakan untuk menampilkan karakter khusus untuk dibaca _compiler_. Beberapa contoh dari _escape sequences_ adalah:
+
+- `\n` untuk membuat baris baru (newline).
+- `\b` untuk membuat backspace.
+- `\t` untuk melakukan tab.
+- dan masih banyak lagi.
+
+```c title="escape sequences"
+printf("Hello, World!\nThis is a test.\tThis is another test.\n");
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+Hello, World!
+This is a test.  This is another test.
+```
+
+Salah satu _escape sequence_ yang sering digunakan juga adalah `\` yang dapat digunakan untuk menampilkan karakter `"`. Sebagai contoh:
+
+```c title="escape sequences with double quote"
+printf("The Master said, \"A true gentleman is one who has set his heart upon the Way. A fellow who is ashamed merely of shabby clothing or modest meals is not even worth conversing with.\"\n - (Confucius)\n");
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+The Master said, "A true gentleman is one who has set his heart upon the Way. A fellow who is ashamed merely of shabby clothing or modest meals is not even worth conversing with."
+ - (Confucius)
+```
+
+Lucunya adalah, jika kita ingin menampilkan karakter `\` maka kita harus menulis `\\`. Karena jika kita hanya menulis `\` maka _compiler_ akan menganggapnya sebagai awalan dari _escape sequence_. Maka untuk menampilkan karakter `\` kita harus menulis `\\`.
+
+```c title="escape sequences with backslash"
+printf("The backslash character is: \\");
+```
+
+Hasil output dari kode diatas adalah:
+
+```bash title="output"
+The backslash character is: \
+```
