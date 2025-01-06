@@ -1,0 +1,154 @@
+---
+title: "Reading input with scanf"
+category: "system-programming"
+subcategory: "1-c-programming-language"
+curriculum: "Formatted Input and Output"
+slug: "reading-input-with-scanf"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+
+Sama halnya dengan fungsi `printf`, fungsi `scanf` juga merupakan fungsi yang berasal dari standard library `stdio.h`. Bedanya, jika fungsi `printf` digunakan untuk menampilkan output ke layar, fungsi `scanf` digunakan untuk membaca input dari keyboard dengan _format specification_ dan _conversion_ yang sama dengan fungsi `printf`.
+
+```c title="scanf.c" {7}
+#include <stdio.h>
+
+int main() {
+    int i, j;
+
+    printf("Enter first integer: ");
+    scanf("%d", &i);
+
+    printf("Enter second integer: ");
+    scanf("%d", &j);
+
+    printf("The sum of %d and %d is %d\n", i, j, i + j);
+
+    return 0;
+}
+```
+
+Perlu diperhatikan pada baris yang di-highlight diatas. Fungsi `scanf` akan membaca input dan menempatkan nilai tersebut ke dalam variabel yang telah dibuat sebelumnya. Tipe data dari nilai tersebut akan dikonversikan sesuai dengan _conversion specification_ yang telah kita tetapkan, yang dimana dalam kasus diatas adalah `%d` yang akan mengonversikan nilai input ke dalam tipe data `integer`.
+
+<LessonCallout variant="warning">
+  Jangan lupa gunakan simbol `&` sebelum variabel yang ingin diisi nilainya.
+  Melupakan penggunaan simbol `&` akan menyebabkan program kita mengalami error
+  atau paling tidak nilai dari input tidak akan tersimpan ke dalam variabel.
+
+Mengenai simbol `&` akan dibahas lebih lanjut pada modul kedepan.
+
+</LessonCallout>
+
+Beberapa hal yang perlu diperhatikan adalah, fungsi `scanf` akan mengabaikan setiap _whitespace_ seperti spasi, tab, dan newline dari input yang dibaca.
+
+```c title="scanf.c"
+#include <stdio.h>
+
+int main() {
+    int i, j;
+    float x, y;
+
+    scanf("%d%d", &i, &j);
+    printf("%d %d", i, j);
+
+    return 0;
+}
+```
+
+Jika kita memasukkan input:
+
+```bash title="Scanf with whitespace input"
+12                   56
+```
+
+Maka output yang akan dihasilkan adalah:
+
+```bash title="Scanf with whitespace output"
+12 56
+```
+
+Dalam penggabungan beberapa _conversion specification_ pada fungsi `scanf`, maka input yang dibaca akan disesuaikan dengan _conversion specification_ yang telah ditetapkan, dari kiri ke kanan.
+
+Sebagai contoh, jika kita memiliki program seperti berikut:
+
+```c title="scanf with multiple conversion specification"
+#include <stdio.h>
+
+int main() {
+    int i, j;
+    float x, y;
+
+    scanf("%d%d%f%f", &i, &j, &x, &y);
+    printf("%d %d %f %f", i, j, x, y);
+
+    return 0;
+}
+```
+
+Jika kita memasukkan input:
+
+```bash title="Scanf with multiple conversion specification input"
+1-30.4-5.0
+```
+
+Maka output yang akan dihasilkan adalah:
+
+```bash title="Scanf with multiple conversion specification output"
+1 -30 0.400000 -5.000000
+```
+
+Alur pembacaan input dari fungsi `scanf` adalah sebagai berikut:
+
+1. _Conversion specification_ `%d` akan membaca input `1`, namun dikarenakan input selanjutnya adalah `-`, maka input `-` akan diabaikan dan nilai `1` yang akan disimpan ke dalam variabel `i`.
+2. _Conversion specification_ `%d` akan membaca input `-` dan disusul dengan `30`, namun dikarenakan input selanjutnya adalah `.`, maka input `.4` akan diabaikan dan nilai `-30` yang akan disimpan ke dalam variabel `j`.
+3. _Conversion specification_ `%f` akan membaca input `.` yang disusul dengan nilai `4`, namun dikarenakan input selanjutnya adalah `-`, maka input `-5.0` akan diabaikan dan nilai `.4` (`0.4`) akan disimpan ke dalam variabel `x`.
+4. _Conversion specification_ `%f` akan membaca input `-` yang disusul dengan nilai `50` maka nilai `-5.0` yang akan disimpan ke dalam variabel `y`.
+
+Hal lain yang perlu kita perhatikan juga adalah, seandainya kita memasukkan input dengan jumlah yang lebih dari fungsi `scanf` kita saat itu, maka nilai yang tidak terbaca tersebut akan tetap disimpan untuk dibaca pada pemanggilan fungsi `scanf` selanjutnya. Sebagai contoh:
+
+```c title="scanf with more input than expected"
+#include <stdio.h>
+
+int main() {
+    int i, j;
+    char str[10];
+
+    scanf("%d%s", &i, str);
+    printf("%d %s", i, str);
+
+    printf("\n");
+
+    scanf("%d", &j);
+    printf("%d", j);
+
+    return 0;
+}
+```
+
+Jika kita memasukkan input:
+
+```bash title="Input with more characters than expected"
+10000 test 50000
+```
+
+Maka output yang akan dihasilkan adalah:
+
+```bash title="The excess input will be stored for the next scanf call"
+10000 test
+50000
+```
+
+Nilai `50000` tidak akan diambil oleh fungsi `scanf` pertama karena sudah melebihi jumlah _conversion specification_ yang telah ditetapkan. Oleh karena itu, nilai `50000` baru akan disimpan ke dalam variabel `j` pada panggilan fungsi `scanf` kedua.
+
+<LessonCallout variant="danger">
+  Jangan menambahkan simbol `&` pada variabel `str` dikarenakan karena bagaimana tipe variabel _array_ bekerja.
+
+Kita akan membahas lebih lanjut mengenai tipe data _array_ dan _pointer_ pada modul kedepan.
+
+</LessonCallout>
+
+Perlu diingat bahwa fungsi `scanf` adalah fungsi yang cukup _risky_ karena kita tidak bisa mengetahui apakah input yang kita masukkan sudah sesuai dengan _conversion specification_ yang telah ditetapkan.
+
+Tentu saja kita bisa menambahkan _error checking_ untuk mengetahui apakah input yang kita masukkan sudah sesuai dengan _conversion specification_ yang telah ditetapkan, namun tergantung dari jumlah input yang kita masukkan, cara tersebut bisa menjadi tidak efisien.
+
+Ada fungsi lain yang lebih aman digunakan untuk membaca input yang akan kita pelajari pada modul kedepan.
