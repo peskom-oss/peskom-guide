@@ -1,0 +1,311 @@
+---
+title: "Operators and Expressions"
+category: "system-programming"
+subcategory: "1-c-programming-language"
+curriculum: "Basic Types and Operations"
+slug: "operators-and-expressions"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+
+Kita sudah melihat apa itu variabel dan konstanta pada modul sebelumnya. Apa yang dimaksud dengan _expression_ (ekspresi) adalah penggabungan antara variabel, konstanta, operator, fungsi, dll untuk menghasilkan suatu nilai.
+
+Kita akan mempelajari tentang _function_ pada modul kedepan. Namun sebelum itu, kita harus tahu terlebih dahulu tentang _operator_ dan jenis-jenisnya yang ada dalam bahasa pemrograman C.
+
+Contoh dari _expression_ paling sederhana adalah `a + b`, dimana `a` dan `b` adalah variabel (_operand_) dan `+` adalah operator. Operator penjumlahan ini disebut sebagai operator aritmatika (_arithmetic operator_) dalam bahasa C.
+
+<LessonCallout>
+  _Operand_ adalah nilai atau variabel yang digunakan oleh _operator_ untuk
+  membangun _expression_. Dalam kasus diatas, `a` dan `b` adalah _operand_.
+</LessonCallout>
+
+_Expression_ ini sendiri bisa terdiri dari beberapa _expression_ lainnya. Contohnya, _expression_ `a + b + (c * d)` yang terdiri dari `a` dan `b` sebagai _primary expression_ dan `(c * d)` sebagai _compound expression_ lainnya, dimana `a + b` juga bisa dianggap sebagai _compound expression_ juga.
+
+Jadi kita bisa menganggap kalau _operator_ itu adalah alat yang digunakan untuk membangun _expression_. Dan terlepas dari operator aritmatika, bahasa C, sama seperti bahasa lain juga memiliki beberapa jenis operator lainnya.
+
+- _arithmetic operators_, yang meliputi operator aritmatika seperti tambah, kurang, kali, bagi, dll.
+- _relational operators_, yang digunakan untuk membandingkan dua nilai, seperti "nilai _i_ lebih besar dari 0".
+- _logical operators_, yang digunakan untuk membangun kondisi seperti "Nilai _i_ lebih besar dari 5 tapi lebih kecil dari 10"
+- _dll_
+
+Masih banyak operator-operator lainnya seperti _assignment operators_, _bitwise operators_, _pointer operators_, dll. Kita akan semakin mengenal banyak operator seiring berjalannya waktu.
+
+## Arithmetic Operators
+
+Operator aritmatika yang meliputi operator penjumlahan, pengurangan, perkalian, pembagian, adalah operator yang menjadi dasar dari banyak bahasa pemrograman, termasuk C.
+
+```c title="Simple arithmetic operations example"
+#include <stdio.h>
+
+int main() {
+    printf("%d\n", 1 + 2);
+    printf("%d\n", 1 - 2);
+    printf("%d\n", 1 * 2);
+    printf("%d\n", 1 / 2);
+    printf("%d\n", 1 % 2);
+
+    return 0;
+}
+```
+
+Program diatas akan menghasilkan output sebagai berikut:
+
+```bash title="Output of simple arithmetic operations example"
+3
+-1
+2
+0
+1
+```
+
+Operator `%` adalah apa yang disebut sebagai _modulo operator_, yang digunakan untuk menghitung sisa pembagian dari dua bilangan. Dalam kasus diatas, `1 % 2` akan menghasilkan `1` karena sisa pembagian dari `1 / 2` adalah `1`.
+
+Beberapa hal yang perlu kita perhatikan dalam menggunakan operator aritmatika, terutama `/` dan `%` adalah:
+
+- Operator `/` dapat menghasilkan nilai yang tidak terduga jika kedua operandnya adalah bilangan bulat (_integer_). Dalam contoh diatas, hasil dari `1 / 2` adalah `0` bukan `0.5`. Hal ini dikarenakan bahwa operator `/` akan menghasilkan nilai integer jika kedua operandnya adalah bilangan bulat yang artinya hasil nilainya akan dibulatkan.
+- Operator `%` hanya dapat digunakan pada operand yang bertipe bilangan bulat (_integer_).
+- Menggunakan nilai nol sebagai _operand_ dalam operasi `/` atau `%` akan menghasilkan error atau nilai yang tidak terduga.
+
+Operator lainnya yang kita gunakan untuk menentukan apakah nilai suatu variabel bersifat positif atau negatif disebut sebagai _unary operator_.
+
+```c title="Unary operator example"
+#include <stdio.h>
+
+int main() {
+    int a = 1;
+
+    printf("%d\n", -a);
+    printf("%d\n", +a);
+
+    return 0;
+}
+```
+
+Program diatas akan menghasilkan output sebagai berikut:
+
+```bash title="Output of unary operator example"
+-1
+1
+```
+
+Hal lain yang perlu diperhatikan adalah apa yang disebut dengan _operator precedence_. _Operator precedence_ adalah aturan yang menentukan urutan operasi dalam suatu _expression_. Operator yang memiliki _precedence_ lebih tinggi akan dieksekusi lebih dulu.
+
+Sebagai contoh, jika kita memiliki _expression_ `a + b * c`, maka operator `*` akan dieksekusi lebih dulu karena memiliki _precedence_ yang lebih tinggi dibandingkan `+`. Dalam kasus ini, maka ekspresi `b * c` akan dieksekusi terlebih dahulu sebelum menambahkan hasilnya dengan `a`.
+
+Jika kita urutkan operator-operator tersebut berdasarkan _precedence_, maka akan menjadi seperti ini:
+
+1. _Unary operator_ seperti `-` dan `+`.
+2. Operator `*`, `/`, dan `%`.
+3. Operator `+` dan `-`.
+
+<LessonCallout>
+  Kesimpulannya, _unary operator_ memiliki _precedence_ yang lebih tinggi
+  dibandingkan operator _binary operator_. Operator _binary_ adalah operator
+  yang diharuskan memiliki minimal dua _operands_
+</LessonCallout>
+
+Solusi lain untuk menyelesaikan masalah _operator precedence_ adalah dengan menggunakan tanda kurung `()` untuk memastikan bahwa operasi yang diinginkan dieksekusi terlebih dahulu.
+
+Sebagai contoh, ekspresi `(a + b) * c` akan dieksekusi sebagai `(a + b)` terlebih dahulu sebelum dikalikan dengan `c`.
+
+Jika kita gabungkan semua konsep diatas, maka kita akan mendapatkan:
+
+- `a + b * c` akan dieksekusi sebagai `a + (b * c)`.
+- `-a + -b` akan dieksekusi sebagai `(-a) + (-b)`.
+- `-a + b * c` akan dieksekusi sebagai `(-a) + (b * c)`.
+
+## Assignment Operators
+
+_Assignment operator_ mungkin adalah operator yang paling pertama dan paling kita sering lihat sejak awal. Hampir setiap operasi yang melibatkan variabel, akan ada peran _assignment operator_ disitu. Contoh yang paling simpelnya adalah `a = 1`, dimana `a` adalah variabel dan `1` adalah nilai yang akan diassign ke variabel `a`.
+
+```c title="Assignment operator example"
+#include <stdio.h>
+
+int main() {
+    int a = 1;
+    int b = 2 + a;
+    int c = 3;
+
+    int i = a + b * c; // i = 1 + 3 * 3 = 10
+
+    return 0;
+}
+```
+
+Dan jika kita ingin men-assign suatu nilai ke suatu variabel dengan tipe data yang berbeda, maka compiler akan berusaha untuk mengonversikan nilai tersebut sesuai dengan tipe data variabel yang dituju.
+
+```c title="Assignment operator with different data type example"
+#include <stdio.h>
+
+int main() {
+    int i = 12;
+    i = 14.3; // Assign float to int
+
+    printf("%d", i); // Output: 14 (int)
+
+    return 0;
+}
+```
+
+Alasan kenapa nilai dari variabel `i` menjadi `14` adalah karena dalam bahasa pemrograman C, _assignment_ itu merupakan sebuah _operator_, berbeda dengan bahasa pemrograman lain yang menganggap kalau _assignment_ merupakan sebuah _statement_.
+
+_Operator_ akan selalu menghasilkan sebuah nilai. Sama seperti penggunaan operator `+` yang kita gunakan untuk melakukan operasi penjumlahan akan menghasilkan sebuah nilai. Nilai dari proses _assignment_ `i = 14.3` adalah hasil dari nilai `i` setelah dilakukan proses _assignment_ dengan `14.3`.
+
+<LessonCallout>
+Dikarenakan _assignment_ adalah sebuah _operator_, maka kita bisa melakukan proses _assignment_ bersamaan dengan _operator_. Sebagai contoh:
+
+```c title="Assignment operator with arithmetic operator example"
+#include <stdio.h>
+
+int main() {
+    int i = 2, j, k;
+
+    k = i + (j = i); // Assignment here
+
+    printf("%d %d %d", i, j, k); // Output: 2 2 4
+
+    return 0;
+}
+```
+
+Namun perlu diperhatikan kalau penggunaan proses _assignment_ seperti ini sangat tidak disarankan karena dapat membuat program kita lebih sulit dibaca dan bisa menghasilkan bug-bug yang sulit ditemukan.
+
+</LessonCallout>
+Kita juga bisa melakukan beberapa _assignment_ secara bersamaan, seperti `i = j = k = 1`, yang dapat diartikan sebagai `i = (j = (k = 1))`.
+
+Namun perlu diperhatikan juga kalau _assignment_ dengan tipe data yang berbeda disaat yang bersamaan dapat menghasilkan nilai yang tidak terduga.
+
+```c title="Assignment with different data type example"
+#include <stdio.h>
+
+int main() {
+    int i;
+    float j;
+
+    j = i = 1.3;
+
+    printf("%.1f", j); // Output: 1.0
+
+    return 0;
+}
+```
+
+Hal ini dikarenakan bahwa nilai `1.3` akan dikonversikan menjadi _integer_ terlebih dahulu sebelum dikonversikan lagi menjadi _float_.
+
+```bash title="Conversion process"
+1.3 -> 1 (integer)
+1 -> 1.0 (float)
+```
+
+<LessonCallout>
+  Mungkin udah ada yang nyoba buat melakukan proses _assignment_ terhadap suatu
+  _operand_ yang tidak valid. Sebagai contoh, proses _assignment_ `12 = 1`
+  adalah proses _assignment_ yang tidak valid.
+
+Hal ini dikarenakan bahwa proses _assignment_ membutuhkan apa yang disebut dengan **lvalue** (_left value_). _Lvalue_ adalah sebuah ekspresi yang dapat menunjuk ke suatu lokasi memori dan wajib berada di sisi kiri dari operator _assignment_ (sebelum `=`, _duh_).
+
+Inilah kenapa variabel adalah _lvalue_ yang valid, karena variabel memiliki alamat di memori.
+
+</LessonCallout>
+
+Hal terakhir yang perlu kita bahas tentang _assignment operator_ adalah _compound assignment operator_. _Compound assignment operator_ adalah operator yang digunakan untuk melakukan proses komputasi yang membutuhkan nilai sebelumnya dari variabel tersebut untuk menghasilkan nilai yang baru.
+
+```c title="Compound assignment operator example" {5}
+#include <stdio.h>
+
+int main() {
+    int i = 1;
+    i = i + 2;
+
+    printf("%d", i); // Output: 3
+
+    return 0;
+}
+```
+
+Kebanyakan programmer juga akan menggunakan _shorthand syntax_ dalam melakukan proses _compound assignment_. Sebagai contoh:
+
+```c title="Compound assignment operator shorthand syntax example" {5}
+#include <stdio.h>
+
+int main() {
+    int i = 1;
+    i += 2; // Sama dengan i = i + 2
+
+    printf("%d", i); // Output: 3
+
+    return 0;
+}
+```
+
+Disini operator `+=` adalah _compound assignment operator_ yang digunakan untuk menambahkan nilai dari variabel `i` dengan `2` dan menyimpannya kembali ke variabel `i`.
+
+Hal serupa juga berlaku untuk operator `-=`, `*=`, `/=`, dan `%=`.
+
+<LessonCallout variant="danger">
+  `i += 2` tidak sama dengan `i =+ 2`. jadi berhati-hatilah dalam menggunakan
+  shorthand syntax ini.
+</LessonCallout>
+
+1 hal penting yang perlu kita perhatikan adalah bahwa `i *= 2 + 3` tidaklah sama dengan `i = i * 2 + 3`. Hal ini dikarenakan hukum dari _operator precedence_ yang sudah kita bahas sebelumnya.
+
+`i *= 2 + 3` akan dieksekusi sebagai `i = i * (2 + 3)`, yang artinya `i = i * 5`. Inilah kenapa penyebutan _shorthand syntax_ sebelumnya mungkin bisa dianggap kurang tepat.
+
+Hal yang sama juga berlaku untuk _compound assignment_ seperti dalam kasus `i += j += k` yang berarti `i = i + (j = j + k)`.
+
+## Increment and Decrement Operators
+
+Dalam _compound assignment_ kita sudah melihat operator `+=` dan `-=`. _Increment_ dan _decrement_ operator ini juga dapat digunakan untuk melakukan proses _increment_ dan _decrement_. Hanya saja, nilai perubahan dari _increment_ dan _decrement_ operator ini adalah `1`.
+
+```c title="Increment and decrement operator example" {5, 9}
+#include <stdio.h>
+
+int main() {
+    int a = 10;
+    a++;
+
+    printf("%d", a); // Output: 11
+
+    a--;
+    printf("%d", a); // Output: 10
+
+    return 0;
+}
+```
+
+Bisa dilihat kalau `a++` akan menghasilkan `11` dan `a--` akan menghasilkan `10`. Ini berarti bahwa _increment_ dan _decrement_ operator ini akan melakukan perubahan nilai dari variabel tersebut setelah proses _increment_ atau _decrement_ sebesar `1`.
+
+Hal yang perlu diperhatikan adalah, bahwa operator `++` dan `--` dapat diletakkan di depan (prefix) atau di belakang (postfix) variabel. Jika diletakkan di depan, maka proses _increment_ atau _decrement_ akan dilakukan sebelum proses _assignment_ dilakukan. Sebaliknya, jika diletakkan di belakang, maka proses _increment_ atau _decrement_ akan dilakukan setelah proses _assignment_ dilakukan.
+
+```c title="Prefix and postfix increment and decrement operator example"
+#include <stdio.h>
+
+int main() {
+    int a = 10;
+
+    printf("%d\n", ++a); // Output: 11
+    printf("%d\n", a++); // Output: 11
+    printf("%d\n", a); // Output: 12
+
+    return 0;
+}
+```
+
+Sekarang coba perhatikan, kenapa output dari `printf("%d\n", a++)` adalah `11` bukan `12`? Hal ini dikarenakan bahwa operator `++` diletakkan di belakang variabel `a`, yang artinya proses _increment_ akan dilakukan setelah proses _assignment_ dilakukan. Inilah kenapa output dari baris selanutnya adalah `12`, dikarenakan proses _increment_ pada baris sebelumnya telah dilakukan.
+
+Kita bisa mengartikan kalau `++i` berarti lakukan _increment_ terhadap variabel `i` sekarang, sedangkan `i++` berarti lakukan _increment_ terhadap variabel `i` setelah proses _assignment_ dilakukan.
+
+<LessonCallout variant="warning">
+  Demi kewarasan anda, tolong hindari penulisan kode seperti ini:
+
+```c title="Bad example of increment and decrement operator" {3}
+int a = 10;
+int b = 11;
+int c = ++a + b++;
+
+printf("%d", c); // Output: 22
+```
+
+</LessonCallout>
+
+_Increment_ dan _decrement_ operator ini mungkin terlihat tidak berguna dan jarang digunakan. Namun, dalam beberapa kasus, operator ini justru sangat berguna, terutama ketika kita ingin melakukan proses _looping_ atau _iteration_ nantinya.
