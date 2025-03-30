@@ -1,0 +1,501 @@
+---
+title: "Selection Statements"
+category: "system-programming"
+subcategory: "1-c-programming-language"
+curriculum: "Basic Types and Operations"
+slug: "selection-statements"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+
+Kita sudah melihat banyak contoh dari _operators_ dalam bahasa C. Tapi kita belum banyak melihat contoh dari _statements_ yang dapat mempengaruhi alur program kita. Sejauh ini, kita baru pernah melihat 2 jenis _statements_, yaitu _return statement_ dan _expression statement_.
+
+Selain dari 2 jenis _statements_ tersebut, terdapat 3 jenis _statements_ lainnya yang dapat kita gunakan, yaitu _selection statement_, _iteration statement_, dan _jump statement_. Ada juga _compound statement_ yang dapat kita gunakan untuk mengelompokkan beberapa _statements_ menjadi satu dan _null statement_ yang tidak memiliki efek apapun.
+
+pada modul ini, kita akan membahas tentang _selection statement_ yang di dalamnya terdapat _if statement_, _if-else statement_, dan _switch statement_. Namun sebelum itu, kita akan membahas tentang _logical expression_ terlebih dahulu.
+
+## Logical Expression
+
+_Selection statement_ akan menguji apakah suatu kondisi atau nilai dari ekspresi yang diberikan adalah _true_ atau _false_.
+
+Sebagai contoh, ekspresi `x > 0` akan menghasilkan nilai _true_ jika nilai dari `x` lebih besar dari 0, dan _false_ jika nilai dari `x` kurang dari atau sama dengan 0. Nilai _true_ dan _false_ inilah yang dimaksud dengan tipe data _boolean_.
+
+```c title="Boolean data type" {2}
+#include <stdio.h>
+#include <stdbool.h> // Include header file to support boolean data type
+
+int main() {
+    bool a = true;
+    bool b = false;
+
+    printf("%d\n", a); // Output: 1
+    printf("%d\n", b); // Output: 0
+
+    return 0;
+}
+```
+
+Bisa dilihat dari output diatas, nilai _true_ dan _false_ di representasikan dengan nilai 1 dan 0.
+
+<LessonCallout>
+  Ada masa dimana `stdbool.h` tidak tersedia, terutama ketika kita menggunakan compiler lawas, sehingga kita perlu menggunakan
+  tipe data `int` untuk merepresentasikan nilai _true_ dan _false_.
+
+```c title="Boolean data type without stdbool.h"
+#include <stdio.h>
+
+int main() {
+    int a = 1;
+    int b = 0;
+
+    printf("%d\n", a); // Output: 1 = true
+    printf("%d\n", b); // Output: 0 = false
+
+    return 0;
+}
+```
+
+</LessonCallout>
+
+Operator `>` dalam ekspresi `x > 0` adalah _relational operator_ yang digunakan untuk membandingkan nilai dari `x` dengan 0. Dan tidak hanya itu, terdapat juga _relational operator_ lainnya seperti `>=`, `<`, dan `<=`.
+
+- `>` : lebih besar dari
+- `>=` : lebih besar dari atau sama dengan
+- `<` : kurang dari
+- `<=` : kurang dari atau sama dengan
+
+Perlu diketahui kalau _relational operator_ itu secara prioritas lebih rendah dari _arithmetic operator_. Sehingga `a - b > c + d` akan di evaluasi mejadi `(a - b) > (c + d)`.
+
+<LessonCallout>
+Perlu diketahui juga kalau meskipun ekspresi `a < x < b` adalah sebuah ekspresi yang valid, namun hasil dari ekspresi ini tidak seperti apa yang kita pikirkan.
+
+Dikarenakan _relaational operator_ itu dibaca dari kiri ke kanan, sehingga ekspresi `a < x < b` akan di evaluasi menjadi `(a < x) < b`.
+
+</LessonCallout>
+
+Operator lain yang tidak kalah penting adalah _equality operator_ yang terdiri dari `==` dan `!=` yang juga akan menghasilkan nilai _true_ atau _false_.
+
+- `==` : sama dengan
+- `!=` : tidak sama dengan
+
+```c title="Equality operator"
+#include <stdio.h>
+
+int main() {
+    int a = 1;
+    int b = 2;
+
+    printf("%d\n", a == 1); // Output: 1 = true
+    printf("%d\n", a == b); // Output: 0 = false
+    printf("%d\n", a != b); // Output: 1 = true
+
+    return 0;
+}
+```
+
+_Equality operator_ memiliki prioritas yang lebih rendah dibanding _relational operator_. Sehingga ekspresi `a < b == c > d` akan di evaluasi menjadi `(a < b) == (c > d)`.
+
+Ada juga _logical operator_ yang terdiri dari `&&`, `||`, dan `!`.
+
+- `&&` : AND, ekspresi akan menghasilkan nilai _true_ jika kedua ekspresi yang diuji adalah _true_.
+- `||` : OR, ekspresi akan menghasilkan nilai _true_ jika salah satu dari ekspresi yang diuji adalah _true_.
+- `!` : NOT, ekspresi akan menghasilkan nilai _true_ jika ekspresi yang diuji adalah _false_, dan _false_ jika ekspresi yang diuji adalah _true_.
+
+```c title="Logical operator"
+#include <stdio.h>
+
+int main() {
+    int a = 10;
+    int b = 20;
+
+    printf("%d\n", a == 10 && b == 20);
+    printf("%d\n", a == 10 && b == 10);
+    printf("%d\n", a == 10 || b == 20);
+    printf("%d\n", a == 10 || b == 10);
+    printf("%d\n", !(a == 10 && b == 20));
+
+    return 0;
+}
+```
+
+Penjelasan dari contoh diatas adalah sebagai berikut:
+
+- `a == 10 && b == 20` akan menghasilkan nilai _true_ jika `a` sama dengan 10 dan `b` sama dengan 20. Artinya, kedua ekspresi yang diuji harus bernilai _true_.
+- `a == 10 && b == 10` akan menghasilkan nilai _false_ karena `b` tidak sama dengan 10. Artinya, salah satu dari ekspresi yang diuji harus bernilai _false_.
+- `a == 10 || b == 20` akan menghasilkan nilai _true_ karena `a` sama dengan 10. Artinya, salah satu dari ekspresi yang diuji harus bernilai _true_.
+- `a == 10 || b == 10` akan menghasilkan nilai _true_ karena `a` sama dengan 10. Artinya, salah satu dari ekspresi yang diuji harus bernilai _true_.
+- `!(a == 10 && b == 20)` akan menghasilkan nilai _false_ karena `a` sama dengan 10 dan `b` sama dengan 20. Artinya, ekspresi yang diuji harus bernilai _false_.
+
+<LessonCallout variant="danger">
+  Perhatikan kalau `==` tidak sama dengan `=`.
+</LessonCallout>
+
+Buat yang masih bingung. Jangan khawatir, _logical operator_ memang membutuhkan banyak latihan untuk memahaminya.
+
+## The `if` Statement
+
+_Selection statement_ pertama dan mungkin yang paling sering kita temui adalah _if statement_. Dimana inti dari _if statement_ ini adalah untuk menjalankan suatu blok kode jika suatu kondisi terpenuhi.
+
+Bentuk dari _if statement_ adalah sebagai berikut:
+
+```c
+if (condition) {
+    // Block of code to be executed if condition is true
+}
+```
+
+Kita kan sebelumnya sudah membahas tentang _logical expression_. nah, umumnya, _logical expression_ inilah yang akan kita gunakan sebagai _condition_ di dalam _if statement_.
+
+```c title="If statement" {6}
+#include <stdio.h>
+
+int main() {
+    int a = 10;
+
+    if (a > 0) {
+        printf("a is greater than 0\n");
+    }
+
+    printf("the value of a is %d\n", a);
+
+    return 0;
+}
+```
+
+Output dari program diatas adalah:
+
+```bash title="Output from if statement program"
+a is greater than 5
+the value of a is 10
+```
+
+Sekarang, bagaimana jika kita dengan sengaja membuat agar kondisi menjadi tidak terpenuhi?
+
+```c title="If statement with false condition"
+#include <stdio.h>
+
+int main() {
+    int a = 2;
+
+    if (a > 5) {
+        // Condition is false, so this block will not be executed
+        printf("a is greater than 5\n");
+    }
+
+    printf("the value of a is %d\n", a);
+
+    return 0;
+}
+```
+
+Output dari program diatas adalah:
+
+```bash title="Output from if statement program"
+the value of a is 2
+```
+
+Bisa dilihat dari output diatas, bahwa blok kode yang ada di dalam _if statement_ tidak dijalankan karena kondisi yang diuji tidak terpenuhi.
+
+Contoh yang lebih kompleks adalah sebagai berikut:
+
+```c title="If statement with more complex conditions"
+#include <stdio.h>
+
+int main() {
+    int a = 50;
+
+    if (a > 30 && a < 70) {
+        printf("a is between 30 and 70\n");
+    }
+
+    printf("the value of a is %d\n", a);
+
+    return 0;
+}
+```
+
+Output dari program diatas adalah:
+
+```bash title="Output from if statement program"
+a is between 30 and 70
+the value of a is 50
+```
+
+## The `if-else` Statement
+
+Sekarang bagaimana jika kita ingin menjalankan suatu blok kode jika kondisi terpenuhi, dan jika tidak terpenuhi, kita ingin menjalankan suatu blok kode lain? Disinilah peran `else` statement berada.
+
+Bentuk dari _if-else statement_ adalah sebagai berikut:
+
+```c title="If-else statement clause"
+if (condition) {
+    // Block of code to be executed if condition is true
+} else {
+    // Block of code to be executed if condition is false
+}
+```
+
+Perlu diperhatikan kalau `else` statement ini tidak membutuhkan kondisi atau ekspresi untuk berjalan. Dikarenakan karena, `else` statement ini akan menjalankan blok kode yang ada di dalamnya jika kondisi di dalam _if statement_ tidak terpenuhi. Jadi, kapanpun kondisi dari _if statement_ bernilai _false_, maka blok kode yang ada di dalam _else statement_ akan dijalankan.
+
+```c title="If-else statement example"
+#include <stdio.h>
+
+int main() {
+    int a = 20;
+
+    if (a > 30) {
+        printf("a is greater than 30\n");
+    } else {
+        printf("a is less than or equal to 30\n");
+    }
+
+    printf("the value of a is %d\n", a);
+
+    return 0;
+}
+```
+
+output dari program diatas adalah:
+
+```bash title="Output from if-else statement program"
+a is less than or equal to 30
+the value of a is 20
+```
+
+Dari contoh diatas, kita dapat melihat bahwa blok kode yang ada di dalam _else statement_ akan dijalankan dikarenakan kondisi di dalam _if statement_ tidak terpenuhi.
+
+<LessonCallout variant="warning">
+Mungkin ada beberapa contoh di internet yang menulis _if-else statement_ seperti ini:
+
+```c title="If-else statement without curly braces"
+if (condition)
+    // Block of code to be executed if condition is true
+else (condition)
+    // Block of code to be executed if condition is false
+```
+
+Bisa dilihat dari contoh diatas, bahwa _if-else statement_ ini tidak memiliki kurung kurawal. Hal ini sah-sah saja karena kurung kurawal itu sifatnya tidak wajib di dalam _if-else statement_ dan tidak akan memunculkan error.
+
+Jika menggunakan contoh kita sebelumnya, maka kode tersebut akan menjadi seperti ini:
+
+```c title="If-else statement without curly braces"
+if (a > 30)
+    printf("a is greater than 30\n");
+else
+    printf("a is less than or equal to 30\n");
+```
+
+Atau mungkin seperti ini:
+
+```c title="If-else statement one-liner"
+if (a > 30) printf("a is greater than 30\n");
+else printf("a is less than or equal to 30\n");
+```
+
+Kedua kode diatas akan berjalan sesuai dengan semestinya tanpa ada error. Dan tergantung preferensi kita, kode ini mungkin bisa dianggap lebih mudah dibaca bukan?
+
+Namun perlu diingat kalau _if-else statement_ tanpa kurung kurawal ini hanya boleh dilakukan jika kode blok di dalam setiap kondisi kita hanya 1 _statement_ saja.
+
+```c title="If-else statement with multiple statements"
+int a = 50;
+
+if (a > 30)
+    printf("a is greater than 30\n");
+else
+    printf("a is less than or equal to 30\n");
+    printf("inside else clause\n");
+```
+
+Output dari program diatas adalah:
+
+```bash title="Output from if-else statement program"
+a is greater than 30
+inside else clause
+```
+
+Seperti dilihat dari output diatas, bahwa muncul _bug_ dimana terdapat kode di dalam _else statement_ kita yang dijalankan meskipun kondisi di dalam _if statement_ terpenuhi. Hal ini terjadi karena baris kedua dalam _else statement_ dianggap sudah bukan lagi bagian dari _else statement_ tersebut.
+
+Jadi berhati-hatilah ketika menggunakan _if-else statement_ tanpa kurung kurawal.
+
+</LessonCallout>
+
+Dan perlu diketahui juga kalau tidak ada batasan terhadap _statement_ apa yang bisa kita gunakan di dalam _if-else statement_. Bahkan kita bisa menulis _if-else statement_ di dalam _if-else statement_ seperti ini:
+
+```c title="If-else statement nested"
+#include <stdio.h>
+
+int main() {
+    int a = 50;
+
+    if (a > 30) {
+        printf("a is greater than 30\n");
+        if (a > 40) {
+            printf("a is greater than 40\n");
+
+            if (a == 50) {
+                printf("a is equal to 50\n");
+            } else {
+                printf("a is not equal to 50\n");
+            }
+        }
+    } else {
+        printf("a is less than or equal to 30\n");
+
+        if (a < 20) {
+            printf("a is less than 20\n");
+        }
+    }
+}
+```
+
+Output dari program diatas adalah:
+
+```bash title="Output from if-else statement program"
+a is greater than 30
+a is greater than 40
+a is equal to 50
+```
+
+Penggunaan _if-else statement_ di dalam _if-else statement_ disebut dengan _nested if-else statement_ dan percayalah, ini bukanlah hal yang jarang kita temui.
+
+Dan faktanya, saking seringnya kita temui kode _nested if-else statement_ ini, banyak bahasa pemrograman di dunia, termasuk bahasa C, memiliki fitur untuk mempermudah kita dalam menulis kode _nested if-else statement_ yang dinamakan dengan _cascaded if statement_.
+
+Dan jika kita menulis ulang kode kita diatas dengan menggunakan _cascaded if statement_, maka kode tersebut akan menjadi seperti ini:
+
+```c title="Cascaded if statement"
+#include <stdio.h>
+
+int main() {
+    int a = 50;
+
+    if (a > 50) {
+        printf("a is greater than 50\n");
+    } else if (a == 50) {
+        printf("a is equal to 50\n");
+    } else if (a > 40) {
+        printf("a is greater than 40\n");
+    } else if (a > 30) {
+        printf("a is greater than 30\n");
+    } else if (a < 20) {
+        printf("a is less than 20\n");
+    } else {
+        printf("a is less than or equal to 30\n");
+    }
+}
+```
+
+Agak sedikit berantakan, tapi bentuk inti dari _cascaded if statement_ ini adalah seperti ini:
+
+```c title="Cascaded if statement"
+if (condition) {
+    // Block of code to be executed if condition is true
+} else if (condition) {
+    // Block of code to be executed if condition is true
+} else if (condition) {
+    // Block of code to be executed if condition is true
+} else {
+    // Block of code to be executed if all previous condition is false
+}
+```
+
+Perlu diperhatikan kalau _cascaded if statement_ ini bukan ingin menggantikan _nested if-else statement_, melainkan memberikan kita pilihan lain untuk menulis kode _if-else statement_ yang lebih mudah dibaca dan lebih mudah di maintain.
+
+Lalu apakah dengan adanya _cascaded if statement_ ini, kita tidak perlu menggunakan _if-else statement_ lagi? Jawabannya adalah **tidak**. Ada banyak kasus dimana kita tetap ingin menulis _if-else statement_ bersamaan dengan _cascaded if statement_. Ingat, _cascaded if statement_ ini bukan pengganti dari _nested if-else statement_.
+
+## Conditional (Ternary) Operator
+
+Jika `if-else statement` memungkinkan kita untuk menjalankan satu atau lebih perintah berdasarkan nilai dari suatu kondisi, maka `conditional operator` juga memungkinkan kita melakukan hal yang sama.
+
+`Conditional operator` dalam bahasa _C_ atau yang terkadang lebih dikenal juga dengan `ternary operator`, terdiri dari 2 simbol, yaitu simbol `?` dan `:`.
+
+```c title="Basic usage of conditional operator"
+Condition ? Expression1 : Expression2
+```
+
+Cara membaca ekspresi diatas adalah:
+
+- Jika `Condition` bernilai _true_, maka `Expression1` akan dieksekusi.
+- Jika `Condition` bernilai _false_, maka `Expression2` akan dieksekusi.
+
+Sehingga, dalam dalam pengaplikasiannya, kita bisa menulis ulang kode yang menggunakan `if-else statement` menjadi menggunakan `conditional operator` seperti ini:
+
+```c title="Rewriting if-else statement using conditional operator" {6-11}#del {13}#ins
+#include <stdio.h>
+
+int main() {
+    int a = 50;
+
+    int b;
+    if (a > 40) {
+        b = 1;
+    } else {
+        b = 0;
+    }
+
+    b = a > 40 ? 1 : 0; // b is now 1
+
+    printf("%d\n", b); // Output: 1
+    return 0;
+}
+```
+
+Bisa dilihat kalau kita bisa menulis ulang 4 baris kode menjadi hanya 1 baris kode saja.
+
+Namun perlu diingat kalau meskipun penggunaan `conditional operator` ini bisa mempermudah kita dalam menulis kode, tidak berarti kalau kita harus menggunakannya di setiap kondisi yang ada. Perlu diingat kalau penggunaan `conditional operator` ini bisa membuat kode menjadi sulit dibaca dan sulit di maintain.
+
+Umumnya, jika kondisi atau ekspresi yang ingin kita uji terlalu kompleks, lebih baik gunakan `if-else statement` daripada `conditional operator`.
+
+## The `switch` Statement
+
+Gak bakalan lengkap kalo kita belum bahas tentang `switch statement`.
+
+Kita udah lihat sebelumnya, kalo kita punya banyak pengkondisian, maka yang terjadi adalah, seringkali kita menemukan diri kita menulis `if-else statement` secara berulang-ulang sampai semua kondisi kita terpenuhi. Hal ini valid-valid aja, tapi ada cara lain yang lebih baik untuk menulis kode ini, yaitu dengan menggunakan `switch statement`.
+
+```c title="Previous if-else statement before rewritten using switch statement"
+int x = 2;
+
+if (x == 1) {
+    printf("x is one\n");
+} else if (x == 2) {
+    printf("x is two\n");
+} else if (x == 3) {
+    printf("x is three\n");
+} else {
+    printf("x is something else\n");
+}
+```
+
+Kode diatas adalah salah satu contoh kode yang kita tulis dengan menggunakan `if-else statement`. Disini kita akan menulis ulang kode tersebut dengan menggunakan `switch statement`.
+
+```c title="Rewriting if-else statement using switch statement"
+int x = 2;
+
+switch (x) {
+    case 1:
+        printf("x is one\n");
+        break;
+    case 2:
+        printf("x is two\n");
+        break;
+    case 3:
+        printf("x is three\n");
+        break;
+    default:
+        printf("x is something else\n");
+        break;
+}
+```
+
+Output dari program diatas adalah:
+
+```bash title="Output from switch statement program"
+x is two
+```
+
+Ketika setiap baris dari `switch statement` dijalankan, maka setiap `case` yang ada akan dijalankan dan diuji apakah nilai dari `x` sama dengan nilai dari `case` tersebut. Jika ya, maka blok kode yang ada di dalam `case` tersebut akan dijalankan.
+
+Setiap case akan diuji satu per satu secara berurutan. Dan jika tidak ada case yang terpenuhi, maka blok kode yang ada di dalam `default` akan dijalankan. Dalam hal ini, blok `default` itu bisa dianggap sama seperti `else` statement di dalam `if-else statement` dimana ekspresi di dalam blok tersebut akan dijalankan jika semua pengecekan kondisi sebelumnya tidak terpenuhi.
+
+Peran dari `break` _statement_ memang cukup mencurigakan. Tapi pada dasarnya, peran dari `break` _statement_ ini sudah dijelaskan dari nama _statement_ itu sendiri. Adanya `break` _statement_ ini adalah untuk menghentikan seluruh eksekusi yang ada di dalam `switch statement` dan keluar dari `switch statement`.
+
+Jika kita tidak menulis `break` _statement_ di dalam `case` tersebut, maka blok kode yang ada di dalam `case` tersebut akan dijalankan dan eksekusi akan dilanjutkan ke blok kode yang ada di dalam `case` berikutnya.
