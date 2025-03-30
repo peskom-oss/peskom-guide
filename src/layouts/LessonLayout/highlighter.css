@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 [data-line],
 [data-rehype-pretty-code-figure] {
   display: block;

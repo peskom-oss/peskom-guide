@@ -48,16 +48,47 @@ async function getLesson(category, subcategory, lessonSlug) {
   return lesson;
 }
 
+// Helper to extract leading numeric prefixes from a file path
+function extractNumbersFromPath(path) {
+  return path
+    .split("/")
+    .map((part) => {
+      const match = part.match(/^(\d+)-/);
+      return match ? parseInt(match[1], 10) : null;
+    })
+    .filter((num) => num !== null);
+}
+
+// Compare two file paths based on their numeric prefixes
+function comparePaths(aPath, bPath) {
+  const aNumbers = extractNumbersFromPath(aPath);
+  const bNumbers = extractNumbersFromPath(bPath);
+  const maxLength = Math.max(aNumbers.length, bNumbers.length);
+  for (let i = 0; i < maxLength; i++) {
+    const aNum = aNumbers[i] || 0;
+    const bNum = bNumbers[i] || 0;
+    if (aNum !== bNum) {
+      return aNum - bNum;
+    }
+  }
+  return 0;
+}
+
 async function getCurriculumList() {
   const allCurriculums = await getCollection("curriculums");
 
-  // Filter curriculums to only include current subcategory
-  const filteredCurriculums = allCurriculums.filter(
+  // Sort the curriculums based on numeric prefixes in their file paths
+  const sortedCurriculums = allCurriculums.sort((a, b) =>
+    comparePaths(a.filePath, b.filePath),
+  );
+
+  // Filter curriculums to only include the current subcategory
+  const filteredCurriculums = sortedCurriculums.filter(
     (item) =>
       item.data.category === category && item.data.subcategory === subcategory,
   );
 
-  // Categorize items
+  // Categorize items based on the curriculum field
   const categorized = filteredCurriculums.reduce(
     (acc, item) => {
       const curriculum = item.data.curriculum;
@@ -79,7 +110,7 @@ async function getCurriculumList() {
     {} as Record<string, Array<LessonMeta>>,
   );
 
-  // Convert categorized object into an array of objects
+  // Convert the categorized object into an array of objects
   const result = Object.entries(categorized).map(([curriculum, children]) => ({
     curriculum,
     category,
@@ -104,7 +135,7 @@ const lastModified = dayjs(remarkPluginFrontmatter.lastModified)
   .format("DD MMMM YYYY");
 const minutesRead = remarkPluginFrontmatter.minutesRead;
 
-// SEO
+// SEO meta configuration
 const meta = {
   title: `${lesson.data.title} pada ${subcategory} | belajar ${category} | Peskom Guide`,
   description: `Panduan belajar ${subcategory} dengan topik ${lesson.data.title} yang merupakan bagian dari ${category}`,
@@ -137,10 +168,9 @@ const meta = {
 
         <p class="font-medium text-text-tertiary text-sm">
           <span class="bg-emphasis text-accent px-1.5 py-1 rounded-lg">
-            Last Updated</span
-          >
-          :
-          {lastModified} / {minutesRead}
+            Last Updated
+          </span>
+          : {lastModified} / {minutesRead}
         </p>
       </div>
       <div
