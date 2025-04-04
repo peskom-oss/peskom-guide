@@ -552,7 +552,7 @@ Sebagai contoh, kita ingin membuat sebuah program yang akan menerima _input_ ber
 #include <stdio.h>
 
 int main() {
-    // Total must have an initial value
+    // Total must have an initial value!
     int input, total = 0;
 
     printf("Enter a number: ");
@@ -568,6 +568,18 @@ int main() {
     return 0;
 }
 ```
+
+<LessonCallout variant="warning">
+  Dalam _loop header_, kita perlu melakukan kalkulasi terhadap total sebelum
+  kita melakukan _increment_ terhadap `i`. Seandainya kita menukar posisi `total
+  += i` dengan `i++`, maka hasil dari program akan berbeda. Total kalkulasinya bisa sangat berbeda!
+
+```c title="The revesing the total += i and i++ position"
+// Increment will be done first, then the total += i
+for (int i = 0; i <= input; i++, total += i);
+```
+
+</LessonCallout>
 
 Dari kode diatas, dikarenakan semua logic yang dibutuhkan berada di dalam _loop_ header, hal tersebut meninggalkan _loop body_ menjadi kosong. Disitu, kita mengisi _loop body_ dengan _null statement_ `;` untuk menandakan bahwa semua logic yang dibutuhkan berada di dalam _loop_ header.
 
