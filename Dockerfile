@@ -1,4 +1,5 @@
 FROM node:20-alpine AS build
+RUN apk add --no-cache git openssh
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
