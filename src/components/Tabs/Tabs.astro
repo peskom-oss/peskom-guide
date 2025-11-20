@@ -1,0 +1,115 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="tabs">
+  <div class="tab-list" role="tablist">
+    {
+      items.map((item, index) => (
+        <button
+          role="tab"
+          class="tab-button"
+          data-tab={index}
+          data-active={index === 0 ? "true" : "false"}
+          aria-selected={index === 0 ? "true" : "false"}
+        >
+          {item}
+        </button>
+      ))
+    }
+  </div>
+  <div class="tab-panels">
+    <div role="tabpanel" class="tab-panel" data-tab="0" data-active="true">
+      <slot name="tab1" />
+    </div>
+    <div role="tabpanel" class="tab-panel" data-tab="1" data-active="false">
+      <slot name="tab2" />
+    </div>
+    <div role="tabpanel" class="tab-panel" data-tab="2" data-active="false">
+      <slot name="tab3" />
+    </div>
+    <div role="tabpanel" class="tab-panel" data-tab="3" data-active="false">
+      <slot name="tab4" />
+    </div>
+    <div role="tabpanel" class="tab-panel" data-tab="4" data-active="false">
+      <slot name="tab5" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .tabs {
+    width: 100%;
+  }
+
+  .tab-list {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid var(--custom-gray-400);
+    margin-bottom: 1rem;
+  }
+
+  .tab-button {
+    background: none;
+    border: none;
+    padding: 0.5rem 0;
+    color: #6b7280;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .tab-button[data-active="true"] {
+    color: var(--token-keyword);
+  }
+
+  .tab-button[data-active="true"]::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--token-keyword);
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel[data-active="true"] {
+    display: block;
+  }
+</style>
+
+<script>
+  function setupTabs() {
+    const buttons = document.querySelectorAll(".tab-button");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tabId = button.getAttribute("data-tab");
+
+        buttons.forEach((btn) => {
+          const isActive = btn === button;
+          btn.setAttribute("data-active", isActive.toString());
+          btn.setAttribute("aria-selected", isActive.toString());
+        });
+
+        panels.forEach((panel) => {
+          panel.setAttribute(
+            "data-active",
+            panel.getAttribute("data-tab") === tabId ? "true" : "false",
+          );
+        });
+      });
+    });
+  }
+
+  setupTabs();
+  document.addEventListener("astro:page-load", setupTabs);
+</script>

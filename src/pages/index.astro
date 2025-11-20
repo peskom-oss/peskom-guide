@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import { SEO } from "astro-seo";
 
 import { CoreLayout } from "../layouts/CoreLayout";
-import { FacebookIcon } from "../components/Icon";
+import { FacebookIcon, GithubIcon } from "../components/Icon";
 import { GuideCard } from "../components/GuideCard";
 
 const categories = await getCollection("categories");
@@ -16,8 +16,8 @@ const meta = {
 
 <CoreLayout {...meta}>
   <SEO
-    title="Panduan Belajar Programming untuk Mahasiswa & Lulusan IT yang Gak Bisa Ngoding | Peskom Guide"
-    description="Temukan panduan lengkap belajar programming di Peskom Guide! Mulai dari frontend, backend, hingga teknologi terkini. Cocok untuk mahasiswa dan lulusan IT yang ingin meningkatkan skill coding mereka."
+    title="Panduan belajar pemrograman dan IT untuk sarjana komedi"
+    description="Tutorial panduan belajar pemrograman frontend & animasi web, backend, system, dan devops untuk para sarjana komedi dan lulusan IT yang gak bisa ngoding"
   />
   <div
     class="grid grid-cols-[1fr_minmax(auto,880px)_1fr] gap-x-4 gap-y-14 items-stretch"
@@ -31,12 +31,13 @@ const meta = {
           Dari sarjana komedi, oleh sarjana komedi, untuk sarjana komedi
         </span>
         <p>
-          Website yang didedikasikan untuk memberikan panduan bagi mahasiswa dan
-          lulusan IT gak bisa ngoding tapi jujur masih mau belajar ngoding!
+          Website yang didedikasikan untuk memberikan panduan pemrograman bagi
+          mahasiswa dan lulusan IT gak bisa ngoding tapi jujur masih mau belajar
+          ngoding!
         </p>
       </h1>
-      <div class="mt-3 flex">
-        <a
+      <div class="mt-3 flex gap-2">
+        <!-- <a
           href="https://www.facebook.com/groups/sarjana.komedi"
           target="_blank"
           class="no-underline"
@@ -46,6 +47,18 @@ const meta = {
           >
             sarjana.komedi
             <FacebookIcon />
+          </button>
+        </a> -->
+        <a
+          href="https://github.com/peskom-oss"
+          target="_blank"
+          class="no-underline"
+        >
+          <button
+            class="bg-emphasis text-accent font-medium px-3 py-2 rounded-md flex items-center gap-2 cursor-pointer"
+          >
+            peskom-oss
+            <GithubIcon />
           </button>
         </a>
       </div>

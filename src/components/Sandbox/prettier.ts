@@ -8,7 +8,7 @@ import prettier from "prettier/standalone";
 import babelPlugin from "prettier/plugins/babel";
 import htmlPlugin from "prettier/plugins/html";
 import postcssPlugin from "prettier/plugins/postcss";
-import typescriptPlugin from "prettier/plugins/typescript"
+import typescriptPlugin from "prettier/plugins/typescript";
 
 export function useIsPrettier() {
   const [prettier, setPrettier] = React.useState(false);
@@ -49,7 +49,7 @@ export function usePrettier() {
   const { sandpack } = useSandpack();
 
   React.useEffect(() => {
-    const handleKeyDown = async (event) => {
+    const handleKeyDown = async (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
         await prettifyCode();
@@ -64,7 +64,7 @@ export function usePrettier() {
   }, [sandpack.files, sandpack.activeFile]);
 
   const debouncedUpdate = React.useCallback(
-    debounce((code) => {
+    debounce((code: string) => {
       sandpack.updateCurrentFile(code, false);
     }, 150),
     [sandpack.activeFile, sandpack.files],

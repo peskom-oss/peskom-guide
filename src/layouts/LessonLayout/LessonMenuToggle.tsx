@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X, House } from "lucide-react";
 
-import type { Curriculum, LessonMeta } from "./LessonLayout.astro";
+import type { Curriculum } from "./LessonLayout.astro";
 
 interface Props {
   curriculums: Curriculum[];

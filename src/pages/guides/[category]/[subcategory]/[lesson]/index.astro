@@ -30,7 +30,11 @@ export async function getStaticPaths() {
 
 const { category, subcategory, lesson: lessonSlug } = Astro.params;
 
-async function getLesson(category, subcategory, lessonSlug) {
+async function getLesson(
+  category: string,
+  subcategory: string,
+  lessonSlug: string,
+) {
   // Fetch the lesson based on category, subcategory, and slug
   const allCurriculums = await getCollection("curriculums");
 
@@ -49,18 +53,18 @@ async function getLesson(category, subcategory, lessonSlug) {
 }
 
 // Helper to extract leading numeric prefixes from a file path
-function extractNumbersFromPath(path) {
+function extractNumbersFromPath(path: string) {
   return path
     .split("/")
-    .map((part) => {
+    .map((part: string) => {
       const match = part.match(/^(\d+)-/);
       return match ? parseInt(match[1], 10) : null;
     })
-    .filter((num) => num !== null);
+    .filter((num: number | null) => num !== null);
 }
 
 // Compare two file paths based on their numeric prefixes
-function comparePaths(aPath, bPath) {
+function comparePaths(aPath: string, bPath: string) {
   const aNumbers = extractNumbersFromPath(aPath);
   const bNumbers = extractNumbersFromPath(bPath);
   const maxLength = Math.max(aNumbers.length, bNumbers.length);
@@ -79,7 +83,7 @@ async function getCurriculumList() {
 
   // Sort the curriculums based on numeric prefixes in their file paths
   const sortedCurriculums = allCurriculums.sort((a, b) =>
-    comparePaths(a.filePath, b.filePath),
+    comparePaths(a.filePath!, b.filePath!),
   );
 
   // Filter curriculums to only include the current subcategory
