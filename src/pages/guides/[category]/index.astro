@@ -25,14 +25,16 @@ const currentSubcategoriesList = subcategories.filter((subcategory) => {
 });
 
 const meta = {
-  title: `Panduan belajar ${currentSubguides} | Peskom Guide`,
-  description: `Panduan terlengkap untuk belajar dasar ${currentSubguides} bahasa indonesia`,
+  title: `Panduan belajar ${currentSubguides} untuk pemula | gakbisangoding`,
+  description: `Panduan tutorial terlengkap untuk belajar dasar ${currentSubguides} untuk pemula bahasa indonesia`,
   canonical: `${Astro.url.origin}/guides/${currentSubguides}`,
 };
 ---
 
 <CoreLayout {...meta}>
-  <SEO title={`Panduan belajar ${currentSubguides} | Peskom Guide`} />
+  <SEO
+    title={`Panduan belajar ${currentSubguides} untuk pemula | gakbisangoding`}
+  />
   <div class="py-6">
     <h1 class="text-text-primary text-2xl font-bold capitalize text-center">
       {currentSubguides} Guide

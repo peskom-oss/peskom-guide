@@ -10,22 +10,21 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 
 import tailwindcss from "@tailwindcss/vite";
 
+import sitemap from "@astrojs/sitemap";
+
 const isProd = process.env.NODE_ENV === "production";
 
 // https://astro.build/config
 export default defineConfig({
   site: isProd ? "https://gakbisangoding.com" : "http://localhost:4321",
-  integrations: [
-    react(),
-    mdx({
-      syntaxHighlight: false,
-      // Todo: implement proper dark mode for code blocks
-      rehypePlugins: [rehypePrettyCode],
-      remarkPlugins: [remarkModifiedTime, remarkReadingTime],
-      remarkRehype: { footnoteLabel: "Footnotes" },
-      gfm: false,
-    }),
-  ],
+  integrations: [react(), mdx({
+    syntaxHighlight: false,
+    // Todo: implement proper dark mode for code blocks
+    rehypePlugins: [rehypePrettyCode],
+    remarkPlugins: [remarkModifiedTime, remarkReadingTime],
+    remarkRehype: { footnoteLabel: "Footnotes" },
+    gfm: false,
+  }), sitemap()],
   vite: {
     ssr: {
       noExternal: ["react-tweet"],

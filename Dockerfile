@@ -1,4 +1,5 @@
 FROM node:20-alpine AS build
+ENV NODE_ENV=production
 RUN apk add --no-cache git openssh
 WORKDIR /app
 COPY package*.json ./

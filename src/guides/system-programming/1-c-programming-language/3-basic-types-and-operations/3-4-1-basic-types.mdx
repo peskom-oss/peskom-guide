@@ -1,0 +1,127 @@
+---
+title: "Basic Types"
+category: "system-programming"
+subcategory: "1-c-programming-language"
+curriculum: "Basic Types and Operations"
+slug: "basic-types"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+
+Sejauh ini, kita telah melihat beberapa tipe dasar yang dimiliki bahasa C, seperti `int` yang paling sering kita gunakan dan juga `float` yang pernah kita gunakan di awal pembahasan dalam pengenalan bahasa C.
+
+Nah, sekarang kita akan membahas lebih dalam mengenai tipe-tipe dasar yang dimiliki dalam bahasa C. Termasuk dari tipe dasar yang sering kita gunakan, seperti `int` yang berarti _integer_. Siapa sangka kalau tipe data `int` itu hanya bisa digunakan untuk menyimpan bilangan bulat?
+
+Siapa sangka kalau tipe data _integer_ yang sering kita gunakan itu ternyata sama dengan tipe data `signed int`? dan tidak hanya itu, tipe data _integer_ juga memiliki tipe data lainnya seperti `unsigned int`, `short int`, and `long int`. Hal yang sama juga berlaku pada tipe data `float`.
+
+## The `integer` types
+
+Untung menyimpan bilangan bulat, dalam bahasa C kita bisa menggunakan tipe data `int` yang berarti _integer_. Perlu diingat bahwa kita tidak bisa menyimpan bilangan desimal dengan tipe data `int`.
+
+Meskipun tipe data _integer_ berfungsi untuk menyimpan angka. Namun juga terdapat limitasi besaran angka yang bisa disimpan dengan menggunakan tipe data `int` ini.
+
+Sebagai contoh, tipe data `int` dapat menyimpan bilangan bulat dengan besaran 32-bit, mulai dari `–2,147,483,648` sampai `2,147,483,647` (Pada CPU lawas bisa lebih kecil lagi yaitu hanya sebesar 16-bit).
+
+```c title="integer number with maximum value"
+#include <stdio.h>
+
+int main() {
+    int i = 2147483647; // maximum value of int: 2,147,483,647
+
+    printf("%d\n", i);
+    return 0;
+}
+```
+
+Jika kita compile dan run program diatas, maka outputnya akan bernilai sama persis seperti yang kita inisialisasi, yaitu `2,147,483,647`.
+
+Lalu bagaimana jika kita menambahkan `1` pada variabel `i`?
+
+```c title="integer number with maximum value"
+#include <stdio.h>
+
+int main() {
+    int i = 2147483647; // maximum value of int: 2,147,483,647
+
+    i += 1; // Add 1 to i, causing it to overflow
+
+    printf("%d\n", i); // output: -2147483648
+
+    i += 1; // Add 1 again to i
+
+    printf("%d\n", i); // output: -2147483647
+
+    return 0;
+}
+```
+
+Hasil mengejutkan terjadi, kita menambahkan `1` pada variabel `i` yang bernilai `2,147,483,647` dan hasilnya menjadi `-2,147,483,648`. Hal ini dikarenakan nilai yang kita tampung sudah melebihi batas maksimal yang bisa disimpan oleh tipe data `int`, maka nilai yang kita tampung akan kembali ke nilai minimal yang bisa disimpan oleh tipe data `int`, yaitu `-2,147,483,648`.
+
+Namun tipe data `int` ini juga memiliki beberapa bentuk lainnya yang memungkinkan kita untuk menyimpan nilai yang lebih kecil atau besar dari tipe data `int` biasa. Berikut 6 bentuk dari tipe data `int` yang bisa digunakan pada kebanyakan sistem:
+
+- `short int`, umumnya dapat menampung nilai dari `-32,768` sampai `32,767` (16-bit)
+- `unsigned short int`, umumnya dapat menampung nilai non-negatif dari `0` sampai `65,535` (16-bit)
+- `int`, umumnya dapat menampung nilai dari `-2,147,483,648` sampai `2,147,483,647` (32-bit)
+- `unsigned int`, umumnya dapat menampung nilai non-negatif dari `0` sampai `4,294,967,295` (32-bit)
+- `long int`, umumnya dapat menampung nilai dari `-2,147,483,648` sampai `2,147,483,647` (sistem 32-bit) atau `-9,223,372,036,854,775,808` sampai `9,223,372,036,854,775,807` (sistem 64-bit)
+- `unsigned long int`, umumnya dapat menampung nilai non-negatif dari `0` sampai `4,294,967,295` (sistem 32-bit) atau `0` sampai `18,446,744,073,709,551,615` (sistem 64-bit)
+
+Bahasa _C_ juga memperbolehkan kita untuk tidak menulis kata `int` dalam penggunaan tipe-tipe data `int` diatas. Sebagai contoh, kita bisa menulis `short` daripada `short int`, `unsigned` daripada `unsigned int`, dan seterusnya. Dan urutan _keyword_ juga tidaklah penting, sebagai contoh, `unsigned long int` adalah sama dengan `long unsigned int`.
+
+Ada juga tipe data `long long int` yang dapat menampung nilai dari `-9,223,372,036,854,775,808` sampai `9,223,372,036,854,775,807` (64-bit). Karena `long int` dan `unsigned long int` sangatlah bergantung pada platform, sehingga pada platform tertentu, nilai yang bisa disimpan oleh `long int` dan `unsigned long int` bisa sama dengan `int` dan `unsigned int`.
+
+{/* add example program to read int here */}
+
+## The `floating-point` types
+
+Kita harusnya juga udah gak asing lagi dengan tipe data ini. Karena tipe data inilah yang memungkinkan kita untuk menyimpan nilai desimal, berbeda dengan tipe data `int` yang hanya bisa menyimpan nilai bilangan bulat.
+
+Bahasa pemrograman _C_ menyediakan tiga jenis _floating-point type_ yang bisa kita gunakan untuk menyimpan nilai desimal, yaitu `float`, `double`, dan `long double`.
+
+- `float`, presisi paling rendah, sekitar 6-7 digit desimal
+- `double`, presisi sedang, sekitar 15-16 digit desimal
+- `long double`, presisi tertinggi, sekitar 18-19 digit desimal (tergantung pada platform)
+
+Tentu saja masih lebih banyak perbedaan antara ketiga tipe data ini, namun inti dari perbedaan ini terdapat pada besaran angka yang bisa disimpan oleh tipe data tersebut. Semakin tinggi presisi tipe data tersebut dan tingkat akurasinya, maka semakin akurat nilai yang bisa disimpan oleh tipe data tersebut.
+
+Dan perlu diketahui juga kalau semakin kecil presisinya, maka akan semakin cepat proses perhitungan yang dilakukan oleh tipe data tersebut.
+
+```c title="Read and Print Floating-Point Types"
+#include <stdio.h>
+
+int main() {
+    double d;
+    long double ld;
+
+    printf("Enter a double: ");
+    scanf("%lf", &d);
+
+    printf("Enter a long double: ");
+    scanf("%Lf", &ld);
+
+    printf("d = %lf\n", d);
+    printf("ld = %Lf\n", ld);
+    return 0;
+}
+```
+
+<LessonCallout variant="danger">
+  Pada mesin windows, ada kemungkinan kalau tipe data `long double` tidak bisa
+  disimpan dengan presisi yang tepat atau bahkan tidak bekerja sama sekali. Hal
+  ini dikarenakan [microsoft menganggap tipe data `long double` pada mesin
+  windows adalah sama dengan tipe data
+  `double`](https://stackoverflow.com/questions/26296058/cant-print-correctly-a-long-double-in-c).
+</LessonCallout>
+
+Jika kita compile dan run program diatas, maka kita akan diminta untuk memasukkan nilai untuk variabel `d` dan `ld`. Setelah itu, kita akan melihat nilai dari variabel `d` dan `ld` yang kita masukkan.
+
+```bash title="Output"
+Enter a double: 12.67
+Enter a long double: 12.67
+d = 12.670000
+ld = 12.670000
+```
+
+Kita bisa menggunakan `%g` untuk memformat output dari tipe data `double` dan `long double`, sehingga outputnya tidak akan menyisakan angka 0 yang tidak perlu diujungnya.
+
+## The `character` type
