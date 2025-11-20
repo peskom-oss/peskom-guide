@@ -1,0 +1,595 @@
+---
+title: "Looping and Iteration"
+category: "system-programming"
+subcategory: "1-c-programming-language"
+curriculum: "Basic Types and Operations"
+slug: "looping-and-iteration"
+---
+
+import { LessonCallout } from "@/components/LessonCallout";
+import { Tabs } from "@/components/Tabs";
+
+Setelah `if` dan `switch` _statements_, salah satu operasi yang akan sering kita gunakan dan temukan adalah _loop_ atau operasi perulangan.
+
+Seperti namanya, _loop_ adalah sebuah _statement_ yang bertujuan untuk mengeksekusi sebuah blok kode secara berulang-ulang. Kode akan dieksekusi di dalam sebuah iterasi, dan setiap sebelum menjalankan eksekusi selanjutnya, akan dilakukan evaluasi terhadap kondisi untuk menentukan apakah eksekusi akan dihentikan atau dilanjutkan.
+
+Dalam bahasa _C_ ada 3 jenis _loop_ yang bisa kita gunakan, yaitu `for`, `while`, dan `do-while`. Perbedaan utama dari ketiga jenis _loop_ ini adalah dimana dan kapan kondisi ini dievaluasi. Dimana dengan `while` dan `for` statement, kondisi akan dievaluasi sebelum eksekusi berjalan, dengan `do-while` statement, kondisi akan dievaluasi setelah eksekusi berjalan.
+
+<LessonCallout>
+  Jujur aja, jarang liat `do-while` statement digunakan dalam kode.
+</LessonCallout>
+
+## The `while` Loop Statement
+
+Dari semua cara melakukan _looping_ di dalam bahasa _C_, `while` loop statement adalah jenis _loop_ yang paling sederhana dan fundamental.
+
+```c title="The while loop basic structure"
+while (condition) {
+  // Will executed if condition is true
+}
+```
+
+Kode di dalam blok `{}` akan dieksekusi jika kondisi yang ditempatkan di dalam `()` adalah berupa `true`.
+
+```c title="The while loop example"
+int i = 0;
+
+// The condition is evaluated first
+while (i < 10) {
+  printf("%d\n", i);
+  i++; // This is executed after the body of the loop
+}
+```
+
+Kode di atas akan menampilkan angka 0 hingga 9, karena kondisi `i < 10` akan bernilai `true` selama `i` kurang dari 10. Setelah `i` bernilai 10, kondisi akan bernilai `false` dan eksekusi akan berhenti. Nilai dari variabel `i` akan terus bertambah 1 setiap kali eksekusi berjalan karena kita menggunakan `i++` di dalam blok `{}`.
+
+<LessonCallout variant="info">
+  Kita bisa tidak menggunakan kurung kurawal `{}` jika hanya ada satu _statement_ di dalam blok _loop_.
+
+```c title="The while loop example without curly braces"
+int i = 0;
+
+while (i < 10)
+  printf("%d\n", i++);
+```
+
+</LessonCallout>
+
+Seandainya kita ingin membuat program yang meminta kita untuk memasukkan sebuah angka, dan program akan menampilkan angka yang kita masukkan bersamaan dengan kelipatan 2 dari angka yang kita masukkan, maka kita bisa menggunakan _loop_ seperti ini:
+
+```c title="The while loop example"
+#include <stdio.h>
+
+int main() {
+    // The flag variable is commonly used as a temporary variable
+    // or a signal variable to indicate whether certain condition is met
+    int input, flag = 1;
+
+    printf("Enter a number: ");
+    scanf("%d", &input);
+
+    while(flag <= input) {
+        printf("%d\t%d\n", flag, flag * flag);
+        flag++;
+    }
+}
+```
+
+Maka program akan menampilkan output seperti ini:
+
+```c title="The while loop example output"
+Enter a number: 10
+1       1
+2       4
+3       9
+4       16
+5       25
+6       36
+7       49
+8       64
+9       81
+10      100
+```
+
+Seperti dilihat, program kita akan terus berjalan dan melakukan komputasi selama kondisi `flag <= input` bernilai `true`.
+
+<LessonCallout variant="danger" label="Infinite Loop">
+  Kita bisa membuat sebuah _loop_ yang tidak pernah berhenti dengan membuat kondisi menjadi `true`.
+
+```c title="The infinite loop example"
+while (1) {
+  printf("Hello, World!\n");
+}
+```
+
+Kode di atas akan menampilkan "Hello, World!" terus menerus, karena kondisi `1` selalu bernilai `true`.
+
+Jadi jika bukan ini yang kita mau, maka kita harus memastikan bahwa kondisi kita dapat berubah menjadi `false` ketika kita ingin menghentikan eksekusi _loop_.
+
+</LessonCallout>
+
+## The `do-while` Loop Statement
+
+Seperti namanya, `do-while` loop statement mirip sekali dengan `while` loop statement. Perbedaannya adalah kondisi akan dievaluasi setelah eksekusi blok kode di dalam _loop_ berjalan.
+
+```c title="The do-while loop basic structure"
+do {
+  // Will executed if condition is true
+} while (condition);
+```
+
+Dengan struktur seperti di atas, maka blok kode di dalam `{}` akan dieksekusi setidaknya satu kali, dan kemudian kondisi akan dievaluasi. Jika kondisi bernilai `true`, maka eksekusi akan dilanjutkan ke blok kode di dalam `{}` dan kondisi akan dievaluasi lagi.
+
+Hal ini membuat, setidaknya kode yang berada di dalam `{}` akan dieksekusi sekurang-kurangnya satu kali. Tidak peduli apakah kondisi bernilai `true` atau `false` pada eksekusi pertama.
+
+Mari kita coba tulis ulang contoh program sebelumnya dengan menggunakan `do-while` loop statement:
+
+```c title="The do-while loop example"
+#include <stdio.h>
+
+int main() {
+    int input, flag = 1;
+    printf("Enter a number: ");
+    scanf("%d", &input);
+
+    do {
+        printf("%d\t%d\n", flag, flag * flag);
+        flag++;
+    } while(flag <= input);
+}
+```
+
+Jika kita menjalankan program dan memasukkan angka yang tidak valid dari awal, maka program akan tetap berjalan pada eksekusi pertama seperti ini:
+
+```c title="The do-while loop example output"
+Enter a number: 0
+1       1
+```
+
+Angka `0` bukanlah angka yang valid dikarenakan flag kita saja dimulai dari nilai `1`. Namun, dikarenakan kondisi dievaluasi setelah eksekusi blok kode di dalam `{}` berjalan, maka eksekusi akan berhenti setelah eksekusi pertama.
+
+## The `for` Loop Statement
+
+`for` Loop statemetn adalah jenis _loop_ terakhir yang akan kita bahas disini. Dan mungkin juga, ini adalah jenis _loop_ yang paling sering digunakan dan temukan di dalam kode-kode diluar sana.
+
+Tidak heran kalau `for` loop biasanya adalah jenis _loop_ yang pertama kali akan diajarkan kepada pemula dalam bahasa pemrograman _C_ diluar sana. Meskipun strukturnya yang "agak lain", tapi tidak sulit untuk membiasakan diri dengan struktur dari `for` _loop_ ini.
+
+```c title="The for loop basic structure 1"
+for (expr1; expr2; expr3) {
+  // Statements
+}
+```
+
+Meskipun terlihat rumit, namun jenis struktur dari `for` loop ini biasanya diringkas menjadi seperti ini:
+
+```c title="The for loop basic structure 2"
+for (initialization; condition; increment) {
+  // Will executed if condition is true
+}
+```
+
+Meskipun struktur kedua ini terlihat lebih berbeda, sebenarnya keduanya adalah sama. Namun jenis struktur kedua ini yang lebih sering digunakan sebagai contoh dalam penerapan `for` loop diluar sana. Struktur tersebut valid-valid saja, namun implementasi `for` _loop_ di dunia nyata bisa menjadi sangat kompleks, sehingga kita tidak boleh melupakan struktur pertama.
+
+Dari struktur `for` _loop_ yang kedua, kita bisa melihat `initialization` sebagai sebuah ekspresi yang akan dieksekusi sebelum eksekusi blok kode di dalam `{}` berjalan. `condition` sebagai sebuah ekspresi yang akan dievaluasi untuk menentukan apakah eksekusi blok kode di dalam `{}` akan dilanjutkan atau dihentikan. Dan `increment` sebagai sebuah ekspresi yang akan dieksekusi setelah eksekusi blok kode di dalam `{}` berjalan.
+
+Mari kita lihat contoh penerapan dari `for` loop ini:
+
+```c title="The for loop example using the second for loop structure"
+for (int i = 0; i < 10; i++) {
+  printf("%d\n", i);
+}
+```
+
+Ketika kita menjalankan program di atas, maka output yang akan kita dapatkan adalah seperti ini:
+
+```c title="The for loop example output"
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9 // 9 is the last number before the condition is false
+```
+
+Dan jika kita mencoba menerjemahkan kode di atas ke dalam `while` loop, maka akan menjadi seperti ini:
+
+```c title="The for loop example using the while loop structure"
+// The initialization is executed first
+int i = 0;
+
+// The condition is evaluated first
+while (i < 10) {
+  printf("%d\n", i);
+  i++; // The increment is executed after the body of the loop
+}
+```
+
+Namun bagaimana jika kita tidak ingin menginisialisasi variabel `i` di dalam `for` loop? Kita bisa meninggalkan ekspresi `initialization` kosong, dan hanya menulis `condition` dan `increment`.
+
+```c title="The for loop example without initialization"
+// The initialization is outside the for loop
+int i = 0;
+
+for (; i < 10; i++) {
+  printf("%d\n", i);
+}
+```
+
+<LessonCallout variant="warning">
+  Meskipun kita tidak perlu menulis ekspresi `initialization` di dalam `for`
+  loop, namun kita tetap perlu menulis `;` untuk memisahkan ekspresi
+  `initialization` dengan `condition`.
+</LessonCallout>
+
+Tidak hanya bagian `initialization` saja, kita juga bisa meninggalkan bagian `increment` juga.
+
+```c title="The for loop example without increment"
+for (int i = 0; i < 10; ) {
+  printf("%d\n", i);
+
+  // The increment is inside the loop body
+  i++;
+}
+```
+
+Bisa dilihat, dikarenakan ekspres `increment` tidak berada di dalam `for` _loop_, maka kita menaruh ekspres `increment` di dalam blok kode di dalam `{}`.
+
+<LessonCallout variant="info">
+  Untuk melakukan _infinite loop_ dengan menggunakan `for` loop, kita bisa
+  meninggalkan semua ekspres di dalam `for` loop, dan hanya menulis `;` untuk
+  memisahkan ekspres `initialization` dengan `condition`.
+
+Contohnya seperti ini:
+
+```c title="The infinite loop example using the for loop structure"
+for (;;) {
+  printf("Hello, World!\n");
+}
+```
+
+</LessonCallout>
+
+Lalu bagaimana jika kita ingin melakukan lebih dari satu `initialization` atau `increment` di dalam `for` loop sekaligus? Kita bisa melakukannya dengan memisahkan masing-masing ekspres dengan menggunakan koma `,`.
+
+```c title="The for loop example with multiple initialization and increment"
+#include <stdio.h>
+
+int main() {
+    for (int i = 0, j = 0; i < 10 && j < 10; i++, j++) {
+        printf("%d\t%d\n", i, j);
+    }
+}
+```
+
+Ketika kita menjalankan program di atas, maka output yang akan kita dapatkan adalah seperti ini:
+
+```c title="The for loop example with multiple initialization and increment output"
+0       0
+1       1
+2       2
+3       3
+4       4
+5       5
+6       6
+7       7
+8       8
+9       9
+```
+
+Bisa dilihat kita melakukan `initialization` dan `increment` lebih dari satu kali di dalam `for` _loop_ sekaligus dan semuanya tetap berjalan.
+
+## Exiting or Skipping a Loop
+
+Ada beberapa alasan kenapa kita mungkin ingin keluar dari sebuah _loop_ atau melewati eksekusi sebuah iterasi di dalam _loop_.
+
+Salah satu alasan yang paling umum adalah kita ingin menghentikan eksekusi _loop_ jika kondisi tertentu terpenuhi. Kita bisa melakukan hal ini dengan menggunakan _statement_ `break`.
+
+Atau kita ingin melewati eksekusi sebuah iterasi di dalam _loop_ berdasarkan suatu kondisi. Kita bisa melakukan hal ini dengan menggunakan _statement_ `continue`.
+
+Ada juga `goto` _statement_ yang agak _tricky_ dan dianggap _bad practice_ di dalam pemrograman _C_, namun tidak ada salahnya jika kita bahas agar kita tahu bahwa _statement_ ini ada.
+
+### The `break` Statement
+
+`break` _statement_ adalah _statement_ yang akan menghentikan eksekusi _loop_ dan keluar dari _loop_ tersebut. Dan `break` _statement_ ini bisa digunakan pada `while`, `do-while`, dan `for` _loop_.
+
+Sebagai contoh, anggap saja kita ingin membuat program yang akan menerima _input_ berupa angka, dan program kita nantinya akan melakukan _looping_ dari angka `0` sampai dengan angka yang kita masukkan.
+
+```c title="For loop with break statement"
+#include <stdio.h>
+
+int main() {
+  int input, flag = 0;
+  printf("Enter a number: ");
+  scanf("%d", &input);
+
+  // Infinite Loop
+  for(;;) { // Or we can use while(1)
+      printf("%d\n", flag);
+
+      flag++;
+      if(flag > input) {
+          break; // This will exit the loop
+      }
+  }
+}
+```
+
+Kita dengan sengaja menggunakan _infinite Loop_ untuk menunjukkan bahwa `break` _statement_ akan menghentikan eksekusi _loop_ dan keluar dari _loop_ tersebut ketika ada suatu kondisi terpenuhi.
+
+<LessonCallout variant="warning">
+  Perlu diingat bahwa `break` _statement_ itu bukan satu-satunya _statement_
+  yang digunakan untuk menghentikan eksekusi _loop_. Sebagai contoh, dalam kasus
+  penggunaan `switch` _statement_, kita bisa menggunakan `break` _statement_
+  untuk keluar dari `switch` _statement_ tersebut.
+
+Lalu bagaimana jika kita menggunakan `switch` _statement_ di dalam `for` _loop_ yang dimana kita menggunakan `break` _statement_ untuk keluar dari `switch` _statement_ tersebut?
+
+```c title="For loop with break statement inside switch statement"
+#include <stdio.h>
+
+int main() {
+    int input, flag = 0;
+    printf("Enter a number: ");
+    scanf("%d", &input);
+
+    for (;;) {
+        switch(flag) {
+            case 2:
+                printf("Breaking...\n");
+                break; // This breaks out of the switch, not the for loop
+        }
+
+        // This still gets executed
+        flag++;
+    }
+}
+```
+
+Jadi kita masih perlu menggunakan `break` _statement_ diluar dari `switch` _statement_ untuk keluar dari `for` _loop_ tersebut.
+
+```c title="For loop with break statement inside switch statement and outside of the switch statement"
+#include <stdio.h>
+
+int main() {
+    int input, flag = 0;
+    printf("Enter a number: ");
+    scanf("%d", &input);
+
+    for (;;) {
+        switch(flag) {
+            case 2:
+                printf("Breaking...\n");
+                break; // This breaks out of the switch, not the for loop
+        }
+
+        // This still gets executed
+        flag++;
+
+        if (flag > input) {
+            break; // This breaks out of the for loop
+        }
+    }
+}
+```
+
+</LessonCallout>
+
+### The `continue` Statement
+
+Dibandingkan dengan `break` _statement_ yang akan menghentikan keseluruhan eksekusi dari _loop_, `continue` _statement_ adalah _statement_ yang berguna untuk melewati eksekusi blok kode pada iterasi _loop_ saat ini dan melanjutkan eksekusi _loop_ ke iterasi berikutnya.
+
+Perlu diketahui juga, berbeda dengan `break` _statement_, `continue` _statement_ hanya bisa digunakan di dalam operasi _loop_ saja, dan tidak bisa digunakan di dalam `switch` _statement_.
+
+```c title="For loop with continue statement"
+#include <stdio.h>
+
+int main() {
+    for (int i = 1; i <= 10; i++) {
+        if (i == 5) {
+            continue; // skip the rest of the loop when i == 5
+        }
+        printf("%d\n", i);
+    }
+
+    return 0;
+}
+```
+
+Ketika kita menjalankan program di atas, maka output yang akan kita dapatkan adalah seperti ini:
+
+```c title="For loop with continue statement output"
+1
+2
+3
+4
+6 // 5 is skipped
+7
+8
+9
+10
+```
+
+Bisa dilihat, bahwa angka `5` tidak pernah dicetak karena kita menggunakan `continue` _statement_ untuk melewati eksekusi blok kode pada iterasi _loop_ saat ini dan melanjutkan eksekusi _loop_ ke iterasi berikutnya, berbeda dengan `break` _statement_ yang akan menghentikan keseluruhan eksekusi dari _loop_.
+
+### The `goto` Statement
+
+Inti dari `goto` _statement_ adalah untuk melompat ke bagian tertentu dari program dengan menggunakan penanda yang kita sebut dengan _label_. Dari sisi namanya sendiri, `goto` yang terbuat dari kata _go_ dan _to_ yang bisa diartikan sebagai "pergi ke".
+
+Apa yang disebut dengan _label_ dalam `goto` _statement_ ini berguna sebagai penanda yang akan kita panggil untuk melompat ke bagian tertentu dari program.
+
+```c title="The goto statement basic structure"
+label:
+  // Statements
+```
+
+Dan kita bisa menggunakan _label_ ini di dalam `goto` _statement_ untuk melompat ke bagian tertentu dari program.
+
+```c title="The goto statement basic structure"
+goto label;
+```
+
+1 hal yang perlu diingat adalah, `goto` _statement_ hanya bisa digunakan di dalam fungsi yang sama.
+
+```c title="The goto statement with loop"
+#include <stdio.h>
+
+int main() {
+    for (int i = 1; i <= 10; i++) {
+        if (i == 5) {
+            goto special;  // jump to label when i is 5
+        }
+        printf("Number: %d\n", i);
+    }
+
+special: // This is the label
+    printf("Hello from special!\n");
+
+    return 0;
+}
+```
+
+Ketika kita menjalankan program di atas, maka output yang akan kita dapatkan adalah seperti ini:
+
+```bash title="The goto statement with loop output"
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Hello from special!
+```
+
+Hal menarik dari program diatas adalah, kita tidak perlu menuliskan `break` _statement_ untuk keluar dari _loop_. _in a sense_, dengan menggunakan `goto` _statement_ kita sudah melakukan hal yang sama seperti menggunakan `break` _statement_ untuk keluar dari _loop_.
+
+Lalu bagaimana jika kita ingin melanutkan loop lagi setelah melompat ke _label_ ? mungkin kita bisa melakukannya seperti ini:
+
+```c title="The goto statement with loop"
+#include <stdio.h>
+
+int main() {
+    int i;
+    for (i = 1; i <= 10; i++) {
+        if (i == 5) {
+            goto special;  // jump to label when i is 5
+        }
+        printf("Number: %d\n", i);
+        // continue;  // skip label if i is not 5
+
+    }
+
+special:
+    printf("Hello from special! i = %d\n", i);
+
+    // Resume the rest of the loop manually
+    for (i = i + 1; i <= 10; i++) {
+        printf("Number: %d\n", i);
+    }
+
+    return 0;
+}
+```
+
+Gimana ? ribet kan ?
+
+Inilah alasan kenapa `goto` _statement_ sudah jarang digunakan di dalam pemrograman _C_ diluar sana. Mungkin bisa dibilang kalau `goto` _statement_ ini merupakan bagian dari cara ngoding yang udah kuno. Jadi lebih baik kita menghindari juga penggunaan `goto` _statement_ ini.
+
+Mungkin salah satu kasus penggunaan `goto` _statement_ yang valid di dunia nyata adalah ketika kita ingin keluar dari dalam `switch` _statement_ bersamaan dengan _loop_.
+
+```c title="Exiting switch statement and loop using goto statement"
+#include <stdio.h>
+
+int main() {
+    int i;
+    while (1) {
+        switch(i) {
+            case 5:
+                goto loop_exit;
+                // We don't need a break here because we're using goto
+            default:
+                printf("Number: %d\n", i);
+                i++;
+                break;
+        }
+
+    }
+
+loop_exit:
+    printf("Hello from loop_exit! i = %d\n", i);
+
+    // Resume the rest of the loop manually
+    for (i = i + 1; i <= 10; i++) {
+        printf("Number: %d\n", i);
+    }
+
+    return 0;
+}
+```
+
+## The `Null` Statement Inside a Loop
+
+Inti dari `null` _statement_ adalah _statement_ yang tidak melakukan eksekusi apapun atau tidak melakukan apa-apa.
+
+```c title="The null statement example"
+int i = 0; ; j = 1;
+```
+
+Contoh kode diatas, meskipun terlihat hanya terdapat 2 _statement_, namun sebenarnya terdapat 3 _statement_ yang dijalankan.
+
+1. `int i = 0;`, _assignment_ nilai `0` ke variabel `i`
+2. `;`, _null statement_ (literally, gak ngelakuin apa-apa)
+3. `j = 1;`, _assignment_ nilai `1` ke variabel `j`
+
+Bisa dilihat kalau _null statement_ ini sebenarnya tidak melakukan apa-apa. Lalu mengapa ada orang yang perlu menggunakan sebuah _statement_ yang tidak melakukan apa-apa?
+
+Umumnya, ketika kita membicarakan _looping_ atau _iteration_, `null` _statement_ ini digunakan untuk menjadi sebuah penanda kalau semua eksekusi dari _loop_ tersebut berada di dalam blok kondisi dari _loop_ tersebut (_loop_ header).
+
+Sebagai contoh, kita ingin membuat sebuah program yang akan menerima _input_ berupa angka, lalu program kita akan melakukan kalkulasi `(+)` secara berurutan dari `0` sampai dengan angka yang kita masukkan.
+
+```c title="The null statement inside a loop"
+#include <stdio.h>
+
+int main() {
+    // Total must have an initial value!
+    int input, total = 0;
+
+    printf("Enter a number: ");
+    scanf("%d", &input);
+
+    // See the total += i and i++ are inside the loop header?
+    // That means all the code logic is inside the loop header
+    // Making the loop body empty
+    for (int i = 0; i <= input; total += i, i++)
+      ; // This is a null statement
+
+    printf("The sum of all numbers from 0 to %d is %d\n", input, total);
+    return 0;
+}
+```
+
+<LessonCallout variant="warning">
+  Dalam _loop header_, kita perlu melakukan kalkulasi terhadap total sebelum
+  kita melakukan _increment_ terhadap `i`. Seandainya kita menukar posisi `total
+  += i` dengan `i++`, maka hasil dari program akan berbeda. Total kalkulasinya bisa sangat berbeda!
+
+```c title="The revesing the total += i and i++ position"
+// Increment will be done first, then the total += i
+for (int i = 0; i <= input; i++, total += i);
+```
+
+</LessonCallout>
+
+Dari kode diatas, dikarenakan semua logic yang dibutuhkan berada di dalam _loop_ header, hal tersebut meninggalkan _loop body_ menjadi kosong. Disitu, kita mengisi _loop body_ dengan _null statement_ `;` untuk menandakan bahwa semua logic yang dibutuhkan berada di dalam _loop_ header.
+
+Lalu kenapa kita melakukan hal tersebut? jujur saja, kita bisa saja menghindari penggunaan _null statement_, sehingga kita dapat menghilangkan penanda _loop body_ kita.
+
+```c title="Removing the null statement"
+for (int i = 0; i <= input; total += i, i++);
+printf("The sum of all numbers from 0 to %d is %d\n", input, total);
+```
+
+Ketika orang lain membaca kode diatas, mungkin saja dia bisa bingung dan menganggap bahwa eksekusi `printf` tersebut merupakan bagian dari _loop_ atau berada di dalam _loop body_, padahal tidak seperti itu!
+
+Jadi sebenarnya penggunaan utama dari `null` _statement_ di dalam _loop_ adalah untuk menandakan bahwa semua logic yang dibutuhkan berada di dalam _loop_ header yang mengakibatkan _loop body_ menjadi tidak dibutuhkan. Serta untuk menandakan kalau kode setelah _loop_ tersebut **bukan** merupakan bagian dari _loop_ tersebut.

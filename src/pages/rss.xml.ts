@@ -1,7 +1,8 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
+import type { APIContext } from "astro";
 
-export async function GET(context) {
+export async function GET(context: APIContext) {
   // Get all content
   const curriculums = await getCollection("curriculums");
   const categories = await getCollection("categories");
@@ -39,7 +40,7 @@ export async function GET(context) {
       "Peskom Guide: Panduan Belajar Programming untuk Mahasiswa & Lulusan IT yang Gak Bisa Ngoding",
     description:
       "Temukan panduan lengkap belajar programming di Peskom Guide! Mulai dari frontend, backend, hingga teknologi terkini. Cocok untuk mahasiswa dan lulusan IT yang ingin meningkatkan skill coding mereka.",
-    site: context.site,
+    site: context.site!,
     items: allItems,
     customData: `<language>ID-id</language>`,
   });

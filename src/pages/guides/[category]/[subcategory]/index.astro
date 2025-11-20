@@ -51,10 +51,10 @@ lessonsInSubcategory.sort((a, b) => {
 
 // Redirect to the first lesson if it exists
 if (lessonsInSubcategory.length > 0) {
-  const firstLessonSlug = lessonsInSubcategory[0].data.slug;
+  // const firstLessonSlug = lessonsInSubcategory[0].data.slug;
 
   return Astro.redirect(
-    `/guides/${category}/${subcategory}/${firstLessonSlug}`,
+    `/guides/${category}/${subcategory}/${lessonsInSubcategory[0].data.slug}`,
   );
 } else {
   return Astro.redirect("/404");
